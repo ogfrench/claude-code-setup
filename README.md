@@ -1,4 +1,4 @@
-# frog-claude
+# claude-code-setup
 
 My Claude Code setup as a plugin marketplace. Projects point at this repo from their committed `.claude/settings.json`, and Claude Code installs from it, locally and in cloud sessions alike. Change a skill here once and every project picks it up.
 
@@ -22,11 +22,11 @@ Official plugins (superpowers, context7, playwright and the rest) come from `cla
 ```json
 {
   "extraKnownMarketplaces": {
-    "frog": { "source": { "source": "github", "repo": "ogfrench/claude-code-setup" } }
+    "ogfrench": { "source": { "source": "github", "repo": "ogfrench/claude-code-setup" } }
   },
   "enabledPlugins": {
-    "frog-writing@frog": true,
-    "caveman@frog": true
+    "frog-writing@ogfrench": true,
+    "caveman@ogfrench": true
   }
 }
 ```

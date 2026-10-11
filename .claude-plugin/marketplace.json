@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "frog",
+  "name": "ogfrench",
   "description": "ogfrench's Claude Code setup: own skills plus pinned third-party plugins.",
   "owner": {
     "name": "ogfrench",
