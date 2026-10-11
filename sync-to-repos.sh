@@ -14,34 +14,38 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BRANCH="chore/claude-code-setup"
-WORK="$(mktemp -d)"
-trap 'rm -rf "$WORK"' EXIT
+SUBJECT="Sync shared Claude Code setup"
 
-if (($#)); then repos=("$@"); else mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' "$HERE/repos.txt"); fi
-
-for repo in "${repos[@]}"; do
-  repo="${repo%$'\r'}"
-  echo "== $repo"
+# One repo, in its own process, so a failure aborts that repo and nothing else.
+sync_one() {
+  local repo="$1" base dir renamed="" odd managed rel out url remote_sha
+  local work; work="$(mktemp -d)"; trap 'rm -rf "$work"' RETURN
   base="$(gh repo view "$repo" --json defaultBranchRef -q .defaultBranchRef.name)"
-  dir="$WORK/${repo##*/}"
+  dir="$work/${repo##*/}"
   gh repo clone "$repo" "$dir" -- --quiet --depth 1 --branch "$base" 2>/dev/null
   git -C "$dir" checkout -q -b "$BRANCH"
-  renamed=""
 
   # `.CLAUDE` works on Windows and macOS but Claude on Linux (cloud sessions)
   # only reads `.claude`. Rename through git, in two steps, or a case-insensitive
   # filesystem treats it as a no-op.
-  odd="$(git -C "$dir" ls-files | sed -n 's#^\([^/]*\)/.*#\1#p' | sort -u | grep -ix '\.claude' | grep -vx '\.claude' || true)"
-  if [[ -n "$odd" ]]; then
+  odd="$(git -C "$dir" ls-files | sed -n 's#^\([^/]*\)/.*#\1#p' | sort -u | grep -ix '\.claude' || true)"
+  if [[ -n "$odd" && "$odd" != ".claude" ]]; then
+    if [[ "$(wc -l <<<"$odd")" -gt 1 ]]; then
+      echo "   both of these are tracked, merge them by hand first: $(tr '\n' ' ' <<<"$odd")" >&2
+      return 1
+    fi
     git -C "$dir" mv "$odd" .claude-case-fix && git -C "$dir" mv .claude-case-fix .claude
     renamed="Renamed \`$odd/\` to \`.claude/\`: Claude on Linux, which cloud sessions run on, only reads the lowercase name."
   fi
 
+  # Run apply outside a process substitution so its failure stops this repo.
+  managed="$(node "$HERE/lib/apply.mjs" "$dir")"
   # -f because some repos gitignore .claude/; only the paths apply.mjs manages are forced in.
   while read -r rel; do
+    [[ -z "$rel" ]] && continue
     if [[ -e "$dir/$rel" ]]; then git -C "$dir" add -f -- "$rel"
     else git -C "$dir" rm -r -q --cached --ignore-unmatch -- "$rel"; fi
-  done < <(node "$HERE/lib/apply.mjs" "$dir")
+  done <<<"$managed"
 
   if [[ -f "$dir/CHANGELOG.md" ]] && grep -q '^## Unreleased' "$dir/CHANGELOG.md" \
      && ! grep -q 'ogfrench/claude-code-setup' "$dir/CHANGELOG.md"; then
@@ -56,9 +60,9 @@ for repo in "${repos[@]}"; do
 
   if git -C "$dir" diff --cached --quiet; then
     echo "   already in sync"
-    continue
+    return 0
   fi
-  git -C "$dir" commit -q -m "Sync shared Claude Code setup
+  git -C "$dir" commit -q -m "$SUBJECT
 
 From ogfrench/claude-code-setup. Skills are committed under .claude/
 because cloud sessions load those but never install plugins from
@@ -70,25 +74,55 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   if [[ "${DRY_RUN:-0}" == 1 ]]; then
     git -C "$dir" show --stat --format=%s HEAD | sed 's/^/   /'
     [[ -n "${KEEP:-}" ]] && cp -r "$dir" "$KEEP/"
-    continue
+    return 0
   fi
-  git -C "$dir" push -q --force origin "$BRANCH"
-  body="Synced from [ogfrench/claude-code-setup](https://github.com/ogfrench/claude-code-setup) by \`sync-to-repos.sh\`.
+
+  # The branch is ours to overwrite only if its tip is one of our sync commits.
+  remote_sha="$(git -C "$dir" ls-remote origin "refs/heads/$BRANCH" | cut -f1)"
+  if [[ -n "$remote_sha" ]]; then
+    git -C "$dir" fetch -q --depth 1 origin "$BRANCH"
+    if [[ "$(git -C "$dir" log -1 --format=%s FETCH_HEAD)" != "$SUBJECT" ]]; then
+      echo "   $BRANCH has someone else's commit on it, not overwriting" >&2
+      return 1
+    fi
+  fi
+  git -C "$dir" push -q --force-with-lease="$BRANCH:$remote_sha" origin "$BRANCH"
+
+  local body="Synced from [ogfrench/claude-code-setup](https://github.com/ogfrench/claude-code-setup) by \`sync-to-repos.sh\`.
 
 - \`.claude/skills/\`: committed copies of the shared skills. Cloud sessions load these, but they never install plugins from project settings.
-- \`.claude/settings.json\`: registers the \`ogfrench\` marketplace and enables the plugins, for local sessions. Existing keys are kept.
+- \`.claude/settings.json\`: registers the \`ogfrench\` marketplace and enables the plugins, for local sessions. Keys the repo already had are kept as they were.
 - \`.claude/claude-code-setup.json\`: lists the synced copies, so a skill removed upstream is removed here too.${renamed:+
 - $renamed}
 
 Edit these in claude-code-setup, not here: the next sync overwrites the copies.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-  url="$(gh pr create --repo "$repo" --base "$base" --head "$BRANCH" \
-           --title "Sync shared Claude Code setup" --body "$body" 2>/dev/null \
-         || gh pr view "$BRANCH" --repo "$repo" --json url -q .url)"
+  if ! out="$(gh pr create --repo "$repo" --base "$base" --head "$BRANCH" --title "$SUBJECT" --body "$body" 2>&1)"; then
+    grep -q "already exists" <<<"$out" || { echo "$out" >&2; return 1; }
+    out="$(gh pr list --repo "$repo" --head "$BRANCH" --state open --json url -q '.[0].url')"
+  fi
+  url="$(grep -o 'https://github.com/[^ ]*/pull/[0-9]*' <<<"$out" | tail -1)"
   echo "   $url"
   if [[ "${MERGE:-0}" == 1 ]]; then
     gh pr merge "$url" --squash --delete-branch >/dev/null
     echo "   merged"
   fi
+}
+
+if [[ "${1:-}" == "--one" ]]; then
+  sync_one "$2"
+  exit
+fi
+
+if (($#)); then repos=("$@"); else mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' "$HERE/repos.txt"); fi
+failed=()
+for repo in "${repos[@]}"; do
+  repo="${repo%$'\r'}"
+  echo "== $repo"
+  bash "$HERE/sync-to-repos.sh" --one "$repo" || failed+=("$repo")
 done
+if ((${#failed[@]})); then
+  echo "Failed: ${failed[*]}" >&2
+  exit 1
+fi

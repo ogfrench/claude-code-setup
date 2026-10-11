@@ -92,6 +92,41 @@ test("a skill removed upstream is removed from the target, MCP servers merge", (
   assert.ok(fs.existsSync(path.join(t, ".claude/skills/keep/SKILL.md")));
 });
 
+test("a value the target already set wins, so a disabled plugin stays disabled", () => {
+  assert.deepEqual(
+    deepMerge({ enabledPlugins: { "caveman@ogfrench": false } }, { enabledPlugins: { "caveman@ogfrench": true, "x@y": true } }),
+    { enabledPlugins: { "caveman@ogfrench": false, "x@y": true } },
+  );
+});
+
+test("a hostile manifest cannot delete outside .claude/<kind>/, and a same-name repo skill is kept", () => {
+  const src = tmp();
+  write(path.join(src, "plugins/p/skills/frogify/SKILL.md"), "ours");
+  write(path.join(src, "project/settings.json"), {});
+  const outside = tmp();
+  write(path.join(outside, "precious.txt"), "keep me");
+  const t = tmp();
+  write(path.join(t, "README.md"), "readme");
+  write(path.join(t, ".claude/skills/frogify/SKILL.md"), "the repo's own frogify");
+  write(path.join(t, ".claude/claude-code-setup.json"), {
+    copied: [path.relative(t, path.join(outside, "precious.txt")).replace(/\\/g, "/"), "README.md", ".claude/../README.md", ".claude/skills/../../README.md"],
+  });
+
+  const managed = apply(t, src);
+  assert.equal(fs.readFileSync(path.join(outside, "precious.txt"), "utf8"), "keep me");
+  assert.equal(fs.readFileSync(path.join(t, "README.md"), "utf8"), "readme");
+  assert.ok(!managed.some((m) => m.includes("README") || m.includes("precious")));
+  assert.equal(fs.readFileSync(path.join(t, ".claude/skills/frogify/SKILL.md"), "utf8"), "the repo's own frogify");
+  assert.ok(!managed.includes(".claude/skills/frogify"));
+});
+
+test("a settings file with a BOM still parses", () => {
+  const t = tmp();
+  write(path.join(t, ".claude/settings.json"), "﻿" + JSON.stringify({ model: "opus" }));
+  apply(t);
+  assert.equal(read(path.join(t, ".claude/settings.json")).model, "opus");
+});
+
 test("every skill has frontmatter with name and description", () => {
   const plugins = path.join(ROOT, "plugins");
   for (const p of fs.readdirSync(plugins)) {

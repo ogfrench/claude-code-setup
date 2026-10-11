@@ -1,0 +1,2 @@
+# The sync script runs in bash on Windows too; a CRLF checkout breaks `set -o pipefail`.
+* text=auto eol=lf
