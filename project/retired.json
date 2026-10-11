@@ -1,0 +1,9 @@
+{
+  "note": "Settings keys the sync removes from every repo. Merging only adds, so taking something back out goes here. Each entry is a path of keys into .claude/settings.json.",
+  "settings": [
+    ["enabledPlugins", "frog-writing@ogfrench"],
+    ["enabledPlugins", "caveman@ogfrench"],
+    ["enabledPlugins", "ponytail@ogfrench"],
+    ["enabledPlugins", "21st@ogfrench"]
+  ]
+}

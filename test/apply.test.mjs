@@ -52,7 +52,7 @@ test("apply on the real repo: copies skills, merges settings, is idempotent", ()
   const settings = read(path.join(t, ".claude/settings.json"));
   assert.deepEqual(settings.permissions, { allow: ["Bash(npm test)"] });
   assert.deepEqual(settings.hooks, { Stop: [] });
-  assert.equal(settings.enabledPlugins["frog-writing@ogfrench"], true);
+  assert.equal(settings.enabledPlugins["superpowers@claude-plugins-official"], true);
   assert.equal(settings.extraKnownMarketplaces.ogfrench.source.repo, "ogfrench/claude-code-setup");
 
   for (const s of fs.readdirSync(path.join(ROOT, "plugins/frog-writing/skills"))) {
@@ -118,6 +118,28 @@ test("a hostile manifest cannot delete outside .claude/<kind>/, and a same-name 
   assert.ok(!managed.some((m) => m.includes("README") || m.includes("precious")));
   assert.equal(fs.readFileSync(path.join(t, ".claude/skills/frogify/SKILL.md"), "utf8"), "the repo's own frogify");
   assert.ok(!managed.includes(".claude/skills/frogify"));
+});
+
+test("keys in retired.json are removed from the repo, nothing else is", () => {
+  const src = tmp();
+  write(path.join(src, "plugins/p/skills/s/SKILL.md"), "s");
+  write(path.join(src, "project/settings.json"), { enabledPlugins: { "keep@m": true } });
+  write(path.join(src, "project/retired.json"), { settings: [["enabledPlugins", "old@m"], ["missing", "path"]] });
+  const t = tmp();
+  write(path.join(t, ".claude/settings.json"), { enabledPlugins: { "old@m": true, "mine@m": true }, model: "opus" });
+  apply(t, src);
+  assert.deepEqual(read(path.join(t, ".claude/settings.json")), {
+    enabledPlugins: { "mine@m": true, "keep@m": true },
+    model: "opus",
+  });
+});
+
+test("the real project settings no longer enable personal plugins", () => {
+  const t = tmp();
+  write(path.join(t, ".claude/settings.json"), { enabledPlugins: { "caveman@ogfrench": true, "frog-writing@ogfrench": true } });
+  apply(t);
+  const on = Object.keys(read(path.join(t, ".claude/settings.json")).enabledPlugins);
+  assert.ok(!on.some((k) => k.endsWith("@ogfrench")), on.join(","));
 });
 
 test("a settings file with a BOM still parses", () => {

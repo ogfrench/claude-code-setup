@@ -1,0 +1,17 @@
+# Plugins installed at user scope by setup-user.sh, on this laptop and in
+# every cloud session. Personal ones live here and not in project/settings.json,
+# so teammates opening a shared repo are not switched into caveman mode.
+caveman@ogfrench
+ponytail@ogfrench
+21st@ogfrench
+superpowers@claude-plugins-official
+frontend-design@claude-plugins-official
+code-review@claude-plugins-official
+code-simplifier@claude-plugins-official
+context7@claude-plugins-official
+github@claude-plugins-official
+playwright@claude-plugins-official
+claude-md-management@claude-plugins-official
+typescript-lsp@claude-plugins-official
+serena@claude-plugins-official
+commit-commands@claude-plugins-official

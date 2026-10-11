@@ -115,6 +115,22 @@ if [[ "${1:-}" == "--one" ]]; then
   exit
 fi
 
+# Only ship what CI tested: the checkout must be exactly origin/main, and the
+# check workflow must have passed on that commit. A dry run skips the gate.
+if [[ "${DRY_RUN:-0}" != 1 ]]; then
+  git -C "$HERE" fetch -q origin main
+  head="$(git -C "$HERE" rev-parse HEAD)"
+  if [[ -n "$(git -C "$HERE" status --porcelain)" || "$head" != "$(git -C "$HERE" rev-parse origin/main)" ]]; then
+    echo "Refusing: commit and push first, the checkout must equal origin/main." >&2
+    exit 1
+  fi
+  ci="$(gh run list -R ogfrench/claude-code-setup --workflow check.yml --commit "$head" --json conclusion -q '.[0].conclusion')"
+  if [[ "$ci" != "success" ]]; then
+    echo "Refusing: CI on ${head:0:7} is '${ci:-not run yet}', not success." >&2
+    exit 1
+  fi
+fi
+
 if (($#)); then repos=("$@"); else mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' "$HERE/repos.txt"); fi
 failed=()
 for repo in "${repos[@]}"; do
