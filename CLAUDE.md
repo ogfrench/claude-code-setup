@@ -22,8 +22,11 @@ part, it stays out. A learning's `source` is a repo listed in `public-repos.txt`
 **Enforced, not just written.** `scripts/check-public.mjs` runs before every push (the
 `.githooks/pre-push` hook), in `node --test`, and in CI. Run it yourself before committing.
 In a fresh clone, enable the hook first: `git config core.hooksPath .githooks`. Names that
-must never appear live outside the repo, in `.private-terms` (gitignored) and the
-`PRIVATE_TERMS` CI secret, so never add them to a tracked file, even to forbid them.
+must never appear live outside the repo, in `.private-terms` (gitignored), the
+`PRIVATE_TERMS` CI secret and the same variable in the cloud environment, so never add them
+to a tracked file, even to forbid them. The hook and CI refuse to run without them: a
+session that has no terms does not push here, it leaves the learning in the other repo's
+inbox instead.
 If the check fails, fix the text; never loosen the check to get a commit through.
 
 Removing a leak from the files does not remove it from history. Say so, and ask before

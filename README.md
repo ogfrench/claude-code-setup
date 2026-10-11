@@ -73,7 +73,13 @@ Anyone can read this repo, its history and its CI logs. So it never names a clie
 - **In `node --test`**, on every tracked file.
 - **In CI**, on the commits of each push or PR, as a backstop. By then the commit is already public, so the hook is the guard that counts.
 
-It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply ones, and any IP address. Names that must never appear (clients, codenames) can't be listed in a public repo, so they live outside it: one per line in `.private-terms` (gitignored) on the laptop, and in the `PRIVATE_TERMS` secret for CI. A finding names the file, the line and the rule, never the matched text.
+It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply and `example.com` ones, and any IP address outside loopback and the documentation ranges. Names that must never appear (clients, codenames) can't be listed in a public repo, so they live outside it, one per line, in three places:
+
+- **The laptop:** `.private-terms` in the clone (gitignored).
+- **CI:** the `PRIVATE_TERMS` repository secret (Settings, Secrets and variables, Actions).
+- **Cloud sessions that push here:** `PRIVATE_TERMS` as an environment variable of the claude.ai/code environment.
+
+The hook and CI refuse to run without them, so a fresh clone cannot push unchecked. A term matches from the start of a word, in any case, whatever separates its words: `acme bank` also catches `AcmeBank`, `acme-bank`, `acmebanks` and a name wrapped over two lines, but not a longer word that merely contains it. A finding names the place and the rule, never the matched text, and a file whose name is flagged is shown by number.
 
 ## Checking and shipping a change
 

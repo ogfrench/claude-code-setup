@@ -11,3 +11,7 @@
   *(2026-10-11-strip-solutions-from-client-payloads)*
 - **Docs that claim a check are not evidence of the check.** Read the code or probe it; fix
   the doc when it is wrong.
+- **In a public repo, names are private data.** A secret scanner misses a client's name in a
+  repo list, a file name, a branch or an example. Check every push for the names
+  themselves, kept outside the repo, refuse to check without them, and never echo a match
+  into a public log. *(2026-10-11-names-are-private-data)*

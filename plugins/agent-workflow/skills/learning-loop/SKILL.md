@@ -35,12 +35,13 @@ or anything already a practice.
 1. Write it with the template in `learnings/README.md`: a one-line lesson, then What
    happened, Why, Do instead, Evidence. One idea per file, `status: raw`.
 2. **Where:**
-   - If `claude-code-setup` is cloned or can be attached to the session, run
+   - If `claude-code-setup` is cloned or can be attached to the session, and the private
+     terms are there (`.private-terms`, or `PRIVATE_TERMS` in the environment), run
      `git config core.hooksPath .githooks` in it, add `learnings/YYYY-MM-DD-slug.md`,
-     run `node --test` (it includes `scripts/check-public.mjs`), and commit to `main` as
-     "Learning: <the lesson>".
-   - If not, append the same text to `.claude/learnings-inbox.md` in the current repo, and
-     tell the user it is waiting to be harvested.
+     run `node --test` and `node scripts/check-public.mjs --require-terms`, and commit to
+     `main` as "Learning: <the lesson>".
+   - If not, or without the terms, append the same text to `.claude/learnings-inbox.md` in
+     the current repo, and tell the user it is waiting to be harvested.
 3. Say in one line what was captured, and where.
 
 ## Curate, in claude-code-setup
@@ -73,7 +74,7 @@ learning to `status: promoted` and list every path in `promoted_to`. Check with
 For each repo in `repos.local.txt` (on the laptop, never committed), read its
 `.claude/learnings-inbox.md` (a shallow clone, or the GitHub API). An inbox in a private repo
 is written freely, so scrub every entry for the public repo before it becomes a learning
-here: no names, no paths, no quotes. Run `node scripts/check-public.mjs` before committing,
+here: no names, no paths, no quotes. Run `node scripts/check-public.mjs --require-terms` before committing,
 then empty that inbox with a commit in its repo.
 
 ## Retire
