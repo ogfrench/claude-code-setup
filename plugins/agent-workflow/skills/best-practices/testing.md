@@ -1,0 +1,15 @@
+# Testing
+
+- **Write the failing test first, and run it on the old code.** A test that never failed
+  proves nothing. When the fix is already written, swap the old file back in for one run.
+- **Force a race window instead of timing it.** Find a call that sits between the read and
+  the write, monkeypatch it to land the competing write, assert the result. Say in the test
+  that the window is forced on purpose. *(2026-10-11-deterministic-race-tests)*
+- **Wait for the state you need, never for time.** Wait for focus, visibility or a polled
+  value. A flaky test is a race in the test or the app until shown otherwise.
+  *(2026-10-11-wait-for-state-not-time)*
+- **One dev stack per working tree.** A second stack from the same tree, even on other
+  ports, rewrites shared generated files and reloads the first one's pages. No edits under
+  a watched tree while browser tests run. *(2026-10-11-second-stack-reloads-pages)*
+- **Check what is on the port before trusting a run.** Another session's stack answers just
+  as well, and then its code is what got tested.

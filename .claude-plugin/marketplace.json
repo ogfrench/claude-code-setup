@@ -15,7 +15,7 @@
     },
     {
       "name": "agent-workflow",
-      "description": "How work is run: model-delegation (which model does what, how to brief and check cheaper agents).",
+      "description": "How work is run: best-practices, learning-loop (capture, curate, promote), model-delegation, and the cheap-reviewer subagent.",
       "source": "./plugins/agent-workflow",
       "category": "productivity"
     },

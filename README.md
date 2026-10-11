@@ -2,6 +2,8 @@
 
 My Claude Code setup, kept in one place and pushed to every repo I own: skills, plugins, hooks, MCP servers and settings. It works in local sessions and in cloud sessions on claude.ai/code.
 
+It is also a living record of what working with Claude has taught me. Lessons are captured as dated learnings, curated into practices that Claude reads in every repo, and promoted into skills, subagents, hooks, commands or plugins when they earn it. See [Learnings and practices](#learnings-and-practices). The repo is public, so nothing in it names a client or comes from a private repo.
+
 ## Two layers
 
 **Me, everywhere: `setup-user.sh`.** It installs every plugin in `user/plugins.txt` and copies the skills into `~/.claude/skills`, at user scope. Run it once on a laptop. For cloud sessions, paste this as the setup script of the environment on claude.ai/code. It runs before Claude starts, in every repo that uses the environment:
@@ -29,6 +31,9 @@ The source of truth is this repo. The copies in each project are overwritten on 
 | `user/plugins.txt` | My plugins, laptop and cloud | not synced; installed by `setup-user.sh` |
 | `.claude-plugin/marketplace.json` | The `ogfrench` marketplace | registered by the merged settings |
 | `repos.txt` | Which repos get all this | |
+| `learnings/` | Dated raw lessons, one per file | not synced |
+| `plugins/agent-workflow/skills/best-practices/` | Curated practices, one file per topic | `.claude/skills/best-practices/` (copied) |
+| `CLAUDE.md` | How Claude keeps the knowledge base: the public-repo rule and the promotion ladder | not synced |
 
 Merging keeps everything a repo already has. Objects merge key by key, arrays gain the entries they lack, and a value the repo already set wins, so a repo's own permissions, hooks and disabled plugins survive. Merging never removes anything, so to take a key back out, list it in `project/retired.json`. Copies are listed in `.claude/claude-code-setup.json` inside each repo. A skill deleted or renamed here is therefore removed there on the next sync, while skills a repo wrote itself are never touched.
 
@@ -43,6 +48,19 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 **A plugin.** For a third-party one, add an entry to `.claude-plugin/marketplace.json` pinned by `sha`. To update a pinned plugin, read the upstream diff and bump the `sha`. Then add it to `user/plugins.txt` if it is just for you, or enable it in `project/settings.json` if every repo should have it. Re-run `setup-user.sh` locally; cloud sessions pick it up on their next start.
 
 **A repo.** Add `owner/name` to `repos.txt`.
+
+## Learnings and practices
+
+```
+learning (raw) -> practice (curated) -> promoted (skill, subagent, hook, command, plugin, MCP) -> retired
+```
+
+- **Capture** a lesson as `learnings/YYYY-MM-DD-slug.md` with the template in `learnings/README.md`. From another repo, the `learning-loop` skill writes it here, or to that repo's `.claude/learnings-inbox.md` to be harvested later.
+- **Curate** it into a topic of the `best-practices` skill, citing the learning. That skill is synced everywhere, so every session can read it.
+- **Promote** a practice when it earns a heavier form: the ladder in `CLAUDE.md` says when a practice should be a skill, a subagent, a hook, a command, a plugin or an MCP server. `model-delegation` and the `cheap-reviewer` subagent are the first ones promoted.
+- **Retire** what stops being true; the learning keeps the reason.
+
+`node --test` checks the links both ways: every learning's `promoted_to` exists, and every practice cites a learning that exists.
 
 ## Checking and shipping a change
 
@@ -61,7 +79,7 @@ CI runs the first two plus an apply into an empty folder on every push and PR. A
 | Plugin | Source |
 | --- | --- |
 | `frog-writing` | This repo. `frogify` and `deslopify` are mine. `humanizer` is vendored from [blader/humanizer](https://github.com/blader/humanizer) at `9600f2b`, MIT, with its license kept in its folder. |
-| `agent-workflow` | This repo. `model-delegation`: which model does which work, how to brief a cheaper agent, and how its work is checked. |
+| `agent-workflow` | This repo. How work is run: `model-delegation` (which model does which work), `best-practices` (the curated practices), `learning-loop` (capture, curate, promote) and the `cheap-reviewer` subagent. |
 | `caveman` | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman), pinned by SHA |
 | `ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail), pinned by SHA |
 | `21st` | [21st-dev/claude-code-plugin](https://github.com/21st-dev/claude-code-plugin), pinned by SHA |

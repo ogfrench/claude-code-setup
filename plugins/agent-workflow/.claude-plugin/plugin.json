@@ -1,7 +1,7 @@
 {
   "name": "agent-workflow",
-  "version": "1.0.0",
-  "description": "How work is run: model-delegation (which model does what, how to brief and check cheaper agents).",
+  "version": "1.1.0",
+  "description": "How work is run: best-practices, learning-loop (capture, curate, promote), model-delegation, and the cheap-reviewer subagent.",
   "author": {
     "name": "ogfrench"
   }
