@@ -11,6 +11,10 @@
 #        DRY_RUN=1 bash sync-to-repos.sh       # commit in a temp clone, push nothing
 #        KEEP=<dir> DRY_RUN=1 ...              # also keep each prepared clone in <dir>
 #        bash sync-to-repos.sh owner/name      # only these repos, not the list
+#
+# repos.local.txt: one repo per line, optionally followed by the stacks it uses, which
+# decide the practices it gets (see kb/_vocab.json). No stacks means the general ones only:
+#   owner/name nextjs,postgres,shadcn
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -19,7 +23,7 @@ SUBJECT="Sync shared Claude Code setup"
 
 # One repo, in its own process, so a failure aborts that repo and nothing else.
 sync_one() {
-  local repo="$1" base dir renamed="" odd managed rel out url remote_sha
+  local repo="$1" stacks="${2:-}" base dir renamed="" odd managed rel out url remote_sha
   local work; work="$(mktemp -d)"; trap 'rm -rf "$work"' RETURN
   base="$(gh repo view "$repo" --json defaultBranchRef -q .defaultBranchRef.name)"
   dir="$work/${repo##*/}"
@@ -40,7 +44,7 @@ sync_one() {
   fi
 
   # Run apply outside a process substitution so its failure stops this repo.
-  managed="$(node "$HERE/lib/apply.mjs" "$dir")"
+  managed="$(node "$HERE/lib/apply.mjs" "$dir" "$stacks")"
   # -f because some repos gitignore .claude/; only the paths apply.mjs manages are forced in.
   while read -r rel; do
     [[ -z "$rel" ]] && continue
@@ -93,6 +97,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 - \`.claude/skills/\`: committed copies of the shared skills. Cloud sessions load these, but they never install plugins from project settings.
 - \`.claude/settings.json\`: registers the \`ogfrench\` marketplace and enables the plugins, for local sessions. Keys the repo already had are kept as they were.
+- \`.claude/knowledge/\`: the practices for this repo's stacks (\`bundle.md\`, one card per practice, a search index). A SessionStart hook prints \`must.md\` from it, a few lines.
 - \`.claude/claude-code-setup.json\`: lists the synced copies, so a skill removed upstream is removed here too.${renamed:+
 - $renamed}
 
@@ -112,7 +117,7 @@ Edit these in claude-code-setup, not here: the next sync overwrites the copies.
 }
 
 if [[ "${1:-}" == "--one" ]]; then
-  sync_one "$2"
+  sync_one "$2" "${3:-}"
   exit
 fi
 
@@ -150,10 +155,11 @@ else
   exit 1
 fi
 failed=()
-for repo in "${repos[@]}"; do
-  repo="${repo%$'\r'}"
-  echo "== $repo"
-  bash "$HERE/sync-to-repos.sh" --one "$repo" || failed+=("$repo")
+for line in "${repos[@]}"; do
+  line="${line%$'\r'}"
+  read -r repo stacks _ <<<"$line"
+  echo "== $repo${stacks:+ ($stacks)}"
+  bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" || failed+=("$repo")
 done
 if ((${#failed[@]})); then
   echo "Failed: ${failed[*]}" >&2

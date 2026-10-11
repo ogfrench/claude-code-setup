@@ -51,7 +51,8 @@ test("apply on the real repo: copies skills, merges settings, is idempotent", ()
   const managed = apply(t);
   const settings = read(path.join(t, ".claude/settings.json"));
   assert.deepEqual(settings.permissions, { allow: ["Bash(npm test)"] });
-  assert.deepEqual(settings.hooks, { Stop: [] });
+  assert.deepEqual(settings.hooks.Stop, [], "the repo's own hook is kept");
+  assert.match(settings.hooks.SessionStart[0].hooks[0].command, /\.claude\/knowledge\/must\.md/);
   assert.equal(settings.enabledPlugins["superpowers@claude-plugins-official"], true);
   assert.equal(settings.extraKnownMarketplaces.ogfrench.source.repo, "ogfrench/claude-code-setup");
 
@@ -176,4 +177,59 @@ test("a skill's README stays in the source, its LICENSE travels with it", () => 
   assert.ok(fs.existsSync(path.join(t, ".claude/skills/vendored/LICENSE")));
   assert.ok(!fs.existsSync(path.join(t, ".claude/skills/vendored/README.md")));
   assert.ok(fs.existsSync(path.join(t, ".claude/skills/vendored/refs/README.md")), "only the top-level README is skipped");
+});
+
+test("knowledge: a repo gets the practices for its stacks, rewritten whole, never over its own folder", () => {
+  const src = tmp();
+  write(path.join(src, "plugins/p/skills/s/SKILL.md"), "s");
+  write(path.join(src, "project/settings.json"), {});
+  write(path.join(src, "kb/_vocab.json"), {
+    concerns: { data: { title: "Data", file: "d.md", readBefore: "x" } },
+    stacks: ["any", "nextjs", "python"], severities: ["must", "should", "tip"],
+    toolKinds: ["skill"], toolStates: ["installed"],
+  });
+  const card = (id, stack, severity) =>
+    `---\nid: ${id}\ntype: practice\nsummary: Rule ${id}.\nconcern: data\nstack: [${stack}]\nseverity: ${severity}\nsource: judgment\nlast_verified: 2026-10-11\nstatus: active\n---\n\nWhy ${id}.\n`;
+  write(path.join(src, "kb/practices/general.md"), card("general", "any", "should"));
+  write(path.join(src, "kb/practices/next-only.md"), card("next-only", "nextjs", "should"));
+  write(path.join(src, "kb/practices/py-only.md"), card("py-only", "python", "should"));
+
+  const t = tmp();
+  const managed = apply(t, src, ["nextjs"]);
+  const k = path.join(t, ".claude/knowledge");
+  assert.ok(managed.includes(".claude/knowledge"));
+  assert.deepEqual(fs.readdirSync(path.join(k, "practices")).sort(), ["general.md", "next-only.md"]);
+  const lines = fs.readFileSync(path.join(k, "index.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l));
+  assert.deepEqual(lines.map((l) => l.id).sort(), ["general", "next-only"]);
+  assert.match(fs.readFileSync(path.join(k, "bundle.md"), "utf8"), /general: Rule general\./);
+  assert.ok(!fs.readFileSync(path.join(k, "bundle.md"), "utf8").includes("py-only"));
+  assert.deepEqual(read(path.join(t, ".claude/claude-code-setup.json")).knowledge, { stacks: ["any", "nextjs"] });
+
+  const before = snapshot(t);
+  apply(t, src, ["nextjs"]);
+  assert.deepEqual(snapshot(t), before, "second apply changes nothing");
+
+  fs.rmSync(path.join(src, "kb/practices/next-only.md"));
+  apply(t, src, ["nextjs"]);
+  assert.ok(!fs.existsSync(path.join(k, "practices/next-only.md")), "a practice removed upstream is removed downstream");
+
+  apply(t, src, []);
+  assert.deepEqual(fs.readdirSync(path.join(k, "practices")), ["general.md"], "fewer stacks, fewer cards");
+
+  assert.throws(() => apply(tmp(), src, ["cobol"]), /unknown stack "cobol"/);
+
+  const own = tmp();
+  write(path.join(own, ".claude/knowledge/notes.md"), "the repo's own notes");
+  apply(own, src, []);
+  assert.equal(fs.readFileSync(path.join(own, ".claude/knowledge/notes.md"), "utf8"), "the repo's own notes");
+  assert.ok(!fs.existsSync(path.join(own, ".claude/knowledge/bundle.md")));
+});
+
+test("the real repo: stack bundles stay inside the session budget", () => {
+  const t = tmp();
+  apply(t, ROOT, ["nextjs", "postgres", "shadcn", "python", "html-css-ts"]);
+  const k = path.join(t, ".claude/knowledge");
+  const must = fs.readFileSync(path.join(k, "must.md"), "utf8");
+  assert.ok(Math.ceil(must.length / 4) <= 600, "must.md is the only thing printed at session start");
+  assert.ok(must.includes("names-are-private-data"));
 });

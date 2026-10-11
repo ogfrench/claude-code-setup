@@ -1,5 +1,5 @@
 {
-  "note": "The controlled lists for kb/practices. A practice whose concern or stack is not here fails node --test. Learnings keep free tags on purpose: they are raw notes.",
+  "note": "The controlled lists for kb/practices and kb/tools. A node whose concern, stack, kind or state is not here fails node --test. Learnings keep free tags on purpose: they are raw notes.",
   "concerns": {
     "testing": {
       "title": "Testing",
@@ -32,6 +32,29 @@
       "readBefore": "delegating to subagents or cheaper models"
     }
   },
-  "stacks": ["any", "nextjs", "postgres", "shadcn", "python", "html-css-ts"],
-  "severities": ["must", "should", "tip"]
+  "stacks": [
+    "any",
+    "nextjs",
+    "postgres",
+    "shadcn",
+    "python",
+    "html-css-ts"
+  ],
+  "severities": [
+    "must",
+    "should",
+    "tip"
+  ],
+  "toolKinds": [
+    "skill",
+    "agent",
+    "plugin",
+    "mcp",
+    "hook"
+  ],
+  "toolStates": [
+    "installed",
+    "candidate",
+    "retired"
+  ]
 }
