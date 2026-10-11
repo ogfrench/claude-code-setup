@@ -4,6 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { parseFrontmatter } from "../lib/frontmatter.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const LEARNINGS = path.join(ROOT, "learnings");
@@ -15,35 +16,11 @@ const PUBLIC_REPOS = new Set(
     .map((l) => l.replace(/#.*$/, "").trim().toLowerCase()).filter(Boolean),
 );
 
-// A small reader for the frontmatter these files use: `key: value`, `[a, b]`, and `- item` lists.
-function frontmatter(text, file) {
-  const m = text.match(/^---\n([\s\S]*?)\n---\n/);
-  assert.ok(m, `${file}: no frontmatter`);
-  const out = {};
-  let list = null;
-  for (const raw of m[1].split("\n")) {
-    const line = raw.replace(/\s+#.*$/, "");
-    const item = line.match(/^\s+-\s+(.+)$/);
-    if (item && list) {
-      out[list].push(item[1].trim());
-      continue;
-    }
-    const kv = line.match(/^([a-z_]+):\s*(.*)$/);
-    if (!kv) continue;
-    const [, key, value] = kv;
-    if (value === "") {
-      out[key] = [];
-      list = key;
-    } else if (value.startsWith("[")) {
-      out[key] = value.slice(1, -1).split(",").map((s) => s.trim()).filter(Boolean);
-      list = null;
-    } else {
-      out[key] = value.trim();
-      list = null;
-    }
-  }
-  return out;
-}
+const frontmatter = (text, file) => {
+  const fm = parseFrontmatter(text);
+  assert.ok(fm, `${file}: no frontmatter`);
+  return fm.data;
+};
 
 const learningFiles = fs.readdirSync(LEARNINGS).filter((f) => f !== "README.md" && f.endsWith(".md"));
 

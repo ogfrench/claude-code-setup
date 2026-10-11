@@ -1,0 +1,1256 @@
+{
+  "nodes": [
+    {
+      "id": "cheapest-model-with-catch",
+      "type": "practice",
+      "summary": "Hand a task to the cheapest model whose mistake would be caught before it lands.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 108,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-cheap-reviews-catch-real-bugs"
+      ],
+      "implemented_by": [
+        "plugins/agent-workflow/skills/model-delegation"
+      ],
+      "related": [
+        "review-every-commit"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "review-every-commit",
+      "type": "practice",
+      "summary": "Review every commit before pushing it.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 132,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-cheap-reviews-catch-real-bugs"
+      ],
+      "implemented_by": [
+        "plugins/agent-workflow/agents/cheap-reviewer.md"
+      ],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "serial-agents-on-shared-stack",
+      "type": "practice",
+      "summary": "Agents that share a stack, a database or rate limits run one at a time.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 79,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-second-stack-reloads-pages"
+      ],
+      "implemented_by": [],
+      "related": [
+        "one-dev-stack-per-tree"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "work-that-survives-cut-short",
+      "type": "practice",
+      "summary": "Ask for work that survives being cut short.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 116,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-background-agents-hit-usage-limits"
+      ],
+      "implemented_by": [
+        "plugins/agent-workflow/skills/model-delegation"
+      ],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "merge-commits-on-shared-branches",
+      "type": "practice",
+      "summary": "Merge commits on shared branches; never rewrite someone else's history.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 0,
+      "tokens": 61,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "missing-checks-mean-conflict",
+      "type": "practice",
+      "summary": "Checks missing from a PR usually mean a merge conflict.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 82,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-conflicted-pr-runs-no-workflows"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "reproduce-ci-with-pinned-versions",
+      "type": "practice",
+      "summary": "Reproduce a CI failure with the exact version CI runs.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 94,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-pin-ci-tool-versions-locally"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "keep-ci-logs",
+      "type": "practice",
+      "summary": "Keep the logs CI needs to explain itself.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 0,
+      "tokens": 64,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "claim-shared-work-atomically",
+      "type": "practice",
+      "summary": "Claim shared work in one step.",
+      "concern": "data",
+      "stack": [
+        "any"
+      ],
+      "severity": "must",
+      "status": "active",
+      "seen": 1,
+      "tokens": 119,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-claim-shared-state-atomically"
+      ],
+      "implemented_by": [],
+      "related": [
+        "conditional-update-is-the-check"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "no-whole-row-writes",
+      "type": "practice",
+      "summary": "No whole-row writes from a stale read.",
+      "concern": "data",
+      "stack": [
+        "any"
+      ],
+      "severity": "must",
+      "status": "active",
+      "seen": 1,
+      "tokens": 127,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-whole-row-orm-writes-revert-saves"
+      ],
+      "implemented_by": [],
+      "related": [
+        "conditional-update-is-the-check"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "conditional-update-is-the-check",
+      "type": "practice",
+      "summary": "A conditional update is the check.",
+      "concern": "data",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 0,
+      "tokens": 82,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "holds-known-to-every-deleter",
+      "type": "practice",
+      "summary": "A hold must be known to every deleter.",
+      "concern": "data",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 97,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-sweeps-must-know-about-holds"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "credential-is-not-authorization",
+      "type": "practice",
+      "summary": "A valid credential is not authorization.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "must",
+      "status": "active",
+      "seen": 1,
+      "tokens": 113,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-api-key-is-not-authorization"
+      ],
+      "implemented_by": [],
+      "related": [
+        "test-with-the-wrong-account"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "names-are-private-data",
+      "type": "practice",
+      "summary": "In a public repo, names are private data.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "must",
+      "status": "active",
+      "seen": 1,
+      "tokens": 134,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-names-are-private-data"
+      ],
+      "implemented_by": [
+        "scripts/check-public.mjs",
+        ".githooks/pre-push"
+      ],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "one-client-payload-builder",
+      "type": "practice",
+      "summary": "One function builds every client payload, and it strips solutions for every type.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "must",
+      "status": "active",
+      "seen": 1,
+      "tokens": 87,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-strip-solutions-from-client-payloads"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "test-with-the-wrong-account",
+      "type": "practice",
+      "summary": "Test with the wrong account, not only with none.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 0,
+      "tokens": 86,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "docs-are-not-evidence",
+      "type": "practice",
+      "summary": "Docs that claim a check are not evidence of the check.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 0,
+      "tokens": 69,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "force-race-window",
+      "type": "practice",
+      "summary": "Force a race window instead of timing it.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 111,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-deterministic-race-tests"
+      ],
+      "implemented_by": [],
+      "related": [
+        "wait-for-state-not-time"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "one-dev-stack-per-tree",
+      "type": "practice",
+      "summary": "One dev stack per working tree.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 120,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-second-stack-reloads-pages"
+      ],
+      "implemented_by": [],
+      "related": [
+        "check-what-is-on-the-port",
+        "serial-agents-on-shared-stack"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "test-fails-first",
+      "type": "practice",
+      "summary": "Write the failing test first, and run it on the old code.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 0,
+      "tokens": 83,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "wait-for-state-not-time",
+      "type": "practice",
+      "summary": "Wait for the state you need, never for time.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 90,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-wait-for-state-not-time"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "check-what-is-on-the-port",
+      "type": "practice",
+      "summary": "Check what is on the port before trusting a run.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 0,
+      "tokens": 75,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "check-accessible-names-after-edit",
+      "type": "practice",
+      "summary": "Check accessible names after an edit, not only on load.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 0,
+      "tokens": 73,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "configure-widgets-via-config",
+      "type": "practice",
+      "summary": "Configure a third-party widget through its config, not by patching its DOM after creation.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 101,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-third-party-editor-overrides"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "one-text-field-shape",
+      "type": "practice",
+      "summary": "One shape, one border, one focus ring for every text field, whatever draws it.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 87,
+      "last_verified": "2026-10-11",
+      "derived_from": [
+        "2026-10-11-third-party-editor-overrides"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "theme-with-tokens",
+      "type": "practice",
+      "summary": "Theme with tokens, never hardcoded black or white.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 0,
+      "tokens": 68,
+      "last_verified": "2026-10-11",
+      "derived_from": [],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "2026-10-11-api-key-is-not-authorization",
+      "type": "learning",
+      "summary": "\"Behind an API key\" is not a gate when any account can mint a key",
+      "tags": [
+        "security",
+        "auth"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 251,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/security.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-background-agents-hit-usage-limits",
+      "type": "learning",
+      "summary": "A background agent can stop mid-task at a usage limit and leave nothing",
+      "tags": [
+        "agents"
+      ],
+      "status": "promoted",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 222,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+        "plugins/agent-workflow/skills/model-delegation/SKILL.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-cheap-reviews-catch-real-bugs",
+      "type": "learning",
+      "summary": "A read-only review of each commit on a mid-size model catches real bugs, cheaply",
+      "tags": [
+        "agents",
+        "review"
+      ],
+      "status": "promoted",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 272,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+        "plugins/agent-workflow/agents/cheap-reviewer.md",
+        "plugins/agent-workflow/skills/model-delegation/SKILL.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-claim-shared-state-atomically",
+      "type": "learning",
+      "summary": "Claim a shared list in one step, or two consumers both act on it",
+      "tags": [
+        "data",
+        "concurrency",
+        "redis"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 227,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-conflicted-pr-runs-no-workflows",
+      "type": "learning",
+      "summary": "A pull request with a merge conflict runs none of its pull_request workflows",
+      "tags": [
+        "git",
+        "ci"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 160,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-deterministic-race-tests",
+      "type": "learning",
+      "summary": "Test a race by landing the second write inside the window, not by timing",
+      "tags": [
+        "testing",
+        "concurrency"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 230,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/testing.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-names-are-private-data",
+      "type": "learning",
+      "summary": "In a public repo, a list of names is private data",
+      "tags": [
+        "security",
+        "privacy",
+        "git"
+      ],
+      "status": "promoted",
+      "source": "ogfrench/claude-code-setup",
+      "tokens": 394,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/security.md",
+        "scripts/check-public.mjs",
+        ".githooks/pre-push"
+      ]
+    },
+    {
+      "id": "2026-10-11-pin-ci-tool-versions-locally",
+      "type": "learning",
+      "summary": "Reproduce a CI failure with the exact tool version CI runs",
+      "tags": [
+        "ci",
+        "security"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 183,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-second-stack-reloads-pages",
+      "type": "learning",
+      "summary": "A second dev stack started from the same tree reloads the first one's pages",
+      "tags": [
+        "testing",
+        "dev-server",
+        "agents"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 240,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/testing.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-strip-solutions-from-client-payloads",
+      "type": "learning",
+      "summary": "Strip the solution from what clients receive, on every path that sends it",
+      "tags": [
+        "security",
+        "games"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 191,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/security.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-sweeps-must-know-about-holds",
+      "type": "learning",
+      "summary": "Every cleanup job must know about every hold, or the hold is decoration",
+      "tags": [
+        "data",
+        "jobs"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 214,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-third-party-editor-overrides",
+      "type": "learning",
+      "summary": "A rich-text library's own CSS and attributes win unless you match how it sets them",
+      "tags": [
+        "ui",
+        "accessibility",
+        "css"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 245,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/ui.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-wait-for-state-not-time",
+      "type": "learning",
+      "summary": "In a browser test, wait for the state you need, not for time",
+      "tags": [
+        "testing",
+        "ui"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 193,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/testing.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-whole-row-orm-writes-revert-saves",
+      "type": "learning",
+      "summary": "An ORM's whole-row update from a stale read reverts other people's writes",
+      "tags": [
+        "data",
+        "concurrency",
+        "orm"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 235,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "cheapest-model-with-catch",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "cheapest-model-with-catch",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "cheapest-model-with-catch",
+      "to": "2026-10-11-cheap-reviews-catch-real-bugs",
+      "type": "derived_from"
+    },
+    {
+      "from": "cheapest-model-with-catch",
+      "to": "plugins/agent-workflow/skills/model-delegation",
+      "type": "implemented_by"
+    },
+    {
+      "from": "cheapest-model-with-catch",
+      "to": "review-every-commit",
+      "type": "related"
+    },
+    {
+      "from": "review-every-commit",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "review-every-commit",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "review-every-commit",
+      "to": "2026-10-11-cheap-reviews-catch-real-bugs",
+      "type": "derived_from"
+    },
+    {
+      "from": "review-every-commit",
+      "to": "plugins/agent-workflow/agents/cheap-reviewer.md",
+      "type": "implemented_by"
+    },
+    {
+      "from": "serial-agents-on-shared-stack",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "serial-agents-on-shared-stack",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "serial-agents-on-shared-stack",
+      "to": "2026-10-11-second-stack-reloads-pages",
+      "type": "derived_from"
+    },
+    {
+      "from": "serial-agents-on-shared-stack",
+      "to": "one-dev-stack-per-tree",
+      "type": "related"
+    },
+    {
+      "from": "work-that-survives-cut-short",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "work-that-survives-cut-short",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "work-that-survives-cut-short",
+      "to": "2026-10-11-background-agents-hit-usage-limits",
+      "type": "derived_from"
+    },
+    {
+      "from": "work-that-survives-cut-short",
+      "to": "plugins/agent-workflow/skills/model-delegation",
+      "type": "implemented_by"
+    },
+    {
+      "from": "merge-commits-on-shared-branches",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "merge-commits-on-shared-branches",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "missing-checks-mean-conflict",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "missing-checks-mean-conflict",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "missing-checks-mean-conflict",
+      "to": "2026-10-11-conflicted-pr-runs-no-workflows",
+      "type": "derived_from"
+    },
+    {
+      "from": "reproduce-ci-with-pinned-versions",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "reproduce-ci-with-pinned-versions",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "reproduce-ci-with-pinned-versions",
+      "to": "2026-10-11-pin-ci-tool-versions-locally",
+      "type": "derived_from"
+    },
+    {
+      "from": "keep-ci-logs",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "keep-ci-logs",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "claim-shared-work-atomically",
+      "to": "data",
+      "type": "concern"
+    },
+    {
+      "from": "claim-shared-work-atomically",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "claim-shared-work-atomically",
+      "to": "2026-10-11-claim-shared-state-atomically",
+      "type": "derived_from"
+    },
+    {
+      "from": "claim-shared-work-atomically",
+      "to": "conditional-update-is-the-check",
+      "type": "related"
+    },
+    {
+      "from": "no-whole-row-writes",
+      "to": "data",
+      "type": "concern"
+    },
+    {
+      "from": "no-whole-row-writes",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "no-whole-row-writes",
+      "to": "2026-10-11-whole-row-orm-writes-revert-saves",
+      "type": "derived_from"
+    },
+    {
+      "from": "no-whole-row-writes",
+      "to": "conditional-update-is-the-check",
+      "type": "related"
+    },
+    {
+      "from": "conditional-update-is-the-check",
+      "to": "data",
+      "type": "concern"
+    },
+    {
+      "from": "conditional-update-is-the-check",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "holds-known-to-every-deleter",
+      "to": "data",
+      "type": "concern"
+    },
+    {
+      "from": "holds-known-to-every-deleter",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "holds-known-to-every-deleter",
+      "to": "2026-10-11-sweeps-must-know-about-holds",
+      "type": "derived_from"
+    },
+    {
+      "from": "credential-is-not-authorization",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "credential-is-not-authorization",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "credential-is-not-authorization",
+      "to": "2026-10-11-api-key-is-not-authorization",
+      "type": "derived_from"
+    },
+    {
+      "from": "credential-is-not-authorization",
+      "to": "test-with-the-wrong-account",
+      "type": "related"
+    },
+    {
+      "from": "names-are-private-data",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "names-are-private-data",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "names-are-private-data",
+      "to": "2026-10-11-names-are-private-data",
+      "type": "derived_from"
+    },
+    {
+      "from": "names-are-private-data",
+      "to": "scripts/check-public.mjs",
+      "type": "implemented_by"
+    },
+    {
+      "from": "names-are-private-data",
+      "to": ".githooks/pre-push",
+      "type": "implemented_by"
+    },
+    {
+      "from": "one-client-payload-builder",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "one-client-payload-builder",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "one-client-payload-builder",
+      "to": "2026-10-11-strip-solutions-from-client-payloads",
+      "type": "derived_from"
+    },
+    {
+      "from": "test-with-the-wrong-account",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "test-with-the-wrong-account",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "docs-are-not-evidence",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "docs-are-not-evidence",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "force-race-window",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "force-race-window",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "force-race-window",
+      "to": "2026-10-11-deterministic-race-tests",
+      "type": "derived_from"
+    },
+    {
+      "from": "force-race-window",
+      "to": "wait-for-state-not-time",
+      "type": "related"
+    },
+    {
+      "from": "one-dev-stack-per-tree",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "one-dev-stack-per-tree",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "one-dev-stack-per-tree",
+      "to": "2026-10-11-second-stack-reloads-pages",
+      "type": "derived_from"
+    },
+    {
+      "from": "one-dev-stack-per-tree",
+      "to": "check-what-is-on-the-port",
+      "type": "related"
+    },
+    {
+      "from": "one-dev-stack-per-tree",
+      "to": "serial-agents-on-shared-stack",
+      "type": "related"
+    },
+    {
+      "from": "test-fails-first",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "test-fails-first",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "wait-for-state-not-time",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "wait-for-state-not-time",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "wait-for-state-not-time",
+      "to": "2026-10-11-wait-for-state-not-time",
+      "type": "derived_from"
+    },
+    {
+      "from": "check-what-is-on-the-port",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "check-what-is-on-the-port",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "check-accessible-names-after-edit",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "check-accessible-names-after-edit",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "configure-widgets-via-config",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "configure-widgets-via-config",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "configure-widgets-via-config",
+      "to": "2026-10-11-third-party-editor-overrides",
+      "type": "derived_from"
+    },
+    {
+      "from": "one-text-field-shape",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "one-text-field-shape",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "one-text-field-shape",
+      "to": "2026-10-11-third-party-editor-overrides",
+      "type": "derived_from"
+    },
+    {
+      "from": "theme-with-tokens",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "theme-with-tokens",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "2026-10-11-api-key-is-not-authorization",
+      "to": "plugins/agent-workflow/skills/best-practices/security.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-background-agents-hit-usage-limits",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-background-agents-hit-usage-limits",
+      "to": "plugins/agent-workflow/skills/model-delegation/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-cheap-reviews-catch-real-bugs",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-cheap-reviews-catch-real-bugs",
+      "to": "plugins/agent-workflow/agents/cheap-reviewer.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-cheap-reviews-catch-real-bugs",
+      "to": "plugins/agent-workflow/skills/model-delegation/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-claim-shared-state-atomically",
+      "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-conflicted-pr-runs-no-workflows",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-deterministic-race-tests",
+      "to": "plugins/agent-workflow/skills/best-practices/testing.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-names-are-private-data",
+      "to": "plugins/agent-workflow/skills/best-practices/security.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-names-are-private-data",
+      "to": "scripts/check-public.mjs",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-names-are-private-data",
+      "to": ".githooks/pre-push",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-pin-ci-tool-versions-locally",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-second-stack-reloads-pages",
+      "to": "plugins/agent-workflow/skills/best-practices/testing.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-strip-solutions-from-client-payloads",
+      "to": "plugins/agent-workflow/skills/best-practices/security.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-sweeps-must-know-about-holds",
+      "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-third-party-editor-overrides",
+      "to": "plugins/agent-workflow/skills/best-practices/ui.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-wait-for-state-not-time",
+      "to": "plugins/agent-workflow/skills/best-practices/testing.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-whole-row-orm-writes-revert-saves",
+      "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
+      "type": "promoted_to"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "note": "The controlled lists for kb/practices. A practice whose concern or stack is not here fails node --test. Learnings keep free tags on purpose: they are raw notes.",
+  "concerns": {
+    "testing": {
+      "title": "Testing",
+      "file": "testing.md",
+      "readBefore": "writing a test for a race, a browser flow or a flaky case; running a local stack"
+    },
+    "data": {
+      "title": "Data and concurrency",
+      "file": "data-and-concurrency.md",
+      "readBefore": "an ORM write, a counter, a claim, a hold, a cleanup job"
+    },
+    "security": {
+      "title": "Security",
+      "file": "security.md",
+      "readBefore": "an auth or ownership check, anything sent to a client, a security probe"
+    },
+    "ui": {
+      "title": "UI",
+      "file": "ui.md",
+      "readBefore": "a form field, a third-party widget, accessible names"
+    },
+    "ci": {
+      "title": "Git and CI",
+      "file": "git-and-ci.md",
+      "readBefore": "a CI failure, a scanner or linter version, a PR whose checks went missing"
+    },
+    "agents": {
+      "title": "Agents and models",
+      "file": "agents-and-models.md",
+      "readBefore": "delegating to subagents or cheaper models"
+    }
+  },
+  "stacks": ["any", "nextjs", "postgres", "shadcn", "python", "html-css-ts"],
+  "severities": ["must", "should", "tip"]
+}

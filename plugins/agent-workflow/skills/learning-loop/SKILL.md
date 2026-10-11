@@ -46,11 +46,13 @@ or anything already a practice.
 
 ## Curate, in claude-code-setup
 
-1. Look for a practice it extends in `plugins/agent-workflow/skills/best-practices/`. Extend
-   that one rather than adding a near-duplicate.
-2. Otherwise add a bullet to the right topic file: the rule in bold, the why, then the
-   citation in italics, `*(YYYY-MM-DD-slug)*`.
-3. Set the learning to `status: practice` with the topic file in `promoted_to`.
+1. Look for a practice it extends: `grep -i <term> kb/index.jsonl`. Extend that node, add the
+   learning to its `derived_from`, and bump `last_verified`. No near-duplicates.
+2. Otherwise add `kb/practices/<id>.md`. Copy a neighbor: `summary` (one line, max 140 chars),
+   `concern` and `stack` from `kb/_vocab.json`, `severity` (`must`, `should`, `tip`), `derived_from`,
+   then the reason as the body. Keep the card under 150 tokens.
+3. Run `node scripts/build-kb.mjs`. It rewrites the topic files, bundles and index. Never edit those.
+4. Set the learning to `status: practice` with the topic file in `promoted_to`.
 4. A learning that only holds in one repo goes to that repo's `CLAUDE.md` instead.
 
 ## Promote
@@ -79,5 +81,6 @@ then empty that inbox with a commit in its repo.
 
 ## Retire
 
-A practice that stopped being true, or that a tool now handles, is removed from its topic
-file. Its learning stays, with `status: retired` and a line saying why.
+A practice that stopped being true, or that a tool now handles, gets `status: retired` (or
+`stale` while unverified), which drops it from the topic files and bundles on the next build.
+Its learning stays, with `status: retired` and a line saying why.

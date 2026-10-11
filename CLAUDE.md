@@ -41,9 +41,11 @@ learning (raw) -> practice (curated) -> promoted (a skill, agent, hook, command,
 - **A learning** is one dated note in `learnings/`: what happened, why, what to do instead,
   and the evidence. Raw, cheap to write, never synced to other repos. Template and statuses
   in `learnings/README.md`.
-- **A practice** is a curated rule in the `best-practices` skill
-  (`plugins/agent-workflow/skills/best-practices/`), one file per topic. That skill is synced
-  into every repo and installed on the laptop, so Claude reads it everywhere.
+- **A practice** is a curated rule, one node file in `kb/practices/`: a one-line summary, the
+  reason, and edges to the learnings it came from. `node scripts/build-kb.mjs` generates the
+  rest: the topic files of the `best-practices` skill (synced into every repo and installed
+  on the laptop), the per-stack bundles, `kb/index.jsonl` and `kb/INDEX.md`. Never edit
+  generated files; edit the node and rebuild.
 - **A promotion** turns a practice into something Claude runs or loads by itself. The ladder
   below says which.
 
@@ -67,8 +69,11 @@ Pick the lightest form that does the job.
 
 ## Rules for edits
 
-- **Every practice cites its learnings** by file name, and every promoted learning names
-  where it went (`promoted_to`). `node --test` checks both.
+- **Every practice has evidence.** Its `derived_from` names the learnings, or it says
+  `source: judgment` and is never severity `must`. Every promoted learning names where it
+  went (`promoted_to`). `node --test` checks both, the vocab in `kb/_vocab.json`, that the
+  generated files are current, and the token budgets in `test/budgets.test.mjs`. Over
+  budget means merge or retire something, not raise the number.
 - **One idea per learning.** Two ideas are two files.
 - **Merge, don't pile up.** Before adding a practice, look for one it extends.
 - **Keep the voice:** plain US English, short sentences, no em dashes, no flattery.

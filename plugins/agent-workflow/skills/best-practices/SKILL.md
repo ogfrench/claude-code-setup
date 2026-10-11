@@ -15,8 +15,10 @@ description: >-
 
 Practices that held up in real work, curated from dated learnings in
 `ogfrench/claude-code-setup/learnings/`. Each one cites the learning it came from, by file
-name. Read only the topic you need:
+name. The topic files are generated; the source is `kb/practices/` in that repo. Read only
+the topic you need:
 
+<!-- kb:topics:begin -->
 | Topic | Read it before |
 | --- | --- |
 | [testing.md](testing.md) | writing a test for a race, a browser flow or a flaky case; running a local stack |
@@ -25,6 +27,7 @@ name. Read only the topic you need:
 | [ui.md](ui.md) | a form field, a third-party widget, accessible names |
 | [git-and-ci.md](git-and-ci.md) | a CI failure, a scanner or linter version, a PR whose checks went missing |
 | [agents-and-models.md](agents-and-models.md) | delegating to subagents or cheaper models |
+<!-- kb:topics:end -->
 
 A practice here can be wrong for a given repo. A repo's own `CLAUDE.md` wins. To add or
 change one, use the `learning-loop` skill: capture a learning first, then curate.

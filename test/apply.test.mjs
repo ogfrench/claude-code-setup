@@ -162,3 +162,18 @@ test("every skill has frontmatter with name and description", () => {
     }
   }
 });
+
+test("a skill's README stays in the source, its LICENSE travels with it", () => {
+  const src = tmp();
+  write(path.join(src, "plugins/p/skills/vendored/SKILL.md"), "s");
+  write(path.join(src, "plugins/p/skills/vendored/README.md"), "for people");
+  write(path.join(src, "plugins/p/skills/vendored/LICENSE"), "MIT");
+  write(path.join(src, "plugins/p/skills/vendored/refs/README.md"), "a reference the skill reads");
+  write(path.join(src, "project/settings.json"), {});
+  const t = tmp();
+  apply(t, src);
+  assert.ok(fs.existsSync(path.join(t, ".claude/skills/vendored/SKILL.md")));
+  assert.ok(fs.existsSync(path.join(t, ".claude/skills/vendored/LICENSE")));
+  assert.ok(!fs.existsSync(path.join(t, ".claude/skills/vendored/README.md")));
+  assert.ok(fs.existsSync(path.join(t, ".claude/skills/vendored/refs/README.md")), "only the top-level README is skipped");
+});
