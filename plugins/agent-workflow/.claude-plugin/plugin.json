@@ -1,0 +1,8 @@
+{
+  "name": "agent-workflow",
+  "version": "1.0.0",
+  "description": "How work is run: model-delegation (which model does what, how to brief and check cheaper agents).",
+  "author": {
+    "name": "ogfrench"
+  }
+}

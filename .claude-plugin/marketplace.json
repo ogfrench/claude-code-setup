@@ -14,6 +14,12 @@
       "category": "productivity"
     },
     {
+      "name": "agent-workflow",
+      "description": "How work is run: model-delegation (which model does what, how to brief and check cheaper agents).",
+      "source": "./plugins/agent-workflow",
+      "category": "productivity"
+    },
+    {
       "name": "caveman",
       "description": "Terse output mode. Pinned upstream: JuliusBrussee/caveman.",
       "source": {

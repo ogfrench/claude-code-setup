@@ -34,7 +34,7 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 
 ## Adding things
 
-**A skill.** Create `plugins/frog-writing/skills/<name>/SKILL.md` with `name` and `description` in its frontmatter. If it belongs to a different theme, start a new plugin in `plugins/<plugin>/` and add an entry to `.claude-plugin/marketplace.json` with `"source": "./plugins/<plugin>"`.
+**A skill.** Create `plugins/frog-writing/skills/<name>/SKILL.md` (or `plugins/agent-workflow/skills/` for how work is run) with `name` and `description` in its frontmatter. If it belongs to a different theme, start a new plugin in `plugins/<plugin>/` and add an entry to `.claude-plugin/marketplace.json` with `"source": "./plugins/<plugin>"`.
 
 **A hook.** Add it under `hooks` in `project/settings.json`, in the same shape as a normal settings file. Hooks belong here and not inside a plugin, because plugin hooks never run in cloud sessions. A hook runs in every repo, on Linux in the cloud and on Windows locally, so keep the command portable.
 
@@ -61,6 +61,7 @@ CI runs the first two plus an apply into an empty folder on every push and PR. A
 | Plugin | Source |
 | --- | --- |
 | `frog-writing` | This repo. `frogify` and `deslopify` are mine. `humanizer` is vendored from [blader/humanizer](https://github.com/blader/humanizer) at `9600f2b`, MIT, with its license kept in its folder. |
+| `agent-workflow` | This repo. `model-delegation`: which model does which work, how to brief a cheaper agent, and how its work is checked. |
 | `caveman` | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman), pinned by SHA |
 | `ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail), pinned by SHA |
 | `21st` | [21st-dev/claude-code-plugin](https://github.com/21st-dev/claude-code-plugin), pinned by SHA |
