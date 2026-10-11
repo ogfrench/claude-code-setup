@@ -40,8 +40,9 @@ the usual culprit. Example:
 
 - Too implicit: "The brand still wins the run. The page AI reads belongs to its
   challengers." (Wins what? Which page? Belongs how?)
-- Explicit: "Runners rate the brand's shoes highly. AI learns from reviews and roundups,
-  where competitors show up more." (Same insight, the mechanism is now stated.)
+- Explicit: "Runners rate the brand's shoes highly. AI learns from reviews and
+  roundups, where competitors show up more." (Same insight, the mechanism is now
+  stated.)
 
 Based on frog's current site and editorial voice (frog.co), not the 1969 manifesto.
 The old slogan "form follows emotion" is heritage, not live copy — do not quote it

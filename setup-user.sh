@@ -35,6 +35,11 @@ while read -r p; do
   claude plugin install "$p" --scope user >/dev/null 2>&1 || failed+=("$p")
 done < "$SRC/user/plugins.txt"
 
+# This repo is public: in a real clone, turn on the hook that refuses to push anything private.
+if git -C "$SRC" rev-parse --git-dir >/dev/null 2>&1 && [[ -d "$SRC/.githooks" ]]; then
+  git -C "$SRC" config core.hooksPath .githooks
+fi
+
 mkdir -p "$CONFIG/skills"
 for s in "$SRC"/plugins/*/skills/*/; do
   name="$(basename "$s")"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Push this repo's shared setup into every repo in repos.txt, one PR per repo.
+# Push this repo's shared setup into every repo in repos.local.txt, one PR per repo.
+# That list stays out of git: this repo is public, and a repo's name can name a client.
 #
 # Why copies at all: cloud sessions (claude.ai/code) never install plugins from
 # a repo's settings, but they do load its committed .claude/skills/, its hooks
@@ -9,7 +10,7 @@
 #        MERGE=1 bash sync-to-repos.sh         # open and squash-merge them
 #        DRY_RUN=1 bash sync-to-repos.sh       # commit in a temp clone, push nothing
 #        KEEP=<dir> DRY_RUN=1 ...              # also keep each prepared clone in <dir>
-#        bash sync-to-repos.sh owner/name      # only these repos, not repos.txt
+#        bash sync-to-repos.sh owner/name      # only these repos, not the list
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -131,7 +132,23 @@ if [[ "${DRY_RUN:-0}" != 1 ]]; then
   fi
 fi
 
-if (($#)); then repos=("$@"); else mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' "$HERE/repos.txt"); fi
+LIST="$HERE/repos.local.txt"
+if ((! $#)) && [[ ! -f "$LIST" ]]; then
+  # The list used to be tracked as repos.txt. Recover it once from this clone's history.
+  for c in $(git -C "$HERE" reflog --format=%H 2>/dev/null) $(git -C "$HERE" rev-list --all 2>/dev/null); do
+    if git -C "$HERE" cat-file -e "$c:repos.txt" 2>/dev/null; then
+      git -C "$HERE" show "$c:repos.txt" > "$LIST"
+      echo "Moved the repo list out of git, into repos.local.txt (from ${c:0:7})."
+      break
+    fi
+  done
+fi
+if (($#)); then repos=("$@")
+elif [[ -f "$LIST" ]]; then mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' "$LIST")
+else
+  echo "No repos.local.txt: list the repos to sync in it, one owner/name per line." >&2
+  exit 1
+fi
 failed=()
 for repo in "${repos[@]}"; do
   repo="${repo%$'\r'}"

@@ -2,7 +2,7 @@
 
 My Claude Code setup, kept in one place and pushed to every repo I own: skills, plugins, hooks, MCP servers and settings. It works in local sessions and in cloud sessions on claude.ai/code.
 
-It is also a living record of what working with Claude has taught me. Lessons are captured as dated learnings, curated into practices that Claude reads in every repo, and promoted into skills, subagents, hooks, commands or plugins when they earn it. See [Learnings and practices](#learnings-and-practices). The repo is public, so nothing in it names a client or comes from a private repo.
+It is also a living record of what working with Claude has taught me. Lessons are captured as dated learnings, curated into practices that Claude reads in every repo, and promoted into skills, subagents, hooks, commands or plugins when they earn it. See [Learnings and practices](#learnings-and-practices). The repo is public, so nothing in it names a client or comes from a private repo. A check enforces that: see [Public by design](#public-by-design).
 
 ## Two layers
 
@@ -30,7 +30,8 @@ The source of truth is this repo. The copies in each project are overwritten on 
 | `project/retired.json` | Settings keys to take back out | removed from `.claude/settings.json` |
 | `user/plugins.txt` | My plugins, laptop and cloud | not synced; installed by `setup-user.sh` |
 | `.claude-plugin/marketplace.json` | The `ogfrench` marketplace | registered by the merged settings |
-| `repos.txt` | Which repos get all this | |
+| `repos.local.txt` | Which repos get all this. Gitignored: a repo's name can name a client | |
+| `public-repos.txt` | My repos that are public, so they may be named here | |
 | `learnings/` | Dated raw lessons, one per file | not synced |
 | `plugins/agent-workflow/skills/best-practices/` | Curated practices, one file per topic | `.claude/skills/best-practices/` (copied) |
 | `CLAUDE.md` | How Claude keeps the knowledge base: the public-repo rule and the promotion ladder | not synced |
@@ -43,11 +44,11 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 
 **A hook.** Add it under `hooks` in `project/settings.json`, in the same shape as a normal settings file. Hooks belong here and not inside a plugin, because plugin hooks never run in cloud sessions. A hook runs in every repo, on Linux in the cloud and on Windows locally, so keep the command portable.
 
-**An MCP server.** Add it under `mcpServers` in `project/mcp.json`. Never commit a secret. Write `"Authorization": "Bearer ${SOME_API_KEY}"` and set `SOME_API_KEY` in the cloud environment's settings on claude.ai/code and in your shell locally. Servers that only run on one machine, such as the Neon wrapper scripts or the local frogconvert build, don't belong here.
+**An MCP server.** Add it under `mcpServers` in `project/mcp.json`. Never commit a secret. Write `"Authorization": "Bearer ${SOME_API_KEY}"` and set `SOME_API_KEY` in the cloud environment's settings on claude.ai/code and in your shell locally. Servers that only run on one machine, such as local wrapper scripts or a local build, don't belong here.
 
 **A plugin.** For a third-party one, add an entry to `.claude-plugin/marketplace.json` pinned by `sha`. To update a pinned plugin, read the upstream diff and bump the `sha`. Then add it to `user/plugins.txt` if it is just for you, or enable it in `project/settings.json` if every repo should have it. Re-run `setup-user.sh` locally; cloud sessions pick it up on their next start.
 
-**A repo.** Add `owner/name` to `repos.txt`.
+**A repo.** Add `owner/name` to `repos.local.txt`, which stays on the laptop. The first sync after the list left git recovers it from the clone's history by itself.
 
 ## Learnings and practices
 
@@ -62,10 +63,22 @@ learning (raw) -> practice (curated) -> promoted (skill, subagent, hook, command
 
 `node --test` checks the links both ways: every learning's `promoted_to` exists, and every practice cites a learning that exists.
 
+## Public by design
+
+Anyone can read this repo, its history and its CI logs. So it never names a client, an employer's confidential work, a private repo or a person, and it carries no secrets, hostnames, IPs or email addresses. `CLAUDE.md` has the full rule.
+
+`scripts/check-public.mjs` enforces it, in three places:
+
+- **Before a push**, from `.githooks/pre-push`, on the commits being pushed: their lines, file names and messages. `setup-user.sh` enables the hook for the clone it runs from; elsewhere, run `git config core.hooksPath .githooks` once.
+- **In `node --test`**, on every tracked file.
+- **In CI**, on the commits of each push or PR, as a backstop. By then the commit is already public, so the hook is the guard that counts.
+
+It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply ones, and any IP address. Names that must never appear (clients, codenames) can't be listed in a public repo, so they live outside it: one per line in `.private-terms` (gitignored) on the laptop, and in the `PRIVATE_TERMS` secret for CI. A finding names the file, the line and the rule, never the matched text.
+
 ## Checking and shipping a change
 
 ```sh
-node --test                                 # unit tests, no dependencies
+node --test                                 # unit tests and the public check, no dependencies
 claude plugin validate . --strict           # marketplace manifest
 DRY_RUN=1 bash sync-to-repos.sh             # prepare every repo, push nothing
 MERGE=1 bash sync-to-repos.sh               # one PR per repo, squash-merged

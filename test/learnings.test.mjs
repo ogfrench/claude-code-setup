@@ -10,6 +10,10 @@ const LEARNINGS = path.join(ROOT, "learnings");
 const PRACTICES = path.join(ROOT, "plugins/agent-workflow/skills/best-practices");
 const STATUSES = ["raw", "practice", "promoted", "retired"];
 const NAME = /^\d{4}-\d{2}-\d{2}-[a-z0-9]+(-[a-z0-9]+)*\.md$/;
+const PUBLIC_REPOS = new Set(
+  fs.readFileSync(path.join(ROOT, "public-repos.txt"), "utf8").split("\n")
+    .map((l) => l.replace(/#.*$/, "").trim().toLowerCase()).filter(Boolean),
+);
 
 // A small reader for the frontmatter these files use: `key: value`, `[a, b]`, and `- item` lists.
 function frontmatter(text, file) {
@@ -53,6 +57,10 @@ test("every learning is well formed and its promotions exist", () => {
     }
     assert.equal(fm.date, file.slice(0, 10), `${file}: date does not match the file name`);
     assert.ok(STATUSES.includes(fm.status), `${file}: status must be one of ${STATUSES.join(", ")}`);
+    assert.ok(
+      fm.source === "a private project" || PUBLIC_REPOS.has(fm.source.toLowerCase()),
+      `${file}: source must be a repo in public-repos.txt, or "a private project"`,
+    );
     if (fm.status === "raw") assert.deepEqual(fm.promoted_to, [], `${file}: a raw learning is promoted nowhere`);
     if (fm.status === "practice" || fm.status === "promoted") {
       assert.ok(fm.promoted_to.length > 0, `${file}: say where it went in promoted_to`);

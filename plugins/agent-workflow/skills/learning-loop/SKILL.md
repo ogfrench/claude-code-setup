@@ -19,8 +19,11 @@ learning (raw) -> practice (curated) -> promoted (skill, agent, hook, command, p
 
 The record lives in `ogfrench/claude-code-setup`: raw notes in `learnings/`, curated
 practices in the `best-practices` skill, and the promotion ladder in that repo's
-`CLAUDE.md`. **That repo is public:** no client or employer names, nothing from a private
-repo, no secrets, hostnames or people. Write the lesson so it stands on its own.
+`CLAUDE.md`. **That repo is public, and this is a hard rule:** no client names or real
+brands, nothing from a private repo (not even its name), no employer-confidential work, no
+secrets, hostnames, IPs, emails or people. Write the lesson so it stands on its own. In a
+private repo, `source` is "a private project" and the evidence names no file, commit or
+issue from it.
 
 ## Capture, from any repo
 
@@ -32,8 +35,9 @@ or anything already a practice.
 1. Write it with the template in `learnings/README.md`: a one-line lesson, then What
    happened, Why, Do instead, Evidence. One idea per file, `status: raw`.
 2. **Where:**
-   - If `claude-code-setup` is cloned or can be attached to the session, add
-     `learnings/YYYY-MM-DD-slug.md` there, run `node --test`, and commit to `main` as
+   - If `claude-code-setup` is cloned or can be attached to the session, run
+     `git config core.hooksPath .githooks` in it, add `learnings/YYYY-MM-DD-slug.md`,
+     run `node --test` (it includes `scripts/check-public.mjs`), and commit to `main` as
      "Learning: <the lesson>".
    - If not, append the same text to `.claude/learnings-inbox.md` in the current repo, and
      tell the user it is waiting to be harvested.
@@ -66,9 +70,11 @@ learning to `status: promoted` and list every path in `promoted_to`. Check with
 
 ## Harvest
 
-For each repo in `repos.txt`, read its `.claude/learnings-inbox.md` (a shallow clone, or the
-GitHub API). Turn each entry into a learning file here, scrubbed for the public repo, then
-empty that inbox with a commit in its repo.
+For each repo in `repos.local.txt` (on the laptop, never committed), read its
+`.claude/learnings-inbox.md` (a shallow clone, or the GitHub API). An inbox in a private repo
+is written freely, so scrub every entry for the public repo before it becomes a learning
+here: no names, no paths, no quotes. Run `node scripts/check-public.mjs` before committing,
+then empty that inbox with a commit in its repo.
 
 ## Retire
 

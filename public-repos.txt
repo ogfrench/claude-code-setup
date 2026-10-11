@@ -1,0 +1,5 @@
+# Repos that are public, so this repo may name them. Any other ogfrench repo stays
+# unnamed: a private repo's name can itself name a client. Add one here only once it
+# is public. scripts/check-public.mjs reads this file.
+ogfrench/claude-code-setup
+ogfrench/frogQuiz

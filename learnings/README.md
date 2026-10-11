@@ -3,14 +3,14 @@
 Raw notes, one per file, named `YYYY-MM-DD-short-slug.md`. Cheap to write: the point is to
 catch the lesson while it is fresh. Curating comes later (see `../CLAUDE.md`).
 
-**The repo is public.** No client names, private-repo content, secrets, hostnames or people.
+**The repo is public.** No client names, private-repo content, secrets, hostnames or people. The hard rule is in `../CLAUDE.md`; `node scripts/check-public.mjs` checks it.
 
 ## Template
 
 ```markdown
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz          # public repo, or "a client project" with no detail
+source: ogfrench/frogQuiz          # a repo in public-repos.txt, or "a private project"
 tags: [testing, concurrency]
 status: raw                        # raw | practice | promoted | retired
 promoted_to: []                    # paths this went to, once practice or promoted

@@ -4,16 +4,30 @@ My Claude Code setup (skills, plugins, hooks, MCP servers, settings) and a livin
 what working with Claude has taught me. The README explains the setup and the sync. This
 file is how to keep the knowledge part alive.
 
-## This repo is public
+## This repo is public: a hard rule
 
-Everything here is readable by anyone. A learning or practice never contains:
+Everything here is readable by anyone: files, history, commit messages, file names and CI
+logs. None of it may contain:
 
-- a client's or employer's name, a project codename, or anything from a private repo
+- a client's name, a project codename, or a real brand used as an example
+- anything from a private repo, including its name: a repo's name can name a client
+- an employer's confidential work, or text copied from a confidential document
 - secrets, tokens, internal hostnames, IPs, email addresses or people's names
-- text copied from a confidential document
 
-Write the lesson so it stands on its own: "a quiz app's image job", not the client's product.
-If a lesson cannot be told without the confidential part, it stays out.
+Write the lesson so it stands on its own: "a quiz app's image job", not the client's product;
+"a running-shoe brand", not the brand. If a lesson cannot be told without the confidential
+part, it stays out. A learning's `source` is a repo listed in `public-repos.txt`, or
+"a private project" with no other detail.
+
+**Enforced, not just written.** `scripts/check-public.mjs` runs before every push (the
+`.githooks/pre-push` hook), in `node --test`, and in CI. Run it yourself before committing.
+In a fresh clone, enable the hook first: `git config core.hooksPath .githooks`. Names that
+must never appear live outside the repo, in `.private-terms` (gitignored) and the
+`PRIVATE_TERMS` CI secret, so never add them to a tracked file, even to forbid them.
+If the check fails, fix the text; never loosen the check to get a commit through.
+
+Removing a leak from the files does not remove it from history. Say so, and ask before
+rewriting `main`.
 
 ## How knowledge moves here
 
@@ -55,5 +69,5 @@ Pick the lightest form that does the job.
 - **One idea per learning.** Two ideas are two files.
 - **Merge, don't pile up.** Before adding a practice, look for one it extends.
 - **Keep the voice:** plain US English, short sentences, no em dashes, no flattery.
-- **Ship as the README says:** `node --test`, `claude plugin validate . --strict`, then push
-  to `main`. The sync to other repos is a separate, explicit step.
+- **Ship as the README says:** `node --test` (which includes the public check),
+  `claude plugin validate . --strict`, then push to `main`. The sync to other repos is a separate, explicit step.
