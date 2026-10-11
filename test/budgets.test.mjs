@@ -1,19 +1,11 @@
-// Token budgets. Over budget means merge or retire something, not raise the number.
-// Estimate: characters / 4. See "Token tiers" in README.md.
+// Token budgets live in lib/kb.mjs. See "Reading it cheaply" in README.md.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { ROOT, loadKb, tokens } from "../lib/kb.mjs";
+import { BUDGET, ROOT, loadKb, tokens } from "../lib/kb.mjs";
 import { parseFrontmatter } from "../lib/frontmatter.mjs";
 
-const BUDGET = {
-  alwaysOn: 1100,     // T0: name + description of every skill and agent, loaded in every session
-  practiceCard: 150,  // T2: one node file
-  bundle: 2000,       // T1: one stack bundle
-  index: 1500,        // T1: kb/INDEX.md
-  skillBody: 1500,    // T1: a SKILL.md body, except the T3 skills below
-};
 // T3: long reference skills, read only when invoked.
 const T3 = new Set(["deslopify", "frogify", "humanizer"]);
 

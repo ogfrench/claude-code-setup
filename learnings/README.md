@@ -7,6 +7,8 @@ catch the lesson while it is fresh. Curating comes later (see `../CLAUDE.md`).
 
 ## Template
 
+`node scripts/kb-new.mjs learning <slug>` writes this with today's date.
+
 ```markdown
 ---
 date: 2026-10-11

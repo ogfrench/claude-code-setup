@@ -65,11 +65,14 @@ test("every practice cites learnings that exist, and every practice-status learn
   }
 });
 
-test("the knowledge base carries no em dashes", () => {
-  const dirs = [LEARNINGS, PRACTICES, path.join(ROOT, "plugins/agent-workflow/skills/learning-loop")];
-  for (const dir of dirs) {
-    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".md"))) {
-      assert.ok(!fs.readFileSync(path.join(dir, file), "utf8").includes("—"), `${path.basename(dir)}/${file} has an em dash`);
-    }
+// The repo's own prose. frog-writing is left out on purpose: it is writing-voice material that
+// quotes and uses dashes, and humanizer is vendored.
+test("the repo's own docs carry no em dashes", () => {
+  const files = ["CLAUDE.md", "README.md", "learnings/README.md"];
+  const walk = (rel) => fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true }).flatMap((d) =>
+    d.isDirectory() ? walk(`${rel}/${d.name}`) : d.name.endsWith(".md") ? [`${rel}/${d.name}`] : []);
+  for (const dir of ["learnings", "kb", "plugins/agent-workflow"]) files.push(...walk(dir));
+  for (const file of files) {
+    assert.ok(!fs.readFileSync(path.join(ROOT, file), "utf8").includes("\u2014"), `${file} has an em dash`);
   }
 });

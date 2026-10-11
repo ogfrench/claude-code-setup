@@ -39,6 +39,7 @@ jobs:
       - name: Dry-run the apply step into an empty repo
         run: |
           t="$(mktemp -d)"
-          node lib/apply.mjs "$t"
+          node lib/apply.mjs "$t" nextjs,postgres
           test -f "$t/.claude/settings.json"
+          test -s "$t/.claude/knowledge/must.md"
           ls "$t/.claude/skills"

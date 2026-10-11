@@ -6,6 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { apply, deepMerge } from "../lib/apply.mjs";
+import { BUDGET } from "../lib/kb.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "ccs-test-"));
@@ -230,6 +231,6 @@ test("the real repo: stack bundles stay inside the session budget", () => {
   apply(t, ROOT, ["nextjs", "postgres", "shadcn", "python", "html-css-ts"]);
   const k = path.join(t, ".claude/knowledge");
   const must = fs.readFileSync(path.join(k, "must.md"), "utf8");
-  assert.ok(Math.ceil(must.length / 4) <= 600, "must.md is the only thing printed at session start");
+  assert.ok(Math.ceil(must.length / 4) <= BUDGET.mustRules, "must.md is the only thing printed at session start");
   assert.ok(must.includes("names-are-private-data"));
 });

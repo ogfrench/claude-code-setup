@@ -33,7 +33,9 @@ turned out wrong. **Not worth one:** a fact about one repo (that goes in its `CL
 or anything already a practice.
 
 1. Write it with the template in `learnings/README.md`: a one-line lesson, then What
-   happened, Why, Do instead, Evidence. One idea per file, `status: raw`.
+   happened, Why, Do instead, Evidence. One idea per file, `status: raw`. In the repo,
+   `node scripts/kb-new.mjs learning <slug>` creates the file; `node --test` rejects it
+   until every `TODO` is written.
 2. **Where:**
    - If `claude-code-setup` is cloned or can be attached to the session, and the private
      terms are there (`.private-terms`, or `PRIVATE_TERMS` in the environment), run
@@ -49,7 +51,8 @@ or anything already a practice.
 1. Look for a practice it extends: `grep -i <term> kb/index.jsonl`. Extend that node, add the
    learning to its `derived_from`, and bump `last_verified`. No near-duplicates.
 2. Otherwise add `kb/practices/<id>.md`. Copy a neighbor: `summary` (one line, max 140 chars),
-   `concern` and `stack` from `kb/_vocab.json`, `severity` (`must`, `should`, `tip`), `derived_from`,
+   `concern` and `stack` from `kb/_vocab.json` (`any` unless the lesson holds on one stack
+   alone), `severity` (`must`, `should`, `tip`), `derived_from`,
    then the reason as the body. Keep the card under 150 tokens.
 3. Run `node scripts/build-kb.mjs`. It rewrites the topic files, bundles and index. Never edit those.
 4. Set the learning to `status: practice` with the topic file in `promoted_to`.
@@ -66,7 +69,8 @@ Use the ladder in the repo's `CLAUDE.md`, and pick the lightest form that works:
 - **Plugin:** two or more related pieces, enabled as a unit.
 - **MCP server:** needs a live outside system.
 
-Then add the files where the README's Layout table says. Update the plugin's `plugin.json`,
+Then add the files where the README's Layout table says, and a node in `kb/tools/` for a new
+skill, agent, plugin or MCP server. Update the plugin's `plugin.json`,
 `.claude-plugin/marketplace.json` and the README's Plugins table if a plugin is new. Set the
 learning to `status: promoted` and list every path in `promoted_to`. Check with
 `node --test` and `claude plugin validate . --strict` before pushing.
