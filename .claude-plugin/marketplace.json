@@ -1,0 +1,48 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "frog",
+  "description": "ogfrench's Claude Code setup: own skills plus pinned third-party plugins.",
+  "owner": {
+    "name": "ogfrench",
+    "url": "https://github.com/ogfrench"
+  },
+  "plugins": [
+    {
+      "name": "frog-writing",
+      "description": "Writing skills: frogify (frog voice), deslopify (copy audit), humanizer (remove AI tells).",
+      "source": "./plugins/frog-writing",
+      "category": "productivity"
+    },
+    {
+      "name": "caveman",
+      "description": "Terse output mode. Pinned upstream: JuliusBrussee/caveman.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/JuliusBrussee/caveman.git",
+        "sha": "25d22f864ad68cc447a4cb93aefde918aa4aec9f"
+      },
+      "category": "productivity"
+    },
+    {
+      "name": "ponytail",
+      "description": "Minimal-solution mode. Pinned upstream: DietrichGebert/ponytail.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/DietrichGebert/ponytail.git",
+        "sha": "687c1b339872289d70f65c5eaabce850b1663867"
+      },
+      "category": "productivity"
+    },
+    {
+      "name": "21st",
+      "description": "21st.dev UI skills and MCP. Pinned upstream: 21st-dev/claude-code-plugin.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/21st-dev/claude-code-plugin.git",
+        "path": "plugins/21st",
+        "sha": "f76b07aec6e65a582abe4b20bf3ec7b0fa64968a"
+      },
+      "category": "design"
+    }
+  ]
+}
