@@ -1,0 +1,28 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test
+      - run: npx -y @anthropic-ai/claude-code plugin validate . --strict
+      - name: Validate each local plugin
+        run: |
+          for p in plugins/*/; do
+            npx -y @anthropic-ai/claude-code plugin validate "$p" --strict
+          done
+      - name: Dry-run the apply step into an empty repo
+        run: |
+          t="$(mktemp -d)"
+          node lib/apply.mjs "$t"
+          test -f "$t/.claude/settings.json"
+          ls "$t/.claude/skills"
