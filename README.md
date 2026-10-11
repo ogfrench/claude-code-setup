@@ -2,12 +2,17 @@
 
 My Claude Code setup, kept in one place and pushed to every repo I own: skills, plugins, hooks, MCP servers and settings. It works in local sessions and in cloud sessions on claude.ai/code.
 
-## How it reaches a repo
+## Two layers
 
-There are two paths, because cloud sessions and local sessions load different things.
+**Me, everywhere: `setup-user.sh`.** It installs every plugin in `user/plugins.txt` and copies the skills into `~/.claude/skills`, at user scope. Run it once on a laptop. For cloud sessions, paste this as the setup script of the environment on claude.ai/code. It runs before Claude starts, in every repo that uses the environment:
 
-- **Cloud sessions never install plugins from a repo's settings.** They do load whatever the repo has committed under `.claude/` (skills, agents, commands, settings with hooks) and its `.mcp.json`. So `sync-to-repos.sh` copies the skills into each repo and merges the settings.
-- **Local sessions** also pick up the plugin marketplace that the merged settings register. That is how the third-party plugins (caveman, ponytail, 21st) and the official ones arrive.
+```sh
+curl -fsSL https://raw.githubusercontent.com/ogfrench/claude-code-setup/main/setup-user.sh | bash
+```
+
+Without it, a cloud session has no plugins at all, because cloud sessions never install plugins from a repo's settings.
+
+**Each repo, for anyone: `sync-to-repos.sh`.** It commits the skills into each repo's `.claude/skills/` and merges `project/settings.json`, so a teammate's session, or a cloud session without the setup script, still gets them. Repos only enable team-useful plugins. Personal modes such as caveman and ponytail stay in `user/plugins.txt`, so nobody else is switched into them.
 
 The source of truth is this repo. The copies in each project are overwritten on the next sync, so edit here.
 
@@ -20,10 +25,12 @@ The source of truth is this repo. The copies in each project are overwritten on 
 | `plugins/<plugin>/commands/<name>.md` | A slash command | `.claude/commands/<name>.md` (copied) |
 | `project/settings.json` | Hooks, permissions, enabled plugins, env | merged into `.claude/settings.json` |
 | `project/mcp.json` | MCP servers | merged into `.mcp.json` |
+| `project/retired.json` | Settings keys to take back out | removed from `.claude/settings.json` |
+| `user/plugins.txt` | My plugins, laptop and cloud | not synced; installed by `setup-user.sh` |
 | `.claude-plugin/marketplace.json` | The `ogfrench` marketplace | registered by the merged settings |
 | `repos.txt` | Which repos get all this | |
 
-Merging keeps everything a repo already has. Objects merge key by key, arrays gain the entries they lack, and nothing is removed, so a repo's own permissions and hooks survive. Copies are listed in `.claude/claude-code-setup.json` inside each repo. A skill deleted or renamed here is therefore removed there on the next sync, while skills a repo wrote itself are never touched.
+Merging keeps everything a repo already has. Objects merge key by key, arrays gain the entries they lack, and a value the repo already set wins, so a repo's own permissions, hooks and disabled plugins survive. Merging never removes anything, so to take a key back out, list it in `project/retired.json`. Copies are listed in `.claude/claude-code-setup.json` inside each repo. A skill deleted or renamed here is therefore removed there on the next sync, while skills a repo wrote itself are never touched.
 
 ## Adding things
 
@@ -33,7 +40,7 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 
 **An MCP server.** Add it under `mcpServers` in `project/mcp.json`. Never commit a secret. Write `"Authorization": "Bearer ${SOME_API_KEY}"` and set `SOME_API_KEY` in the cloud environment's settings on claude.ai/code and in your shell locally. Servers that only run on one machine, such as the Neon wrapper scripts or the local frogconvert build, don't belong here.
 
-**A third-party plugin.** Add an entry to `.claude-plugin/marketplace.json` pinned by `sha`, then enable it in `project/settings.json` as `<name>@ogfrench`. To update a pinned plugin, read the upstream diff and bump the `sha`. Note that third-party plugins reach local sessions only, for the reason above.
+**A plugin.** For a third-party one, add an entry to `.claude-plugin/marketplace.json` pinned by `sha`. To update a pinned plugin, read the upstream diff and bump the `sha`. Then add it to `user/plugins.txt` if it is just for you, or enable it in `project/settings.json` if every repo should have it. Re-run `setup-user.sh` locally; cloud sessions pick it up on their next start.
 
 **A repo.** Add `owner/name` to `repos.txt`.
 
@@ -47,7 +54,7 @@ MERGE=1 bash sync-to-repos.sh               # one PR per repo, squash-merged
 bash sync-to-repos.sh ogfrench/frogQuiz     # just one repo
 ```
 
-CI runs the first two plus an apply into an empty folder on every push and PR.
+CI runs the first two plus an apply into an empty folder on every push and PR. A real sync refuses to run unless the checkout is exactly `origin/main` and CI passed on that commit, so only what CI tested reaches the repos.
 
 ## Plugins
 
