@@ -22,6 +22,12 @@ test("the generic rules", () => {
   assert.deepEqual(scan(`the box at ${join("10.0.", "4.17")}.`, rules), ["an IP address"]);
 });
 
+test("GitHub's default merge message is not mistaken for a repo", () => {
+  const rules = rulesFor();
+  assert.deepEqual(scan(`Merge pull request #7 from ${join("ogf", "rench/some-branch")}`, rules), []);
+  assert.deepEqual(scan(`see Merge pull request #7 from ${join("ogf", "rench/some-branch")} and more`, rules), ["a repo not in public-repos.txt"]);
+});
+
 test("the check lets through what is meant to be here", () => {
   const rules = rulesFor();
   for (const ok of [

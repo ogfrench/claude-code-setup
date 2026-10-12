@@ -52,7 +52,9 @@ export function loadRules(env = process.env, root = ROOT) {
 // Rule names for the line-shaped rules: repos, emails, IPs.
 function lineRules(line, publicRepos) {
   const found = [];
-  for (const [, raw] of line.matchAll(new RegExp(`(?<![A-Za-z0-9])${OWNER}/([A-Za-z0-9._-]+)`, "gi"))) {
+  // GitHub's default merge message names the head branch as owner/branch, which is not a repo.
+  const mergeLine = /^Merge pull request #\d+ from \S+$/.test(line);
+  if (!mergeLine) for (const [, raw] of line.matchAll(new RegExp(`(?<![A-Za-z0-9])${OWNER}/([A-Za-z0-9._-]+)`, "gi"))) {
     const name = raw.replace(/\.+$/, "").replace(/\.git$/i, "");
     if (!publicRepos.has(`${OWNER}/${name}`.toLowerCase())) found.push("a repo not in public-repos.txt");
   }
