@@ -1,7 +1,7 @@
 {
   "name": "agent-workflow",
-  "version": "1.1.0",
-  "description": "How work is run: best-practices, learning-loop (capture, curate, promote), model-delegation, and the cheap-reviewer subagent.",
+  "version": "1.2.0",
+  "description": "How work is run: best-practices, learning-loop (capture, curate, promote), model-delegation, visual-loop (show design options on the real thing and loop), and the cheap-reviewer subagent.",
   "author": {
     "name": "ogfrench"
   }
