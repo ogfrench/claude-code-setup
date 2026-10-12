@@ -37,6 +37,10 @@ or anything already a practice.
    `node scripts/kb-new.mjs learning <slug>` creates the file; `node --test` rejects it
    until every `TODO` is written.
 2. **Where:**
+   - If the lesson cannot be told without a client, a private repo or a person, it is
+     private. Write it to the user's private notes repo if one is attached to the session
+     (same template), else to the current repo's `CLAUDE.md` if it only holds there, else
+     ask the user. It never goes to `claude-code-setup` until it is rewritten without names.
    - If `claude-code-setup` is cloned or can be attached to the session, and the private
      terms are there (`.private-terms`, or `PRIVATE_TERMS` in the environment), run
      `git config core.hooksPath .githooks` in it, add `learnings/YYYY-MM-DD-slug.md`,

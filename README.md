@@ -61,7 +61,7 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 learning (raw) -> practice (curated) -> promoted (skill, subagent, hook, command, plugin, MCP) -> retired
 ```
 
-- **Capture** a lesson as `learnings/YYYY-MM-DD-slug.md` with the template in `learnings/README.md`. From another repo, the `learning-loop` skill writes it here, or to that repo's `.claude/learnings-inbox.md` to be harvested later.
+- **Capture** a lesson as `learnings/YYYY-MM-DD-slug.md` with the template in `learnings/README.md`. From another repo, the `learning-loop` skill writes it here, or to that repo's `.claude/learnings-inbox.md` to be harvested later. A lesson that cannot be told without a client or a private repo goes to a private notes repo of your own (same template, no sync), or to that project's `CLAUDE.md`. When the same private lesson shows up on a second or third project, rewrite it without names and bring it here.
 - **Curate** it into a node in `kb/practices/`, with `derived_from` naming the learning, then run `node scripts/build-kb.mjs`. The `best-practices` skill is generated from the nodes and synced everywhere, so every session can read it.
 - **Promote** a practice when it earns a heavier form: the ladder in `CLAUDE.md` says when a practice should be a skill, a subagent, a hook, a command, a plugin or an MCP server. `model-delegation` and the `cheap-reviewer` subagent are the first ones promoted.
 - **Retire** what stops being true; the learning keeps the reason.
