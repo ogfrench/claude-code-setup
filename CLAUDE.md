@@ -85,5 +85,6 @@ Pick the lightest form that does the job.
 - **Merge, don't pile up.** Before adding a practice, look for one it extends.
 - **Keep the voice:** plain US English, short sentences, no em dashes, no flattery.
 - **Weekly:** `node scripts/kb-audit.mjs`, then act on what it lists.
+- **Only pull requests, never a push to `main`.** The rules are in `CONTRIBUTING.md`.
 - **Ship as the README says:** `node --test` (which includes the public check),
-  `claude plugin validate . --strict`, then push to `main`. The sync to other repos is a separate, explicit step.
+  `claude plugin validate . --strict`, then open a PR. The sync to other repos is a separate, explicit step.

@@ -128,6 +128,8 @@ The hook and CI refuse to run without them, so a fresh clone cannot push uncheck
 
 ## Checking and shipping a change
 
+Changes go in through pull requests only, never a push to `main`. The rules are in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ```sh
 node scripts/build-kb.mjs                   # regenerate topic files, bundles and the index after editing a node
 node --test                                 # unit tests, generated files up to date, budgets, public check; no dependencies
