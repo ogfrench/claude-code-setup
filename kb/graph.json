@@ -758,6 +758,17 @@
       "last_reviewed": "2026-10-11"
     },
     {
+      "id": "visual-loop",
+      "type": "tool",
+      "kind": "skill",
+      "summary": "Show design options on the real thing, read every screenshot first, loop until the user picks.",
+      "use_when": "For any visual change, and whenever the user asks for options, says a design looks wrong, or wants to check something.",
+      "where": "plugins/agent-workflow/skills/visual-loop",
+      "state": "installed",
+      "tokens": 93,
+      "last_reviewed": "2026-10-12"
+    },
+    {
       "id": "2026-10-11-api-key-is-not-authorization",
       "type": "learning",
       "summary": "\"Behind an API key\" is not a gate when any account can mint a key",
@@ -974,6 +985,22 @@
       "tokens": 235,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    },
+    {
+      "id": "2026-10-12-show-options-on-the-real-artifact",
+      "type": "learning",
+      "summary": "Show design options on the real artifact, read every shot first, and loop until one is picked",
+      "tags": [
+        "design",
+        "review",
+        "agents"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 339,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/visual-loop/SKILL.md"
       ]
     }
   ],
@@ -1481,6 +1508,11 @@
     {
       "from": "2026-10-11-whole-row-orm-writes-revert-saves",
       "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-12-show-options-on-the-real-artifact",
+      "to": "plugins/agent-workflow/skills/visual-loop/SKILL.md",
       "type": "promoted_to"
     }
   ]
