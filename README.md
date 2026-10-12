@@ -141,7 +141,7 @@ CI runs the first two plus an apply into an empty folder on every push and PR. A
 | Plugin | Source |
 | --- | --- |
 | `frog-writing` | This repo. `frogify` and `deslopify` are mine. `humanizer` is vendored from [blader/humanizer](https://github.com/blader/humanizer) at `9600f2b`, MIT, with its license kept in its folder. |
-| `agent-workflow` | This repo. How work is run: `model-delegation` (which model does which work), `best-practices` (the curated practices), `learning-loop` (capture, curate, promote), `visual-loop` (show design options on the real thing, read every shot, loop until one is picked) and the `cheap-reviewer` subagent. |
+| `agent-workflow` | This repo. How work is run: `model-delegation` (which model does which work), `best-practices` (the curated practices), `learning-loop` (capture, curate, promote), `visual-loop` (show design options on the real thing, read every shot, loop until one is picked), `token-efficiency` (fewer turns and tokens for the same work: batching, lean context, background waits, environment facts saved once) and the `cheap-reviewer` subagent. |
 | `caveman` | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman), pinned by SHA |
 | `ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail), pinned by SHA |
 | `21st` | [21st-dev/claude-code-plugin](https://github.com/21st-dev/claude-code-plugin), pinned by SHA |
