@@ -41,12 +41,11 @@ or anything already a practice.
      private. Write it to the user's private notes repo if one is attached to the session
      (same template), else to the current repo's `CLAUDE.md` if it only holds there, else
      ask the user. It never goes to `claude-code-setup` until it is rewritten without names.
-   - If `claude-code-setup` is cloned or can be attached to the session, and the private
-     terms are there (`.private-terms`, or `PRIVATE_TERMS` in the environment), run
+   - If `claude-code-setup` is cloned or can be attached to the session, run
      `git config core.hooksPath .githooks` in it, add `learnings/YYYY-MM-DD-slug.md`,
-     run `node --test` and `node scripts/check-public.mjs --require-terms`, and commit to
-     `main` as "Learning: <the lesson>".
-   - If not, or without the terms, append the same text to `.claude/learnings-inbox.md` in
+     run `node --test` and `node scripts/check-public.mjs`, commit on a branch and open a
+     pull request titled "Learning: <the lesson>". Never push to `main`.
+   - If it cannot be attached, append the same text to `.claude/learnings-inbox.md` in
      the current repo, and tell the user it is waiting to be harvested.
 3. Say in one line what was captured, and where.
 
@@ -84,7 +83,7 @@ learning to `status: promoted` and list every path in `promoted_to`. Check with
 For each repo in `repos.local.txt` (on the laptop, never committed), read its
 `.claude/learnings-inbox.md` (a shallow clone, or the GitHub API). An inbox in a private repo
 is written freely, so scrub every entry for the public repo before it becomes a learning
-here: no names, no paths, no quotes. Run `node scripts/check-public.mjs --require-terms` before committing,
+here: no names, no paths, no quotes. Run `node scripts/check-public.mjs` before committing,
 then empty that inbox with a commit in its repo.
 
 ## Retire

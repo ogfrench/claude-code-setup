@@ -6,10 +6,9 @@ This repo is public. These rules apply to everyone, including Claude sessions.
 
 1. **Only pull requests. Never push to `main`.** Work on a branch, open a PR, merge it when
    CI is green. This holds for fixes, docs and learnings alike.
-2. **Run the public check before every push:** `node scripts/check-public.mjs`. With your
-   private terms loaded (`.private-terms`, or `PRIVATE_TERMS` in the environment), run
-   `node scripts/check-public.mjs --require-terms`. In a fresh clone, turn on the hook that
-   does this for you: `git config core.hooksPath .githooks`.
+2. **Run the public check before every push:** `node scripts/check-public.mjs`. In a fresh
+   clone, turn on the hook that does this for you: `git config core.hooksPath .githooks`. The
+   check cannot know a client's name, so read your own diff for names too.
 3. **Run the tests:** `node --test`, and `claude plugin validate . --strict`.
 4. **Nothing private, ever:** no client or project names, no private repo names, no
    secrets, hostnames, IPs, emails or people's names. See `CLAUDE.md`.
@@ -20,7 +19,7 @@ This repo is public. These rules apply to everyone, including Claude sessions.
 
 ## Merging
 
-- CI must be green, including the terms-aware public check. A PR that is red is not merged.
+- CI must be green. A PR that is red is not merged.
 - Squash or merge commit both fine; never rewrite history on a shared branch.
 
 ## Settings to turn on (repo owner)

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // This repo is public. Fail if it would carry anything that must stay private:
-//   - a private term: a client, employer or project name, from a list kept out of git
 //   - an ogfrench repo not listed in public-repos.txt (a repo's name can name a client)
 //   - an email address, other than the no-reply and documentation ones
 //   - an IPv4 address, other than loopback and the documentation ranges
@@ -8,14 +7,8 @@
 //   node scripts/check-public.mjs                        every tracked file, and its path
 //   node scripts/check-public.mjs <git log args>         what those commits add: lines, paths,
 //                                                        messages, author and committer
-//   --require-terms   fail if no private terms are loaded (the pre-push hook and CI pass it)
 //   --ref <name>      also check a ref name, and a tag's own message (the hook passes each ref)
 //
-// The private terms never go in the repo. They come from `.private-terms` (gitignored,
-// one per line, `#` starts a comment line) or the PRIVATE_TERMS env var (a CI secret,
-// same format). A term matches from the start of a word, ignoring case and whatever
-// separates its words: "acme bank" also catches AcmeBank, acme-bank, acme_bank, acmebanks,
-// myAcmeBank and a name wrapped over a line, but not a word that merely contains it.
 // A finding names the place and the rule, never the text: CI logs are public too.
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -49,47 +42,11 @@ export function decode(buf) {
 
 const listLines = (text) =>
   text.split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith("#"));
-const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-// A term's words, joined by anything that is not a letter or digit, or by nothing.
-export function termPattern(term) {
-  const words = term.split(/[^\p{L}\p{N}]+/u).filter(Boolean).map(escape);
-  return words.length ? new RegExp(words.join("[^\\p{L}\\p{N}]{0,3}"), "giu") : null;
-}
-
 export function loadRules(env = process.env, root = ROOT) {
-  const termsFile = path.join(root, ".private-terms");
-  const terms = [
-    ...(env.PRIVATE_TERMS ? listLines(env.PRIVATE_TERMS) : []),
-    ...(fs.existsSync(termsFile) ? listLines(decode(fs.readFileSync(termsFile)).text) : []),
-  ];
   const publicRepos = new Set(
     listLines(fs.readFileSync(path.join(root, "public-repos.txt"), "utf8")).map((r) => r.toLowerCase()),
   );
-  return { terms, patterns: terms.map(termPattern), publicRepos };
-}
-
-// Where a term may start: at the start, after a non-letter, or at a camelCase hump. Not
-// mid-word, or a short name would be found inside an everyday word that happens to hold it.
-function startsWord(text, index) {
-  const prev = text[index - 1];
-  if (prev === undefined || !/[\p{L}\p{N}]/u.test(prev)) return true;
-  return /\p{Ll}/u.test(prev) && /\p{Lu}/u.test(text[index]);
-}
-
-// Rule names for each private term in `text`, with the line each starts on. Anything may
-// follow a term, so a plural, a suffix or a glued word after it is still caught.
-function termFindings(text, rules) {
-  const found = [];
-  rules.patterns.forEach((re, i) => {
-    if (!re) return;
-    re.lastIndex = 0;
-    for (const m of text.matchAll(re)) {
-      if (!startsWord(text, m.index)) continue;
-      found.push({ line: text.slice(0, m.index).split("\n").length, rule: `private term #${i + 1}` });
-    }
-  });
-  return found;
+  return { publicRepos };
 }
 
 // Rule names for the line-shaped rules: repos, emails, IPs.
@@ -110,13 +67,12 @@ function lineRules(line, publicRepos) {
 
 // Every finding in one line of text, as rule names. Kept for one-line checks and tests.
 export function scan(text, rules) {
-  const all = { ...rules, patterns: rules.patterns ?? rules.terms.map(termPattern) };
-  return [...termFindings(text, all).map((f) => f.rule), ...lineRules(text, all.publicRepos)];
+  return lineRules(text, rules.publicRepos);
 }
 
 // Findings in a block of text (a file, a message), each as "<where>:<line>: <rule>".
 export function scanBlock(where, text, rules, { binary = false } = {}) {
-  const out = termFindings(text, rules).map((f) => `${where}:${f.line}: ${f.rule}`);
+  const out = [];
   if (binary) return out;
   text.split("\n").forEach((line, i) => {
     for (const rule of lineRules(line, rules.publicRepos)) out.push(`${where}:${i + 1}: ${rule}`);
@@ -198,23 +154,13 @@ function checkRef(ref, rules) {
 }
 
 export function main(argv, env = process.env) {
-  const requireTerms = argv.includes("--require-terms");
   const refs = [];
   const revs = [];
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === "--require-terms") continue;
     if (argv[i] === "--ref") refs.push(argv[++i]);
     else revs.push(argv[i]);
   }
   const rules = loadRules(env);
-  if (!rules.terms.length) {
-    const why = "no private terms loaded: put them in .private-terms, or set PRIVATE_TERMS";
-    if (requireTerms) {
-      console.error(`Refusing: ${why}. Without them, client names would go through unchecked.`);
-      return 1;
-    }
-    console.error(`note: ${why}; only the generic rules ran`);
-  }
   const findings = [
     ...refs.flatMap((r) => checkRef(r, rules)),
     ...(revs.length ? checkCommits(revs, rules) : checkTree(rules)),

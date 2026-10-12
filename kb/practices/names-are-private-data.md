@@ -12,5 +12,5 @@ implemented_by: [scripts/check-public.mjs, .githooks/pre-push]
 ---
 
 A secret scanner misses a client's name in a repo list, a file name, a branch or an example.
-Check every push for the names themselves, kept outside the repo, refuse to check without
-them, and never echo a match into a public log.
+Read your own diff for the names themselves. If you automate it, keep the list outside the
+repo, refuse to check without it, and never echo a match into a public log.

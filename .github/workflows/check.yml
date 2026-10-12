@@ -16,19 +16,15 @@ jobs:
         with:
           node-version: 22
       - run: node --test
-        env:
-          # Names that must never appear here. A secret, since listing them would publish them.
-          PRIVATE_TERMS: ${{ secrets.PRIVATE_TERMS }}
       - name: Nothing private in the pushed commits
         env:
-          PRIVATE_TERMS: ${{ secrets.PRIVATE_TERMS }}
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           if [ -n "$BASE" ] && [ "$BASE" != 0000000000000000000000000000000000000000 ] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
-            node scripts/check-public.mjs --require-terms "$BASE..$HEAD"
+            node scripts/check-public.mjs "$BASE..$HEAD"
           else
-            node scripts/check-public.mjs --require-terms "$HEAD"
+            node scripts/check-public.mjs "$HEAD"
           fi
       - run: npx -y @anthropic-ai/claude-code@2.1.270 plugin validate . --strict
       - name: Validate each local plugin

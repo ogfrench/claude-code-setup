@@ -5,9 +5,9 @@
   compares the caller with the owner. If any account can mint the credential (an API key),
   "behind a key" gates nothing. *(2026-10-11-api-key-is-not-authorization)*
 - **In a public repo, names are private data.** A secret scanner misses a client's name in
-  a repo list, a file name, a branch or an example. Check every push for the names
-  themselves, kept outside the repo, refuse to check without them, and never echo a match
-  into a public log. *(2026-10-11-names-are-private-data)*
+  a repo list, a file name, a branch or an example. Read your own diff for the names
+  themselves. If you automate it, keep the list outside the repo, refuse to check without
+  it, and never echo a match into a public log. *(2026-10-11-names-are-private-data)*
 - **One function builds every client payload, and it strips solutions for every type.**
   Grep for every sender and route them through it.
   *(2026-10-11-strip-solutions-from-client-payloads)*

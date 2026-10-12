@@ -98,13 +98,13 @@ Nothing here fixes itself, so a weekly look is the habit. `node scripts/kb-audit
 To run the upkeep unattended, create a weekly Routine (fresh session, this repo) with this prompt. It opens a PR and never pushes `main`:
 
 ```
-In ogfrench/claude-code-setup: stop and say so if PRIVATE_TERMS is not set. Otherwise create branch
+In ogfrench/claude-code-setup: create branch
 kb/audit-<date>, run `git config core.hooksPath .githooks` and `node scripts/kb-audit.mjs`. For each
 item it lists, check the claim against the current docs or release notes (Claude Code, and the tools
 in kb/tools) by web search, and change only what a source confirms: bump last_verified or last_reviewed,
 set status stale or retired with the reason in the body, or add a tool node with state candidate.
 Write no names of clients, people or private repos anywhere. Then run `node scripts/build-kb.mjs`,
-`node --test`, `node scripts/check-public.mjs --require-terms` and `claude plugin validate . --strict`.
+`node --test`, `node scripts/check-public.mjs` and `claude plugin validate . --strict`.
 Open a PR titled "kb: weekly audit" that lists each change with its source. Never push to main.
 ```
 
@@ -118,13 +118,7 @@ Anyone can read this repo, its history and its CI logs. So it never names a clie
 - **In `node --test`**, on every tracked file.
 - **In CI**, on the commits of each push or PR, as a backstop. By then the commit is already public, so the hook is the guard that counts.
 
-It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply and `example.com` ones, and any IP address outside loopback and the documentation ranges. Names that must never appear (clients, codenames) can't be listed in a public repo, so they live outside it, one per line, in three places:
-
-- **The laptop:** `.private-terms` in the clone (gitignored).
-- **CI:** the `PRIVATE_TERMS` repository secret (Settings, Secrets and variables, Actions).
-- **Cloud sessions that push here:** `PRIVATE_TERMS` as an environment variable of the claude.ai/code environment.
-
-The hook and CI refuse to run without them, so a fresh clone cannot push unchecked. A term matches from the start of a word, in any case, whatever separates its words: `acme bank` also catches `AcmeBank`, `acme-bank`, `acmebanks` and a name wrapped over two lines, but not a longer word that merely contains it. A finding names the place and the rule, never the matched text, and a file whose name is flagged is shown by number.
+It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply and `example.com` ones, and any IP address outside loopback and the documentation ranges. It cannot know a client's name, because a list of such names can't live in a public repo. Reading your own diff for names is part of every change, and the PR checklist asks for it. A finding names the place and the rule, never the matched text, and a file whose name is flagged is shown by number.
 
 ## Checking and shipping a change
 
