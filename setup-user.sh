@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install my personal Claude Code setup at user scope: the plugins in
-# user/plugins.txt, and the skills under plugins/*/skills as personal skills.
+# user/plugins.txt, and the skills and agents under plugins/* as personal ones.
 #
 # Laptop:  bash setup-user.sh
 # Cloud:   paste this as the environment's setup script on claude.ai/code,
@@ -47,8 +47,15 @@ for s in "$SRC"/plugins/*/skills/*/; do
   cp -r "$s" "$CONFIG/skills/$name"
 done
 
+# Subagents too: they reach a project through the sync, but not a bare laptop or cloud session.
+mkdir -p "$CONFIG/agents"
+for a in "$SRC"/plugins/*/agents/*.md; do
+  [[ -f "$a" ]] && cp "$a" "$CONFIG/agents/$(basename "$a")"
+done
+
 echo "plugins: $(claude plugin list 2>/dev/null | grep -c '❯') installed"
 echo "skills:  $(ls "$CONFIG/skills" | tr '\n' ' ')"
+echo "agents:  $(ls "$CONFIG/agents" | tr '\n' ' ')"
 if ((${#failed[@]})); then
   echo "failed:  ${failed[*]}" >&2
   exit 1
