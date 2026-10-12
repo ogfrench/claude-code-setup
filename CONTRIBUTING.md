@@ -22,7 +22,11 @@ This repo is public. These rules apply to everyone, including Claude sessions.
 - CI must be green. A PR that is red is not merged.
 - Squash or merge commit both fine; never rewrite history on a shared branch.
 
-## Settings to turn on (repo owner)
+## Repo settings (on)
 
-In GitHub, Settings, Branches, add a rule for `main`: require a pull request before merging,
-require the `check` status to pass, and block force pushes and deletion.
+`main` is protected: a pull request is required, the `check` status must pass, force pushes
+and deletion are blocked, and the rule applies to admins too. Zero approvals, because the
+owner merges their own pull requests. Merged branches are deleted automatically.
+
+A merge commit carries only the pull request title. GitHub's default message names the
+head branch as `owner/branch`, which the public check reads as an unlisted repo.
