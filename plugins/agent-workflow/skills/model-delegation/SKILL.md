@@ -4,11 +4,9 @@ description: >-
   Decide which model does each piece of work when a session can hand tasks to
   subagents on cheaper models (haiku, sonnet) and keep the rest on the main one.
   Use when planning multi-step work, before launching subagents, and when the
-  user asks to use cheaper models, delegate, save tokens or go faster. Gives the
-  split by how a mistake would be caught and whether it can be undone, how to
-  brief a cheaper agent, the limits on running agents in parallel, and how their
-  work is checked before it lands. Triggers: "use sonnet", "use haiku", "cheaper
-  agents", "delegate this", "model split", "/model-delegation".
+  user asks to use cheaper models, delegate, save tokens or go faster. Triggers:
+  "use sonnet", "use haiku", "cheaper agents", "delegate this", "model split",
+  "/model-delegation".
 ---
 
 # Model delegation

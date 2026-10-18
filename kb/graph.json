@@ -1127,6 +1127,17 @@
       "last_reviewed": "2026-10-11"
     },
     {
+      "id": "session-continuity",
+      "type": "tool",
+      "kind": "skill",
+      "summary": "Keep long work alive across compactions: durable state, standalone check-ins, work checked against the plan, open points raised.",
+      "use_when": "In any session long enough to compact, before scheduling a check-in, and first thing after a compaction or when resuming someone else's session.",
+      "where": "plugins/agent-workflow/skills/session-continuity",
+      "state": "installed",
+      "tokens": 112,
+      "last_reviewed": "2026-10-18"
+    },
+    {
       "id": "superpowers",
       "type": "tool",
       "kind": "plugin",
@@ -1858,6 +1869,23 @@
       "tokens": 259,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-state-outside-the-conversation-survives-compaction",
+      "type": "learning",
+      "summary": "Long work survives compaction when its state lives outside the conversation",
+      "tags": [
+        "agents",
+        "context",
+        "compaction",
+        "issues"
+      ],
+      "status": "promoted",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 494,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/session-continuity/SKILL.md"
       ]
     },
     {
@@ -2861,6 +2889,11 @@
     {
       "from": "2026-10-18-stacked-prs-conflict-on-the-changelog",
       "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-state-outside-the-conversation-survives-compaction",
+      "to": "plugins/agent-workflow/skills/session-continuity/SKILL.md",
       "type": "promoted_to"
     },
     {
