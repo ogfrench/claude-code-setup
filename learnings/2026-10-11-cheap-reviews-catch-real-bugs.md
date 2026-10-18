@@ -1,6 +1,6 @@
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz
+source: a private project
 tags: [agents, review]
 status: promoted
 promoted_to: 
@@ -17,4 +17,4 @@ promoted_to:
 
 **Do instead.** Review every commit before pushing it, read-only, with the brief above. Verify each finding before acting on it.
 
-**Evidence.** frogQuiz commits 57a3445, c213861 and 311df9e each fix review findings, with tests that fail on the reviewed commit.
+**Evidence.** A quiz app's commits 57a3445, c213861 and 311df9e each fix review findings, with tests that fail on the reviewed commit.

@@ -1,6 +1,6 @@
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz
+source: a private project
 tags: [testing, concurrency]
 status: practice
 promoted_to: 
@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Find a call that sits between the read and the write, monkeypatch it to land the other write, assert the result. Say in the test's comment that the window is forced on purpose.
 
-**Evidence.** frogQuiz `frogquiz/tests/test_counter_writes.py`: reproduced the lost save on the old code, passes on the fix.
+**Evidence.** A quiz app's `tests/test_counter_writes.py`: reproduced the lost save on the old code, passes on the fix.

@@ -1,6 +1,6 @@
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz
+source: a private project
 tags: [agents]
 status: promoted
 promoted_to: 
@@ -16,4 +16,4 @@ promoted_to:
 
 **Do instead.** Ask for work that leaves something usable when cut short (findings written as found, a scratch file). Resume rather than restart. Clean up anything the agent started.
 
-**Evidence.** frogQuiz V1 step 3a; the second run was briefed to finish only what the first had not reached.
+**Evidence.** A quiz app's V1 step 3a; the second run was briefed to finish only what the first had not reached.

@@ -1,6 +1,6 @@
 ---
 date: 2026-10-18
-source: ogfrench/frogQuiz
+source: a private project
 tags: [testing, ci]
 status: raw
 promoted_to: []
@@ -14,4 +14,4 @@ promoted_to: []
 
 **Do instead.** After editing comments in files a text guard scans, run that guard. When a comment must mention the forbidden thing, word it so the pattern does not match ("the corner radius"), rather than weakening the guard.
 
-**Evidence.** frogQuiz CI's frontend lint failed on the comment; rewording it turned the check green with the guard unchanged.
+**Evidence.** A quiz app's CI frontend lint failed on the comment; rewording it turned the check green with the guard unchanged.

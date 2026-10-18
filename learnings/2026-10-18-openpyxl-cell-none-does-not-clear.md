@@ -1,6 +1,6 @@
 ---
 date: 2026-10-18
-source: ogfrench/frogQuiz
+source: a private project
 tags: [tooling, testing]
 status: raw
 promoted_to: []
@@ -14,4 +14,4 @@ promoted_to: []
 
 **Do instead.** Assign `sheet.cell(r, c).value = None` to clear a cell, and write values the same way in tests.
 
-**Evidence.** frogQuiz `frogquiz/tests/test_excel_types.py`: two failures disappeared with the helper rewritten to assign `.value`.
+**Evidence.** A quiz app's `tests/test_excel_types.py`: two failures disappeared with the helper rewritten to assign `.value`.

@@ -12,7 +12,7 @@ catch the lesson while it is fresh. Curating comes later (see `../CLAUDE.md`).
 ```markdown
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz          # a repo in public-repos.txt, or "a private project"
+source: ogfrench/claude-code-setup  # a repo in public-repos.txt, or "a private project"
 tags: [testing, concurrency]
 status: raw                        # raw | practice | promoted | retired
 promoted_to: []                    # paths this went to, once practice or promoted

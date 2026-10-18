@@ -1203,8 +1203,8 @@
         "auth"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 251,
+      "source": "a private project",
+      "tokens": 250,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/security.md"
       ]
@@ -1217,8 +1217,8 @@
         "agents"
       ],
       "status": "promoted",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 222,
+      "source": "a private project",
+      "tokens": 223,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
         "plugins/agent-workflow/skills/model-delegation/SKILL.md"
@@ -1249,8 +1249,8 @@
         "review"
       ],
       "status": "promoted",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 272,
+      "source": "a private project",
+      "tokens": 273,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
         "plugins/agent-workflow/agents/cheap-reviewer.md",
@@ -1267,8 +1267,8 @@
         "redis"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 227,
+      "source": "a private project",
+      "tokens": 226,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1282,8 +1282,8 @@
         "ci"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 160,
+      "source": "a private project",
+      "tokens": 161,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
       ]
@@ -1297,8 +1297,8 @@
         "concurrency"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 230,
+      "source": "a private project",
+      "tokens": 229,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
@@ -1345,8 +1345,8 @@
         "security"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 183,
+      "source": "a private project",
+      "tokens": 184,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
       ]
@@ -1376,8 +1376,8 @@
         "agents"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 240,
+      "source": "a private project",
+      "tokens": 241,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
@@ -1391,8 +1391,8 @@
         "games"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 191,
+      "source": "a private project",
+      "tokens": 192,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/security.md"
       ]
@@ -1406,8 +1406,8 @@
         "jobs"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 214,
+      "source": "a private project",
+      "tokens": 215,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1437,8 +1437,8 @@
         "css"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 245,
+      "source": "a private project",
+      "tokens": 246,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/ui.md"
       ]
@@ -1452,8 +1452,8 @@
         "ui"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 193,
+      "source": "a private project",
+      "tokens": 194,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
@@ -1468,8 +1468,8 @@
         "orm"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 235,
+      "source": "a private project",
+      "tokens": 236,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1616,8 +1616,8 @@
         "data"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 401,
+      "source": "a private project",
+      "tokens": 400,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1679,8 +1679,8 @@
         "e2e"
       ],
       "status": "raw",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 366,
+      "source": "a private project",
+      "tokens": 367,
       "promoted_to": []
     },
     {
@@ -1734,7 +1734,7 @@
         "testing"
       ],
       "status": "practice",
-      "source": "ogfrench/frogQuiz",
+      "source": "a private project",
       "tokens": 323,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
@@ -1749,8 +1749,8 @@
         "testing"
       ],
       "status": "raw",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 188,
+      "source": "a private project",
+      "tokens": 187,
       "promoted_to": []
     },
     {
@@ -1774,7 +1774,7 @@
         "testing"
       ],
       "status": "raw",
-      "source": "ogfrench/frogQuiz",
+      "source": "a private project",
       "tokens": 236,
       "promoted_to": []
     },
@@ -1882,8 +1882,8 @@
         "issues"
       ],
       "status": "promoted",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 494,
+      "source": "a private project",
+      "tokens": 492,
       "promoted_to": [
         "plugins/agent-workflow/skills/session-continuity/SKILL.md"
       ]
@@ -1913,8 +1913,8 @@
         "ui"
       ],
       "status": "raw",
-      "source": "ogfrench/frogQuiz",
-      "tokens": 299,
+      "source": "a private project",
+      "tokens": 300,
       "promoted_to": []
     },
     {
@@ -1926,7 +1926,7 @@
         "ci"
       ],
       "status": "raw",
-      "source": "ogfrench/frogQuiz",
+      "source": "a private project",
       "tokens": 232,
       "promoted_to": []
     },
