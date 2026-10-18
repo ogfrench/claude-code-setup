@@ -25,6 +25,29 @@
       "supersedes": []
     },
     {
+      "id": "limit-what-a-reviewer-runs",
+      "type": "practice",
+      "summary": "Tell a reviewer which commands it may run.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 113,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-reviewers-must-not-build-in-your-worktree"
+      ],
+      "implemented_by": [],
+      "related": [
+        "review-every-commit",
+        "one-suite-at-a-time"
+      ],
+      "supersedes": []
+    },
+    {
       "id": "review-every-commit",
       "type": "practice",
       "summary": "Review every commit before pushing it.",
@@ -69,6 +92,28 @@
       "supersedes": []
     },
     {
+      "id": "state-the-job-first",
+      "type": "practice",
+      "summary": "State the user's job in one line before planning a server, auth or storage.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 117,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-state-the-job-before-planning-a-server"
+      ],
+      "implemented_by": [],
+      "related": [
+        "fetch-as-an-ai-client-would"
+      ],
+      "supersedes": []
+    },
+    {
       "id": "work-that-survives-cut-short",
       "type": "practice",
       "summary": "Ask for work that survives being cut short.",
@@ -78,14 +123,119 @@
       ],
       "severity": "should",
       "status": "active",
-      "seen": 1,
-      "tokens": 116,
-      "last_verified": "2026-10-11",
+      "seen": 2,
+      "tokens": 144,
+      "last_verified": "2026-10-18",
       "derived_from": [
-        "2026-10-11-background-agents-hit-usage-limits"
+        "2026-10-11-background-agents-hit-usage-limits",
+        "2026-10-18-check-worktrees-after-an-agent-stops"
       ],
       "implemented_by": [
         "plugins/agent-workflow/skills/model-delegation"
+      ],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "fetch-as-an-ai-client-would",
+      "type": "practice",
+      "summary": "Fetch with no cookies to see what an AI client gets; content behind a sign-in is invisible to it.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 1,
+      "tokens": 113,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-check-what-an-ai-fetcher-receives"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "scope-a-batch-first",
+      "type": "practice",
+      "summary": "Scope a batch with a cheap read-only pass before delegating it.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 1,
+      "tokens": 105,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-11-scope-a-batch-before-delegating-it"
+      ],
+      "implemented_by": [],
+      "related": [
+        "cheapest-model-with-catch"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "gate-push-on-exit-status",
+      "type": "practice",
+      "summary": "Push only after the gate's own exit status says green.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "must",
+      "status": "active",
+      "seen": 1,
+      "tokens": 104,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-gate-a-push-on-the-real-exit-status"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "compare-against-origin-main",
+      "type": "practice",
+      "summary": "Compare a change against origin/main after a fetch, never a local main.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 102,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-review-baselines-come-from-the-remote"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "estimate-runner-minutes",
+      "type": "practice",
+      "summary": "Estimate a workflow's runner-minutes before merging what triggers it.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 123,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-17-estimate-runner-minutes-before-merging-a-trigger"
+      ],
+      "implemented_by": [
+        "plugins/agent-workflow/skills/actions-cost"
       ],
       "related": [],
       "supersedes": []
@@ -129,6 +279,26 @@
       "supersedes": []
     },
     {
+      "id": "own-install-per-worktree",
+      "type": "practice",
+      "summary": "Every worktree gets its own install.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 98,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-each-worktree-gets-its-own-install"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
       "id": "reproduce-ci-with-pinned-versions",
       "type": "practice",
       "summary": "Reproduce a CI failure with the exact version CI runs.",
@@ -146,6 +316,28 @@
       ],
       "implemented_by": [],
       "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "changelog-at-merge-time",
+      "type": "practice",
+      "summary": "Stacked PRs that all add a changelog line conflict in turn; write it at merge time.",
+      "concern": "ci",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 1,
+      "tokens": 106,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-stacked-prs-conflict-on-the-changelog"
+      ],
+      "implemented_by": [],
+      "related": [
+        "missing-checks-mean-conflict"
+      ],
       "supersedes": []
     },
     {
@@ -316,6 +508,46 @@
       "supersedes": []
     },
     {
+      "id": "identity-limits-need-costly-identities",
+      "type": "practice",
+      "summary": "A limit per identity only binds an attacker when a new identity costs them something.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 122,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-11-per-identity-limits-need-costly-identities"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "pasted-secret-gets-a-home",
+      "type": "practice",
+      "summary": "A secret pasted in chat gets a home outside every repo and a rotation issue at once.",
+      "concern": "security",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 119,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-a-pasted-secret-needs-a-home-and-a-rotation"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
       "id": "test-with-the-wrong-account",
       "type": "practice",
       "summary": "Test with the wrong account, not only with none.",
@@ -397,6 +629,49 @@
       "supersedes": []
     },
     {
+      "id": "one-suite-at-a-time",
+      "type": "practice",
+      "summary": "Run one test suite at a time on a shared stack or machine.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 116,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-one-suite-at-a-time-on-a-shared-stack"
+      ],
+      "implemented_by": [],
+      "related": [
+        "one-dev-stack-per-tree",
+        "serial-agents-on-shared-stack"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "test-derived-names-against-reserved",
+      "type": "practice",
+      "summary": "Test every name derived by rule against the reserved names.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 110,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-11-test-derived-names-against-reserved-ones"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
       "id": "test-fails-first",
       "type": "practice",
       "summary": "Write the failing test first, and run it on the old code.",
@@ -453,6 +728,26 @@
       "supersedes": []
     },
     {
+      "id": "headless-matches-hover-none",
+      "type": "practice",
+      "summary": "Headless Chrome matches hover: none; key touch fallbacks on pointer: coarse.",
+      "concern": "testing",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 1,
+      "tokens": 103,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-16-headless-chrome-matches-hover-none"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
       "id": "check-accessible-names-after-edit",
       "type": "practice",
       "summary": "Check accessible names after an edit, not only on load.",
@@ -485,6 +780,26 @@
       "last_verified": "2026-10-11",
       "derived_from": [
         "2026-10-11-third-party-editor-overrides"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "find-style-readers-before-restyling",
+      "type": "practice",
+      "summary": "Before restyling a component, find the code that reads its computed style.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 106,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-restyling-breaks-programs-that-read-styles"
       ],
       "implemented_by": [],
       "related": [],
@@ -529,6 +844,46 @@
       "supersedes": []
     },
     {
+      "id": "count-webgl-contexts",
+      "type": "practice",
+      "summary": "Count WebGL contexts on a page of canvases; past about sixteen, the oldest are lost.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 1,
+      "tokens": 97,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-11-browsers-cap-webgl-contexts-per-page"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
+      "id": "few-readers-for-per-frame-properties",
+      "type": "practice",
+      "summary": "A custom property changed per frame restyles every element that reads it.",
+      "concern": "ui",
+      "stack": [
+        "any"
+      ],
+      "severity": "tip",
+      "status": "active",
+      "seen": 1,
+      "tokens": 101,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-16-per-frame-custom-properties-restyle-every-reader"
+      ],
+      "implemented_by": [],
+      "related": [],
+      "supersedes": []
+    },
+    {
       "id": "21st",
       "type": "tool",
       "kind": "plugin",
@@ -538,6 +893,17 @@
       "state": "installed",
       "tokens": 53,
       "last_reviewed": "2026-10-11"
+    },
+    {
+      "id": "actions-cost",
+      "type": "tool",
+      "kind": "skill",
+      "summary": "Estimate a change's GitHub Actions runner-minutes before merging it; on demand and cached over a prebuilt matrix.",
+      "use_when": "Before merging or pushing what triggers a workflow in a private repo, adding or widening a matrix, or when a job fails in seconds with no log.",
+      "where": "plugins/agent-workflow/skills/actions-cost",
+      "state": "installed",
+      "tokens": 105,
+      "last_reviewed": "2026-10-18"
     },
     {
       "id": "best-practices",
@@ -782,6 +1148,19 @@
       "last_reviewed": "2026-10-12"
     },
     {
+      "id": "2026-10-11-a-magnitude-is-not-a-switch",
+      "type": "learning",
+      "summary": "A magnitude used as an on/off switch breaks when the magnitude is legitimately small",
+      "tags": [
+        "correctness",
+        "flags"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 178,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-11-api-key-is-not-authorization",
       "type": "learning",
       "summary": "\"Behind an API key\" is not a gate when any account can mint a key",
@@ -809,6 +1188,22 @@
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
         "plugins/agent-workflow/skills/model-delegation/SKILL.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-browsers-cap-webgl-contexts-per-page",
+      "type": "learning",
+      "summary": "A page gets about sixteen WebGL contexts, and the browser drops the oldest without a word",
+      "tags": [
+        "ui",
+        "webgl",
+        "browser-limits"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 246,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/ui.md"
       ]
     },
     {
@@ -893,6 +1288,21 @@
       ]
     },
     {
+      "id": "2026-10-11-per-identity-limits-need-costly-identities",
+      "type": "learning",
+      "summary": "A limit per identity multiplies the attacker's budget when identities cost nothing",
+      "tags": [
+        "security",
+        "rate-limits"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 279,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/security.md"
+      ]
+    },
+    {
       "id": "2026-10-11-pin-ci-tool-versions-locally",
       "type": "learning",
       "summary": "Reproduce a CI failure with the exact tool version CI runs",
@@ -905,6 +1315,21 @@
       "tokens": 183,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-scope-a-batch-before-delegating-it",
+      "type": "learning",
+      "summary": "A cheap read-only scoping pass can show a batch is not the batch you planned",
+      "tags": [
+        "agents",
+        "delegation"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 223,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md"
       ]
     },
     {
@@ -951,6 +1376,21 @@
       "tokens": 214,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    },
+    {
+      "id": "2026-10-11-test-derived-names-against-reserved-ones",
+      "type": "learning",
+      "summary": "A name generated from another name needs a test against the reserved ones",
+      "tags": [
+        "codegen",
+        "testing"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 251,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
     },
     {
@@ -1017,6 +1457,123 @@
       ]
     },
     {
+      "id": "2026-10-16-a-type-scale-pulls-drifting-sizes-back",
+      "type": "learning",
+      "summary": "Per-slide font sizes drift into dozens; a type scale and a before/after sheet pull them back",
+      "tags": [
+        "design",
+        "typography"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 246,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-16-fixed-vocabulary-labels-use-its-words",
+      "type": "learning",
+      "summary": "A label from a fixed vocabulary must use the vocabulary's words",
+      "tags": [
+        "content",
+        "security"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 196,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-16-headless-chrome-matches-hover-none",
+      "type": "learning",
+      "summary": "Headless Chrome matches hover: none, so a touch fallback keyed on it shows in every capture",
+      "tags": [
+        "testing",
+        "browser",
+        "css"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 220,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/testing.md"
+      ]
+    },
+    {
+      "id": "2026-10-16-per-frame-custom-properties-restyle-every-reader",
+      "type": "learning",
+      "summary": "A custom property animated per frame costs one restyle per element that reads it",
+      "tags": [
+        "performance",
+        "css",
+        "animation"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 290,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/ui.md"
+      ]
+    },
+    {
+      "id": "2026-10-16-rejected-options-share-a-premise",
+      "type": "learning",
+      "summary": "When every option is rejected, the premise they share is the problem",
+      "tags": [
+        "design",
+        "feedback"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 270,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/visual-loop/SKILL.md"
+      ]
+    },
+    {
+      "id": "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
+      "type": "learning",
+      "summary": "Estimate a workflow's runner-minutes before merging what triggers it",
+      "tags": [
+        "ci",
+        "cost"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 363,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+        "plugins/agent-workflow/skills/actions-cost/SKILL.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-a-pasted-secret-needs-a-home-and-a-rotation",
+      "type": "learning",
+      "summary": "A pasted secret needs a home and a rotation reminder at once",
+      "tags": [
+        "security",
+        "secrets"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 246,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/security.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-an-optimizer-that-cuts-every-suspect",
+      "type": "learning",
+      "summary": "An optimizer that cuts every suspect drives them all to the floor",
+      "tags": [
+        "testing",
+        "algorithms"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 324,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-18-check-and-write-in-one-transaction",
       "type": "learning",
       "summary": "A check and the write it guards go in one transaction that watches every key the check read",
@@ -1029,6 +1586,54 @@
       "tokens": 401,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-check-what-an-ai-fetcher-receives",
+      "type": "learning",
+      "summary": "llms.txt helps nothing behind a sign-in",
+      "tags": [
+        "web",
+        "ai",
+        "auth"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 256,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-check-worktrees-after-an-agent-stops",
+      "type": "learning",
+      "summary": "A subagent that hits its limit leaves finished work unpushed",
+      "tags": [
+        "agents",
+        "git",
+        "worktrees"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 252,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-each-worktree-gets-its-own-install",
+      "type": "learning",
+      "summary": "A worktree that borrows another worktree's node_modules tests the other's code",
+      "tags": [
+        "git",
+        "worktrees",
+        "testing"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 368,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
       ]
     },
     {
@@ -1045,16 +1650,47 @@
       "promoted_to": []
     },
     {
+      "id": "2026-10-18-gate-a-push-on-the-real-exit-status",
+      "type": "learning",
+      "summary": "A push chained after a test runs even when the test fails, unless the chain reads its exit status",
+      "tags": [
+        "git",
+        "shell",
+        "ci"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 254,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-generated-samples-repeat-repeated-slots",
+      "type": "learning",
+      "summary": "A sample generated from a structure repeats what the structure repeats",
+      "tags": [
+        "content",
+        "codegen"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 245,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-18-one-suite-at-a-time-on-a-shared-stack",
       "type": "learning",
       "summary": "Run one test suite at a time against a shared local stack",
       "tags": [
         "testing"
       ],
-      "status": "raw",
+      "status": "practice",
       "source": "ogfrench/frogQuiz",
-      "tokens": 219,
-      "promoted_to": []
+      "tokens": 323,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/testing.md"
+      ]
     },
     {
       "id": "2026-10-18-openpyxl-cell-none-does-not-clear",
@@ -1070,6 +1706,19 @@
       "promoted_to": []
     },
     {
+      "id": "2026-10-18-pkill-f-matches-its-own-shell",
+      "type": "learning",
+      "summary": "`pkill -f name` kills the shell that runs it",
+      "tags": [
+        "shell",
+        "tooling"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 202,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-18-restart-servers-that-do-not-reload",
       "type": "learning",
       "summary": "After a server change, restart a dev server that does not reload before trusting an end-to-end run",
@@ -1080,6 +1729,98 @@
       "source": "ogfrench/frogQuiz",
       "tokens": 236,
       "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-restyling-breaks-programs-that-read-styles",
+      "type": "learning",
+      "summary": "Changing how a component looks can break a program that reads its styles",
+      "tags": [
+        "ui",
+        "testing",
+        "css"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 286,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/ui.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-review-baselines-come-from-the-remote",
+      "type": "learning",
+      "summary": "A before/after sheet against a stale local main compares the change with the past",
+      "tags": [
+        "git",
+        "review"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 240,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-reviewers-must-not-build-in-your-worktree",
+      "type": "learning",
+      "summary": "A reviewer that runs builds in your worktree breaks your gate",
+      "tags": [
+        "agents",
+        "review",
+        "testing"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 300,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-scripted-import-insertion-can-land-in-a-string",
+      "type": "learning",
+      "summary": "A script that inserts an import after the last match can land inside a string",
+      "tags": [
+        "tooling",
+        "refactoring"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 224,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-stacked-prs-conflict-on-the-changelog",
+      "type": "learning",
+      "summary": "Stacked pull requests that each add a line at the top of the changelog conflict in turn",
+      "tags": [
+        "git",
+        "ci",
+        "changelog"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 259,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-state-the-job-before-planning-a-server",
+      "type": "learning",
+      "summary": "A plan grew a server before anyone stated the job in one line",
+      "tags": [
+        "planning",
+        "scope",
+        "agents"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 301,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md"
+      ]
     },
     {
       "id": "2026-10-18-test-the-zero-case-of-summary-screens",
@@ -1105,6 +1846,20 @@
       "status": "raw",
       "source": "ogfrench/frogQuiz",
       "tokens": 232,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-tsx-keep-names-breaks-page-functions",
+      "type": "learning",
+      "summary": "tsx's keep-names helper breaks functions sent to a browser page",
+      "tags": [
+        "testing",
+        "tooling",
+        "browser"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 187,
       "promoted_to": []
     }
   ],
@@ -1132,6 +1887,31 @@
     {
       "from": "cheapest-model-with-catch",
       "to": "review-every-commit",
+      "type": "related"
+    },
+    {
+      "from": "limit-what-a-reviewer-runs",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "limit-what-a-reviewer-runs",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "limit-what-a-reviewer-runs",
+      "to": "2026-10-18-reviewers-must-not-build-in-your-worktree",
+      "type": "derived_from"
+    },
+    {
+      "from": "limit-what-a-reviewer-runs",
+      "to": "review-every-commit",
+      "type": "related"
+    },
+    {
+      "from": "limit-what-a-reviewer-runs",
+      "to": "one-suite-at-a-time",
       "type": "related"
     },
     {
@@ -1175,6 +1955,26 @@
       "type": "related"
     },
     {
+      "from": "state-the-job-first",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "state-the-job-first",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "state-the-job-first",
+      "to": "2026-10-18-state-the-job-before-planning-a-server",
+      "type": "derived_from"
+    },
+    {
+      "from": "state-the-job-first",
+      "to": "fetch-as-an-ai-client-would",
+      "type": "related"
+    },
+    {
       "from": "work-that-survives-cut-short",
       "to": "agents",
       "type": "concern"
@@ -1191,7 +1991,97 @@
     },
     {
       "from": "work-that-survives-cut-short",
+      "to": "2026-10-18-check-worktrees-after-an-agent-stops",
+      "type": "derived_from"
+    },
+    {
+      "from": "work-that-survives-cut-short",
       "to": "plugins/agent-workflow/skills/model-delegation",
+      "type": "implemented_by"
+    },
+    {
+      "from": "fetch-as-an-ai-client-would",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "fetch-as-an-ai-client-would",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "fetch-as-an-ai-client-would",
+      "to": "2026-10-18-check-what-an-ai-fetcher-receives",
+      "type": "derived_from"
+    },
+    {
+      "from": "scope-a-batch-first",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "scope-a-batch-first",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "scope-a-batch-first",
+      "to": "2026-10-11-scope-a-batch-before-delegating-it",
+      "type": "derived_from"
+    },
+    {
+      "from": "scope-a-batch-first",
+      "to": "cheapest-model-with-catch",
+      "type": "related"
+    },
+    {
+      "from": "gate-push-on-exit-status",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "gate-push-on-exit-status",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "gate-push-on-exit-status",
+      "to": "2026-10-18-gate-a-push-on-the-real-exit-status",
+      "type": "derived_from"
+    },
+    {
+      "from": "compare-against-origin-main",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "compare-against-origin-main",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "compare-against-origin-main",
+      "to": "2026-10-18-review-baselines-come-from-the-remote",
+      "type": "derived_from"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
+      "type": "derived_from"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "plugins/agent-workflow/skills/actions-cost",
       "type": "implemented_by"
     },
     {
@@ -1220,6 +2110,21 @@
       "type": "derived_from"
     },
     {
+      "from": "own-install-per-worktree",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "own-install-per-worktree",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "own-install-per-worktree",
+      "to": "2026-10-18-each-worktree-gets-its-own-install",
+      "type": "derived_from"
+    },
+    {
       "from": "reproduce-ci-with-pinned-versions",
       "to": "ci",
       "type": "concern"
@@ -1233,6 +2138,26 @@
       "from": "reproduce-ci-with-pinned-versions",
       "to": "2026-10-11-pin-ci-tool-versions-locally",
       "type": "derived_from"
+    },
+    {
+      "from": "changelog-at-merge-time",
+      "to": "ci",
+      "type": "concern"
+    },
+    {
+      "from": "changelog-at-merge-time",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "changelog-at-merge-time",
+      "to": "2026-10-18-stacked-prs-conflict-on-the-changelog",
+      "type": "derived_from"
+    },
+    {
+      "from": "changelog-at-merge-time",
+      "to": "missing-checks-mean-conflict",
+      "type": "related"
     },
     {
       "from": "keep-ci-logs",
@@ -1375,6 +2300,36 @@
       "type": "derived_from"
     },
     {
+      "from": "identity-limits-need-costly-identities",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "identity-limits-need-costly-identities",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "identity-limits-need-costly-identities",
+      "to": "2026-10-11-per-identity-limits-need-costly-identities",
+      "type": "derived_from"
+    },
+    {
+      "from": "pasted-secret-gets-a-home",
+      "to": "security",
+      "type": "concern"
+    },
+    {
+      "from": "pasted-secret-gets-a-home",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "pasted-secret-gets-a-home",
+      "to": "2026-10-18-a-pasted-secret-needs-a-home-and-a-rotation",
+      "type": "derived_from"
+    },
+    {
       "from": "test-with-the-wrong-account",
       "to": "security",
       "type": "concern"
@@ -1440,6 +2395,46 @@
       "type": "related"
     },
     {
+      "from": "one-suite-at-a-time",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "one-suite-at-a-time",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "one-suite-at-a-time",
+      "to": "2026-10-18-one-suite-at-a-time-on-a-shared-stack",
+      "type": "derived_from"
+    },
+    {
+      "from": "one-suite-at-a-time",
+      "to": "one-dev-stack-per-tree",
+      "type": "related"
+    },
+    {
+      "from": "one-suite-at-a-time",
+      "to": "serial-agents-on-shared-stack",
+      "type": "related"
+    },
+    {
+      "from": "test-derived-names-against-reserved",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "test-derived-names-against-reserved",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "test-derived-names-against-reserved",
+      "to": "2026-10-11-test-derived-names-against-reserved-ones",
+      "type": "derived_from"
+    },
+    {
       "from": "test-fails-first",
       "to": "testing",
       "type": "concern"
@@ -1475,6 +2470,21 @@
       "type": "stack"
     },
     {
+      "from": "headless-matches-hover-none",
+      "to": "testing",
+      "type": "concern"
+    },
+    {
+      "from": "headless-matches-hover-none",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "headless-matches-hover-none",
+      "to": "2026-10-16-headless-chrome-matches-hover-none",
+      "type": "derived_from"
+    },
+    {
       "from": "check-accessible-names-after-edit",
       "to": "ui",
       "type": "concern"
@@ -1497,6 +2507,21 @@
     {
       "from": "configure-widgets-via-config",
       "to": "2026-10-11-third-party-editor-overrides",
+      "type": "derived_from"
+    },
+    {
+      "from": "find-style-readers-before-restyling",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "find-style-readers-before-restyling",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "find-style-readers-before-restyling",
+      "to": "2026-10-18-restyling-breaks-programs-that-read-styles",
       "type": "derived_from"
     },
     {
@@ -1523,6 +2548,36 @@
       "from": "theme-with-tokens",
       "to": "any",
       "type": "stack"
+    },
+    {
+      "from": "count-webgl-contexts",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "count-webgl-contexts",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "count-webgl-contexts",
+      "to": "2026-10-11-browsers-cap-webgl-contexts-per-page",
+      "type": "derived_from"
+    },
+    {
+      "from": "few-readers-for-per-frame-properties",
+      "to": "ui",
+      "type": "concern"
+    },
+    {
+      "from": "few-readers-for-per-frame-properties",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "few-readers-for-per-frame-properties",
+      "to": "2026-10-16-per-frame-custom-properties-restyle-every-reader",
+      "type": "derived_from"
     },
     {
       "from": "2026-10-11-api-key-is-not-authorization",
@@ -1537,6 +2592,11 @@
     {
       "from": "2026-10-11-background-agents-hit-usage-limits",
       "to": "plugins/agent-workflow/skills/model-delegation/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-browsers-cap-webgl-contexts-per-page",
+      "to": "plugins/agent-workflow/skills/best-practices/ui.md",
       "type": "promoted_to"
     },
     {
@@ -1585,8 +2645,18 @@
       "type": "promoted_to"
     },
     {
+      "from": "2026-10-11-per-identity-limits-need-costly-identities",
+      "to": "plugins/agent-workflow/skills/best-practices/security.md",
+      "type": "promoted_to"
+    },
+    {
       "from": "2026-10-11-pin-ci-tool-versions-locally",
       "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-scope-a-batch-before-delegating-it",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
       "type": "promoted_to"
     },
     {
@@ -1602,6 +2672,11 @@
     {
       "from": "2026-10-11-sweeps-must-know-about-holds",
       "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-11-test-derived-names-against-reserved-ones",
+      "to": "plugins/agent-workflow/skills/best-practices/testing.md",
       "type": "promoted_to"
     },
     {
@@ -1625,8 +2700,88 @@
       "type": "promoted_to"
     },
     {
+      "from": "2026-10-16-headless-chrome-matches-hover-none",
+      "to": "plugins/agent-workflow/skills/best-practices/testing.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-16-per-frame-custom-properties-restyle-every-reader",
+      "to": "plugins/agent-workflow/skills/best-practices/ui.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-16-rejected-options-share-a-premise",
+      "to": "plugins/agent-workflow/skills/visual-loop/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
+      "to": "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-a-pasted-secret-needs-a-home-and-a-rotation",
+      "to": "plugins/agent-workflow/skills/best-practices/security.md",
+      "type": "promoted_to"
+    },
+    {
       "from": "2026-10-18-check-and-write-in-one-transaction",
       "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-check-what-an-ai-fetcher-receives",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-check-worktrees-after-an-agent-stops",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-each-worktree-gets-its-own-install",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-gate-a-push-on-the-real-exit-status",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-one-suite-at-a-time-on-a-shared-stack",
+      "to": "plugins/agent-workflow/skills/best-practices/testing.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-restyling-breaks-programs-that-read-styles",
+      "to": "plugins/agent-workflow/skills/best-practices/ui.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-review-baselines-come-from-the-remote",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-reviewers-must-not-build-in-your-worktree",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-stacked-prs-conflict-on-the-changelog",
+      "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-state-the-job-before-planning-a-server",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
       "type": "promoted_to"
     }
   ]

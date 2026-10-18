@@ -11,6 +11,14 @@
 - **One function builds every client payload, and it strips solutions for every type.**
   Grep for every sender and route them through it.
   *(2026-10-11-strip-solutions-from-client-payloads)*
+- **A limit per identity only binds an attacker when a new identity costs them
+  something.** If addresses or accounts are free to make up, a per-identity budget
+  multiplies the attacker's. Keep the global cap, or make the secret too long to guess
+  within it. *(2026-10-11-per-identity-limits-need-costly-identities)*
+- **A secret pasted in chat gets a home outside every repo and a rotation issue at once.**
+  Store it in a mode-600 file or the environment's secrets, never echo it, and open one
+  issue naming each credential by its last four characters, with rotation steps.
+  *(2026-10-18-a-pasted-secret-needs-a-home-and-a-rotation)*
 - **Test with the wrong account, not only with none.** Probe as anonymous and as two
   accounts, A against B's things, on a live local stack. A missing credential is the easy
   case.
