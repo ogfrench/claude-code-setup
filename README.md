@@ -6,7 +6,7 @@ It is also a living record of what working with Claude has taught me. Lessons ar
 
 ## Two layers
 
-**Me, everywhere: `setup-user.sh`.** It installs every plugin in `user/plugins.txt` and copies the skills into `~/.claude/skills`, at user scope. Run it once on a laptop. For cloud sessions, paste this as the setup script of the environment on claude.ai/code. It runs before Claude starts, in every repo that uses the environment:
+**Me, everywhere: `setup-user.sh`.** It installs every plugin in `user/plugins.txt` and copies the skills into `~/.claude/skills` and the subagents into `~/.claude/agents`, at user scope. Run it once on a laptop. For cloud sessions, paste this as the setup script of the environment on claude.ai/code. It runs before Claude starts, in every repo that uses the environment:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/ogfrench/claude-code-setup/main/setup-user.sh | bash
@@ -32,6 +32,7 @@ The source of truth is this repo. The copies in each project are overwritten on 
 | `.claude-plugin/marketplace.json` | The `ogfrench` marketplace | registered by the merged settings |
 | `repos.local.txt` | Which repos get all this, and their stacks: `owner/name nextjs,postgres`. Gitignored: a repo's name can name a client | |
 | `public-repos.txt` | My repos that are public, so they may be named here | |
+| `CONTRIBUTING.md`, `.github/` | The contribution rules (pull requests only), the PR template and the CI workflow | not synced |
 | `learnings/` | Dated raw lessons, one per file | not synced |
 | `kb/practices/` | The practices: one node per rule, with edges to its learnings and tools. The source | the cards for the repo's stacks, in `.claude/knowledge/practices/` |
 | `kb/tools/` | One node per installed plugin, skill and agent: what it is, when to reach for it | listed in `.claude/knowledge/index.jsonl` |
@@ -45,7 +46,7 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 
 ## Adding things
 
-**A skill.** Create `plugins/frog-writing/skills/<name>/SKILL.md` (or `plugins/agent-workflow/skills/` for how work is run) with `name` and `description` in its frontmatter. If it belongs to a different theme, start a new plugin in `plugins/<plugin>/` and add an entry to `.claude-plugin/marketplace.json` with `"source": "./plugins/<plugin>"`.
+**A skill.** Create `plugins/frog-writing/skills/<name>/SKILL.md` (or `plugins/agent-workflow/skills/` for how work is run) with `name` and `description` in its frontmatter, and add a node for it in `kb/tools/` (`node --test` fails without one). If it belongs to a different theme, start a new plugin in `plugins/<plugin>/` and add an entry to `.claude-plugin/marketplace.json` with `"source": "./plugins/<plugin>"`.
 
 **A hook.** Add it under `hooks` in `project/settings.json`, in the same shape as a normal settings file. Hooks belong here and not inside a plugin, because plugin hooks never run in cloud sessions. A hook runs in every repo, on Linux in the cloud and on Windows locally, so keep the command portable.
 
@@ -53,7 +54,7 @@ Merging keeps everything a repo already has. Objects merge key by key, arrays ga
 
 **A plugin.** For a third-party one, add an entry to `.claude-plugin/marketplace.json` pinned by `sha`. To update a pinned plugin, read the upstream diff and bump the `sha`. Then add it to `user/plugins.txt` if it is just for you, or enable it in `project/settings.json` if every repo should have it. Re-run `setup-user.sh` locally; cloud sessions pick it up on their next start.
 
-**A repo.** Add `owner/name` to `repos.local.txt`, which stays on the laptop. The first sync after the list left git recovers it from the clone's history by itself.
+**A repo.** Add `owner/name` to `repos.local.txt`, which stays on the laptop, followed by its stacks if it has any (`owner/name nextjs,postgres`). The first sync after the list left git recovers it from the clone's history by itself.
 
 ## Learnings and practices
 
@@ -70,7 +71,7 @@ learning (raw) -> practice (curated) -> promoted (skill, subagent, hook, command
 
 ### Reading it cheaply
 
-Four tiers, each with a budget in `test/budgets.test.mjs` (tokens estimated as characters / 4):
+Four tiers, each with a budget in `lib/kb.mjs`, enforced by `test/budgets.test.mjs` (tokens estimated as characters / 4):
 
 | Tier | What | Budget |
 | --- | --- | --- |
@@ -85,7 +86,7 @@ Find things with `grep -i <term> kb/index.jsonl` (one JSON line per node, edges 
 
 A repo's stacks decide what it gets. Put them after the repo in `repos.local.txt` (`owner/name nextjs,postgres,shadcn`; the allowed names are in `kb/_vocab.json`, and a typo fails the sync). The sync writes `.claude/knowledge/` in that repo: `bundle.md` (the `any` practices plus those for its stacks, one line each), `practices/<id>.md` (the cards), `index.jsonl` (search, tools included) and `must.md`. A SessionStart hook in the merged settings prints `must.md`, a few lines, and nothing else is loaded until a task needs it. The folder is rewritten whole each sync, and a repo that already has its own `.claude/knowledge` keeps it.
 
-Mark a practice with a stack only when the lesson holds on that stack alone. Today all but a few are `any`, because the learnings behind them do not show otherwise.
+Mark a practice with a stack only when the lesson holds on that stack alone. Today every practice is `any`, because the learnings behind them do not show otherwise, so every repo gets the same bundle until one is tagged.
 
 ## Maintenance
 
@@ -95,17 +96,33 @@ Nothing here fixes itself, so a weekly look is the habit. `node scripts/kb-audit
 - **Over budget means merge.** The budgets are in `lib/kb.mjs`. Raise none of them; fold two practices into one or retire one.
 - **Capture** with `node scripts/kb-new.mjs learning <slug>`. The file carries `TODO`s that `node --test` rejects until they are written.
 
-To run the upkeep unattended, create a weekly Routine (fresh session, this repo) with this prompt. It opens a PR and never pushes `main`:
+The upkeep can run unattended as a weekly scheduled task (a fresh session in this repo, with the prompt below). It opens a PR, never pushes `main`, and merges only a PR that is nothing but date bumps with no privacy findings:
 
 ```
-In ogfrench/claude-code-setup: create branch
-kb/audit-<date>, run `git config core.hooksPath .githooks` and `node scripts/kb-audit.mjs`. For each
-item it lists, check the claim against the current docs or release notes (Claude Code, and the tools
-in kb/tools) by web search, and change only what a source confirms: bump last_verified or last_reviewed,
-set status stale or retired with the reason in the body, or add a tool node with state candidate.
-Write no names of clients, people or private repos anywhere. Then run `node scripts/build-kb.mjs`,
-`node --test`, `node scripts/check-public.mjs` and `claude plugin validate . --strict`.
-Open a PR titled "kb: weekly audit" that lists each change with its source. Never push to main.
+Weekly upkeep of the public repo ogfrench/claude-code-setup. Clone it if it is not in the working
+directory. Pull requests only, never push to main (CONTRIBUTING.md). Write no names of clients,
+people or private repos anywhere, including PR text and your final message; refer to a finding by
+file and line, never by quoting it.
+
+1. Create branch kb/audit-<date>, run `git config core.hooksPath .githooks` and `node scripts/kb-audit.mjs`.
+2. Accuracy: for each item it lists, check the claim against current docs or release notes (Claude
+   Code, and the tools in kb/tools) by web search. Change only what a source confirms: bump
+   last_verified or last_reviewed, set status stale or retired with the reason in the body, or add a
+   tool node with state candidate. If it lists nothing, change nothing.
+3. Privacy and sensitivity review. The automated check cannot know a name, so read as a careful human
+   would: what changed in the last 7 days, plus all of learnings/, kb/practices/, kb/tools/,
+   public-repos.txt and the README. Look for a client, employer or project name, a private repo's
+   name, a person's name, confidential text, a secret, hostname or internal URL, and a lesson only
+   tellable with the confidential part left in. Check that every learning's source is a listed repo
+   or "a private project", that evidence from a private repo names no file, commit or issue, and
+   that every repo in public-repos.txt is still public.
+4. Fix a finding by rewording it generically or removing it. Note that git history still holds the
+   old text; never rewrite history or force-push. State a serious finding at the top of your final message.
+5. Run `node scripts/build-kb.mjs`, `node --test`, `node scripts/check-public.mjs` and
+   `claude plugin validate . --strict`.
+6. Open a PR titled "kb: weekly audit" with each change and its source. Merge only if CI is green
+   and the change is only date bumps with no privacy findings.
+7. If you cannot push or open a PR, report the findings in your final message instead.
 ```
 
 ## Public by design
@@ -118,7 +135,7 @@ Anyone can read this repo, its history and its CI logs. So it never names a clie
 - **In `node --test`**, on every tracked file.
 - **In CI**, on the commits of each push or PR, as a backstop. By then the commit is already public, so the hook is the guard that counts.
 
-It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply and `example.com` ones, and any IP address outside loopback and the documentation ranges. It cannot know a client's name, because a list of such names can't live in a public repo. Reading your own diff for names is part of every change, and the PR checklist asks for it. A finding names the place and the rule, never the matched text, and a file whose name is flagged is shown by number.
+It flags any `ogfrench/` repo missing from `public-repos.txt`, any email address but the no-reply and `example.com` ones, and any IP address outside loopback and the documentation ranges. It cannot know a client's name, because a list of such names can't live in a public repo. Reading your own diff for names is part of every change, and the PR checklist asks for it. The weekly audit adds a human-style read of the whole repo for the same thing. A finding names the place and the rule, never the matched text, and a file whose name is flagged is shown by number.
 
 ## Checking and shipping a change
 
@@ -134,7 +151,7 @@ MERGE=1 bash sync-to-repos.sh               # one PR per repo, squash-merged
 bash sync-to-repos.sh owner/name            # just one repo
 ```
 
-CI runs the first two plus an apply into an empty folder on every push and PR. A real sync refuses to run unless the checkout is exactly `origin/main` and CI passed on that commit, so only what CI tested reaches the repos.
+CI runs `node --test`, the public check on the pushed commits, plugin validation (the marketplace and each plugin) and an apply into an empty folder with stacks, on every PR and every push to `main`. `main` is protected: a PR is required, `check` must pass, and merge commits carry only the PR title. A real sync refuses to run unless the checkout is exactly `origin/main` and CI passed on that commit, so only what CI tested reaches the repos.
 
 ## Plugins
 

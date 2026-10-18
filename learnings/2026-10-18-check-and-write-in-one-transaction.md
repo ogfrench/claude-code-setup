@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Do the check inside the transaction and WATCH every key it reads, so a concurrent change aborts the write and the retry sees the new state. Put dependent writes (here, the score total) in the same MULTI. On the reading side, close first, then read: anything written before the close is in the read, and anything after is refused.
 
-**Evidence.** A quiz app's `tests/test_answer_close_races.py`: two tests land the competing step inside each gap; both failed on the old code (an answer recorded but not shown, an answer recorded after the close) and pass on the fix.
+**Evidence.** A quiz app's answer-close race tests: two tests land the competing step inside each gap; both failed on the old code (an answer recorded but not shown, an answer recorded after the close) and pass on the fix.

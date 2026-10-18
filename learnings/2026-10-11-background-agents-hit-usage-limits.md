@@ -16,4 +16,4 @@ promoted_to:
 
 **Do instead.** Ask for work that leaves something usable when cut short (findings written as found, a scratch file). Resume rather than restart. Clean up anything the agent started.
 
-**Evidence.** A quiz app's V1 step 3a; the second run was briefed to finish only what the first had not reached.
+**Evidence.** A quiz app; the second run was briefed to finish only what the first had not reached.

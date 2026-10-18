@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Find a call that sits between the read and the write, monkeypatch it to land the other write, assert the result. Say in the test's comment that the window is forced on purpose.
 
-**Evidence.** A quiz app's `tests/test_counter_writes.py`: reproduced the lost save on the old code, passes on the fix.
+**Evidence.** A quiz app's counter-write test: reproduced the lost save on the old code, passes on the fix.

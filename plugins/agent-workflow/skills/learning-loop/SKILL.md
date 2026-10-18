@@ -59,7 +59,7 @@ or anything already a practice.
    then the reason as the body. Keep the card under 150 tokens.
 3. Run `node scripts/build-kb.mjs`. It rewrites the topic files, bundles and index. Never edit those.
 4. Set the learning to `status: practice` with the topic file in `promoted_to`.
-4. A learning that only holds in one repo goes to that repo's `CLAUDE.md` instead.
+5. A learning that only holds in one repo goes to that repo's `CLAUDE.md` instead.
 
 ## Promote
 
@@ -76,7 +76,7 @@ Then add the files where the README's Layout table says, and a node in `kb/tools
 skill, agent, plugin or MCP server. Update the plugin's `plugin.json`,
 `.claude-plugin/marketplace.json` and the README's Plugins table if a plugin is new. Set the
 learning to `status: promoted` and list every path in `promoted_to`. Check with
-`node --test` and `claude plugin validate . --strict` before pushing.
+`node --test` and `claude plugin validate . --strict` before opening the PR.
 
 ## Harvest
 

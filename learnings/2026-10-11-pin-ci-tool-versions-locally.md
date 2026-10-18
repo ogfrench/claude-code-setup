@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Pin the version in CI, download that same version to reproduce, and scan the commits about to be pushed with it before every push.
 
-**Evidence.** A quiz app's V1 step 1: gitleaks 8.24.3 in CI against 8.28 locally.
+**Evidence.** A quiz app: gitleaks 8.24.3 in CI against 8.28 locally.

@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** One function builds every client payload; grep for every sender and route them through it. Test each question type.
 
-**Evidence.** A quiz app's commits 06e4663 and 57a3445.
+**Evidence.** Two commits in a quiz app.

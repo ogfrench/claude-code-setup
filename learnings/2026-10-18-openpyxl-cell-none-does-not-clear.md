@@ -14,4 +14,4 @@ promoted_to: []
 
 **Do instead.** Assign `sheet.cell(r, c).value = None` to clear a cell, and write values the same way in tests.
 
-**Evidence.** A quiz app's `tests/test_excel_types.py`: two failures disappeared with the helper rewritten to assign `.value`.
+**Evidence.** A quiz app's Excel type tests: two failures disappeared with the helper rewritten to assign `.value`.

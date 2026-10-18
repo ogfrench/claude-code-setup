@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Wait for the precondition itself (`toBeFocused`, `toBeVisible`, a poll on the value), never a fixed sleep. A flaky test is a race in the test or the app until shown otherwise.
 
-**Evidence.** A quiz app's `frontend/e2e/game-exits.e2e.ts`; 40 of 40 after the fix.
+**Evidence.** A quiz app's game-exit browser test; 40 of 40 after the fix.

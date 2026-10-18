@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** One stack per working tree. A second stack gets its own worktree, or waits. No edits under a watched tree while browser tests run.
 
-**Evidence.** A quiz app's V1 step 3a: Vite's log showed `page reload .svelte-kit/generated/...` at the minute the second stack started.
+**Evidence.** A quiz app: Vite's log showed `page reload .svelte-kit/generated/...` at the minute the second stack started.

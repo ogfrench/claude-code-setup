@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** When checks go missing, look at the PR's mergeable state first; merge the base in and push.
 
-**Evidence.** A quiz app's PR #57, step 1 close.
+**Evidence.** A quiz app's step-1 pull request.
