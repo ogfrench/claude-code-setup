@@ -92,6 +92,29 @@
       "supersedes": []
     },
     {
+      "id": "simulate-the-users-sandbox",
+      "type": "practice",
+      "summary": "Before shipping a skill or tool, have an agent use it inside a copy of the user's environment.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 146,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-simulate-the-users-sandbox-before-shipping-a-skill"
+      ],
+      "implemented_by": [],
+      "related": [
+        "state-the-job-first",
+        "fetch-as-an-ai-client-would"
+      ],
+      "supersedes": []
+    },
+    {
       "id": "state-the-job-first",
       "type": "practice",
       "summary": "State the user's job in one line before planning a server, auth or storage.",
@@ -1679,6 +1702,20 @@
       "promoted_to": []
     },
     {
+      "id": "2026-10-18-one-sentence-one-type-size",
+      "type": "learning",
+      "summary": "One sentence, one type size: a highlight marks a phrase inside it, not a second line",
+      "tags": [
+        "design",
+        "typography",
+        "ui"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 305,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-18-one-suite-at-a-time-on-a-shared-stack",
       "type": "learning",
       "summary": "Run one test suite at a time against a shared local stack",
@@ -1789,6 +1826,23 @@
       "source": "a private project",
       "tokens": 224,
       "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-simulate-the-users-sandbox-before-shipping-a-skill",
+      "type": "learning",
+      "summary": "Before shipping a skill, have an agent use it inside the user's sandbox",
+      "tags": [
+        "agents",
+        "skills",
+        "testing",
+        "distribution"
+      ],
+      "status": "practice",
+      "source": "a private project",
+      "tokens": 505,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md"
+      ]
     },
     {
       "id": "2026-10-18-stacked-prs-conflict-on-the-changelog",
@@ -1952,6 +2006,31 @@
     {
       "from": "serial-agents-on-shared-stack",
       "to": "one-dev-stack-per-tree",
+      "type": "related"
+    },
+    {
+      "from": "simulate-the-users-sandbox",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "simulate-the-users-sandbox",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "simulate-the-users-sandbox",
+      "to": "2026-10-18-simulate-the-users-sandbox-before-shipping-a-skill",
+      "type": "derived_from"
+    },
+    {
+      "from": "simulate-the-users-sandbox",
+      "to": "state-the-job-first",
+      "type": "related"
+    },
+    {
+      "from": "simulate-the-users-sandbox",
+      "to": "fetch-as-an-ai-client-would",
       "type": "related"
     },
     {
@@ -2771,6 +2850,11 @@
     },
     {
       "from": "2026-10-18-reviewers-must-not-build-in-your-worktree",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-simulate-the-users-sandbox-before-shipping-a-skill",
       "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
       "type": "promoted_to"
     },

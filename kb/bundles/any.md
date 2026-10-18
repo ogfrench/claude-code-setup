@@ -54,6 +54,7 @@ Search every node: `grep -i <term> kb/index.jsonl`.
 - [should] limit-what-a-reviewer-runs: Tell a reviewer which commands it may run.
 - [should] review-every-commit: Review every commit before pushing it.
 - [should] serial-agents-on-shared-stack: Agents that share a stack, a database or rate limits run one at a time.
+- [should] simulate-the-users-sandbox: Before shipping a skill or tool, have an agent use it inside a copy of the user's environment.
 - [should] state-the-job-first: State the user's job in one line before planning a server, auth or storage.
 - [should] work-that-survives-cut-short: Ask for work that survives being cut short.
 - [tip] fetch-as-an-ai-client-would: Fetch with no cookies to see what an AI client gets; content behind a sign-in is invisible to it.
