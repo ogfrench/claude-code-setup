@@ -10,7 +10,10 @@
   sets every field, and even then it puts back counters and ownership changed meanwhile.
   *(2026-10-11-whole-row-orm-writes-revert-saves)*
 - **A conditional update is the check.** "Check, then write" lets two callers both pass
-  the check. Put the condition in the `WHERE` and act only if a row changed.
+  the check. Put the condition in the `WHERE` and act only if a row changed. In Redis, check
+  inside the transaction, `WATCH` every key the check reads, and put dependent writes in the
+  same `MULTI`. A reader that closes something closes first, then reads.
+  *(2026-10-18-check-and-write-in-one-transaction)*
 - **A hold must be known to every deleter.** List every path that deletes the thing, cron
   jobs included, and make each respect the hold. Test the sweep, not only the paths you
   changed. *(2026-10-11-sweeps-must-know-about-holds)*
