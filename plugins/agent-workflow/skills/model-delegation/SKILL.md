@@ -8,8 +8,7 @@ description: >-
   split by how a mistake would be caught and whether it can be undone, how to
   brief a cheaper agent, the limits on running agents in parallel, and how their
   work is checked before it lands. Triggers: "use sonnet", "use haiku", "cheaper
-  agents", "delegate this", "model split", "be more efficient",
-  "/model-delegation".
+  agents", "delegate this", "model split", "/model-delegation".
 ---
 
 # Model delegation

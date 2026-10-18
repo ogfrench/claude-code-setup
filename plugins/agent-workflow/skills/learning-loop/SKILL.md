@@ -2,13 +2,13 @@
 name: learning-loop
 description: >-
   Capture, curate and promote lessons into ogfrench/claude-code-setup, the
-  living record of practices that becomes skills, agents, hooks, commands and
-  plugins. Use when a session learns something non-obvious (a class of bug, a
-  tool quirk, a process lesson, a correction from the user), at the end of a
-  step or milestone, and when the user says "remember this", "note this
+  living record of practices that becomes skills, agents, hooks and plugins.
+  Use when a session learns something non-obvious (a class of bug, a tool
+  quirk, a process lesson, a correction from the user), at the end of a step
+  or milestone, and when the user says "remember this", "note this
   learning", "add to best practices", "promote this", "make this a skill",
-  "harvest learnings". Triggers: "learning", "lesson learned", "best practice",
-  "promote", "harvest", "/learning-loop".
+  "harvest learnings". Triggers: "learning", "lesson learned", "promote",
+  "harvest", "/learning-loop".
 ---
 
 # Learning loop

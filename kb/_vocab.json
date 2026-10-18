@@ -4,7 +4,7 @@
     "testing": {
       "title": "Testing",
       "file": "testing.md",
-      "readBefore": "writing a test for a race, a browser flow or a flaky case; running a local stack"
+      "readBefore": "writing a test for a race, a browser flow or a flaky case; running a local stack or two suites"
     },
     "data": {
       "title": "Data and concurrency",
@@ -19,17 +19,17 @@
     "ui": {
       "title": "UI",
       "file": "ui.md",
-      "readBefore": "a form field, a third-party widget, accessible names"
+      "readBefore": "a form field, a third-party widget, accessible names, restyling, many canvases"
     },
     "ci": {
       "title": "Git and CI",
       "file": "git-and-ci.md",
-      "readBefore": "a CI failure, a scanner or linter version, a PR whose checks went missing"
+      "readBefore": "a push, a worktree, a CI failure or cost, a scanner version, a PR whose checks went missing"
     },
     "agents": {
       "title": "Agents and models",
       "file": "agents-and-models.md",
-      "readBefore": "delegating to subagents or cheaper models"
+      "readBefore": "delegating to subagents or cheaper models, or planning new infrastructure"
     }
   },
   "stacks": [

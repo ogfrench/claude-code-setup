@@ -52,7 +52,9 @@ go with it, for a phone or a quick look.
 "Ugly" or "redundant" means the frame is wrong, not the details. Do not send variants of
 the rejected option. Ask what is repeated or unclear on the screen (the same brand three
 times, two marks doing one job) and make options that remove it in different ways.
-Keep the next round small and different in kind.
+Keep the next round small and different in kind. When every option in a round is
+rejected, look for the premise they share (a framed photo beside the title, say): options
+that share a premise are one option. Name it, and vary that.
 
 ## 6. Build the pick, then look again
 

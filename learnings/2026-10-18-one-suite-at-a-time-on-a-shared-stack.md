@@ -2,8 +2,9 @@
 date: 2026-10-18
 source: ogfrench/frogQuiz
 tags: [testing]
-status: raw
-promoted_to: []
+status: practice
+promoted_to:
+  - plugins/agent-workflow/skills/best-practices/testing.md
 ---
 
 # Run one test suite at a time against a shared local stack
@@ -15,3 +16,8 @@ promoted_to: []
 **Do instead.** Never overlap two suites on one stack. If they must run together, give the second its own stack, database and cache. Discard any result from an overlapped run and rerun it alone before believing it.
 
 **Evidence.** The same spec, rerun alone on a fresh stack, behaved normally.
+
+**Seen again** in a private project: a visual-matrix browser suite went red with 31 stylesheet
+load failures on consecutive pages while another browser suite ran in a second worktree on
+the same four-core machine. Rerun alone, it was green across 1,140 cells. A red run made of
+load failures, not layout findings, is rerun alone before anyone debugs it.
