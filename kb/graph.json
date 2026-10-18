@@ -1032,6 +1032,19 @@
       ]
     },
     {
+      "id": "2026-10-18-fixtures-for-third-party-formats-come-from-the-tool",
+      "type": "learning",
+      "summary": "A fixture in a third-party format comes from that tool, not from memory",
+      "tags": [
+        "testing",
+        "e2e"
+      ],
+      "status": "raw",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 366,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-18-one-suite-at-a-time-on-a-shared-stack",
       "type": "learning",
       "summary": "Run one test suite at a time against a shared local stack",
