@@ -220,10 +220,12 @@
       ],
       "severity": "should",
       "status": "active",
-      "seen": 0,
-      "tokens": 82,
-      "last_verified": "2026-10-11",
-      "derived_from": [],
+      "seen": 1,
+      "tokens": 138,
+      "last_verified": "2026-10-18",
+      "derived_from": [
+        "2026-10-18-check-and-write-in-one-transaction"
+      ],
       "implemented_by": [],
       "related": [],
       "supersedes": []
@@ -1013,6 +1015,84 @@
       "promoted_to": [
         "plugins/agent-workflow/skills/visual-loop/SKILL.md"
       ]
+    },
+    {
+      "id": "2026-10-18-check-and-write-in-one-transaction",
+      "type": "learning",
+      "summary": "A check and the write it guards go in one transaction that watches every key the check read",
+      "tags": [
+        "concurrency",
+        "data"
+      ],
+      "status": "practice",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 401,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-one-suite-at-a-time-on-a-shared-stack",
+      "type": "learning",
+      "summary": "Run one test suite at a time against a shared local stack",
+      "tags": [
+        "testing"
+      ],
+      "status": "raw",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 219,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-openpyxl-cell-none-does-not-clear",
+      "type": "learning",
+      "summary": "In openpyxl, `sheet.cell(row, col, None)` does not clear a cell",
+      "tags": [
+        "tooling",
+        "testing"
+      ],
+      "status": "raw",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 188,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-restart-servers-that-do-not-reload",
+      "type": "learning",
+      "summary": "After a server change, restart a dev server that does not reload before trusting an end-to-end run",
+      "tags": [
+        "testing"
+      ],
+      "status": "raw",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 236,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-test-the-zero-case-of-summary-screens",
+      "type": "learning",
+      "summary": "Give every summary screen a test where nobody did anything",
+      "tags": [
+        "testing",
+        "ui"
+      ],
+      "status": "raw",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 299,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-18-text-guards-read-comments",
+      "type": "learning",
+      "summary": "A text-matching guard test reads comments too",
+      "tags": [
+        "testing",
+        "ci"
+      ],
+      "status": "raw",
+      "source": "ogfrench/frogQuiz",
+      "tokens": 232,
+      "promoted_to": []
     }
   ],
   "edges": [
@@ -1200,6 +1280,11 @@
       "from": "conditional-update-is-the-check",
       "to": "any",
       "type": "stack"
+    },
+    {
+      "from": "conditional-update-is-the-check",
+      "to": "2026-10-18-check-and-write-in-one-transaction",
+      "type": "derived_from"
     },
     {
       "from": "holds-known-to-every-deleter",
@@ -1524,6 +1609,11 @@
     {
       "from": "2026-10-12-show-options-on-the-real-artifact",
       "to": "plugins/agent-workflow/skills/visual-loop/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-check-and-write-in-one-transaction",
+      "to": "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md",
       "type": "promoted_to"
     }
   ]
