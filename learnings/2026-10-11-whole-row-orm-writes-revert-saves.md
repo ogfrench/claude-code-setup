@@ -1,6 +1,6 @@
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz
+source: a private project
 tags: [data, concurrency, orm]
 status: practice
 promoted_to: 
@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Counters are one SQL statement (`SET n = n + 1`). Other writers name their columns (`update(_columns=[...])` in ormar). A whole-row write is a bug unless the writer really sets every field.
 
-**Evidence.** frogQuiz commits 6ee0db8 and ab677df, with tests that fail on the old writes.
+**Evidence.** A quiz app's commits 6ee0db8 and ab677df, with tests that fail on the old writes.

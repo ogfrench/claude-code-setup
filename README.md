@@ -131,7 +131,7 @@ node scripts/kb-audit.mjs                   # the weekly look: what is stale or 
 claude plugin validate . --strict           # marketplace manifest
 DRY_RUN=1 bash sync-to-repos.sh             # prepare every repo, push nothing
 MERGE=1 bash sync-to-repos.sh               # one PR per repo, squash-merged
-bash sync-to-repos.sh ogfrench/frogQuiz     # just one repo
+bash sync-to-repos.sh owner/name            # just one repo
 ```
 
 CI runs the first two plus an apply into an empty folder on every push and PR. A real sync refuses to run unless the checkout is exactly `origin/main` and CI passed on that commit, so only what CI tested reaches the repos.

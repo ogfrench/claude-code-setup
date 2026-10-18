@@ -1,6 +1,6 @@
 ---
 date: 2026-10-18
-source: ogfrench/frogQuiz
+source: a private project
 tags: [testing, e2e]
 status: raw
 promoted_to: []
@@ -14,4 +14,4 @@ promoted_to: []
 
 **Do instead.** Build the fixture in the shape the tool really emits (its exported type, or a real export), and assert the page raises no `pageerror`. To credit a fix for a flaky failure, revert it and reproduce the failure over several runs (`--repeat-each`) first.
 
-**Evidence.** frogQuiz `frontend/e2e/practice.e2e.ts`: with the made-up drawing, 1 of 3 repeats failed and the trace showed two page errors from the library. With a real-shaped export and a `pageerror` assertion, 4 of 4 passed and the try/catch was dropped as unneeded.
+**Evidence.** A quiz app's `frontend/e2e/practice.e2e.ts`: with the made-up drawing, 1 of 3 repeats failed and the trace showed two page errors from the library. With a real-shaped export and a `pageerror` assertion, 4 of 4 passed and the try/catch was dropped as unneeded.

@@ -1,6 +1,6 @@
 ---
 date: 2026-10-11
-source: ogfrench/frogQuiz
+source: a private project
 tags: [security, games]
 status: practice
 promoted_to: 
@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** One function builds every client payload; grep for every sender and route them through it. Test each question type.
 
-**Evidence.** frogQuiz commits 06e4663 and 57a3445.
+**Evidence.** A quiz app's commits 06e4663 and 57a3445.

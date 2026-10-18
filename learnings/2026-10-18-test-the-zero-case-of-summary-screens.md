@@ -1,6 +1,6 @@
 ---
 date: 2026-10-18
-source: ogfrench/frogQuiz
+source: a private project
 tags: [testing, ui]
 status: raw
 promoted_to: []
@@ -14,4 +14,4 @@ promoted_to: []
 
 **Do instead.** For each aggregate or summary screen (podium, leaderboard, dashboard, report), test the zero case: nobody acted, everyone tied at zero, one participant with nothing. Derive "who took part" from membership, and design the empty state on purpose instead of letting the full layout render with nothing in it.
 
-**Evidence.** frogQuiz `frontend/e2e/final-edges.e2e.ts`: both tests failed on the old code (no "Thanks for playing" heading, no 0-point score line) and pass on the fix.
+**Evidence.** A quiz app's `frontend/e2e/final-edges.e2e.ts`: both tests failed on the old code (no "Thanks for playing" heading, no 0-point score line) and pass on the fix.

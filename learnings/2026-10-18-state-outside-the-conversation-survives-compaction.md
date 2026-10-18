@@ -1,6 +1,6 @@
 ---
 date: 2026-10-18
-source: ogfrench/frogQuiz
+source: a private project
 tags: [agents, context, compaction, issues]
 status: promoted
 promoted_to:
@@ -31,5 +31,5 @@ without being asked, and check the work actually done against the plan. The firs
 found a plan that said 124 files cite a document, where the real number was 59, and two
 tasks in the task list that the summary's pending list had dropped.
 
-**Evidence.** ogfrench/frogQuiz, 18 Oct: the release tracker issue, the decision log
+**Evidence.** A quiz app, 18 Oct: the release tracker issue, the decision log
 entries for that day, and PRs merged across compactions without a re-asked question.
