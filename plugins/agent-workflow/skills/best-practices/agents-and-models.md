@@ -12,6 +12,11 @@
   *(2026-10-11-cheap-reviews-catch-real-bugs)*
 - **Agents that share a stack, a database or rate limits run one at a time.**
   *(2026-10-11-second-stack-reloads-pages)*
+- **Before shipping a skill or tool, have an agent use it inside a copy of the user's
+  environment.** No network, only the platform's documented libraries, only the unzipped
+  package, and a real user prompt. Read its reply, its files and what it had to guess. Check
+  the platform's size limits first.
+  *(2026-10-18-simulate-the-users-sandbox-before-shipping-a-skill)*
 - **State the user's job in one line before planning a server, auth or storage.** Then
   list the lightest paths first: what ships, what a sibling project did, what the client
   does natively. Plan only for the gap, and name it.
