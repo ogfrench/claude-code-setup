@@ -1,2 +1,5 @@
 # Kept out of git, because this repo is public (see CLAUDE.md).
 repos.local.txt
+# A list of private names kept on a laptop for reading diffs. The check no longer
+# needs it (67af920), but a copy left in a clone must never be committed.
+.private-terms
