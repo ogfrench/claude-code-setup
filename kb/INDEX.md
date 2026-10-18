@@ -45,7 +45,7 @@
 - playwright (plugin): Browser automation MCP server by Microsoft: navigate, click, fill forms, take screenshots, run end-to-end flows.
 - ponytail (plugin): Minimal-solution mode. Pinned upstream.
 - serena (plugin): Semantic code analysis MCP server: symbol-level navigation and refactoring via language servers.
-- session-continuity (skill): Keep long work alive across compactions. State in durable places, check-ins that stand alone, re-verify after a summary.
+- session-continuity (skill): Keep long work alive across compactions: durable state, standalone check-ins, work checked against the plan, open points raised.
 - superpowers (plugin): Brainstorming, subagent-driven development with built-in review, systematic debugging, red/green TDD, and skill authoring.
 - token-efficiency (skill): Fewer turns and tokens for the same work. Batch tool calls, keep context lean, wait in the background, save facts once.
 - typescript-lsp (plugin): TypeScript and JavaScript language server for code intelligence.
