@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Pass settings through the library's config (CKEditor 5 `label`) instead of patching the DOM after creation. Match or exceed its selectors in your overrides. Re-check the element after an edit, not only on load.
 
-**Evidence.** A quiz app's commit 2ba9a95; the conflict e2e could not find the field by name after typing until the fix.
+**Evidence.** A quiz app: the conflict e2e could not find the field by name after typing until the fix.

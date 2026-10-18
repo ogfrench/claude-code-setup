@@ -3,7 +3,7 @@
 Raw notes, one per file, named `YYYY-MM-DD-short-slug.md`. Cheap to write: the point is to
 catch the lesson while it is fresh. Curating comes later (see `../CLAUDE.md`).
 
-**The repo is public.** No client names, private-repo content, secrets, hostnames or people. The hard rule is in `../CLAUDE.md`; `node scripts/check-public.mjs` checks it.
+**The repo is public.** No client names, private-repo content, secrets, hostnames or people. The hard rule is in `../CLAUDE.md`; `node scripts/check-public.mjs` checks it. For a private project, `source` is "a private project" and the evidence names no file, commit or issue from it.
 
 ## Template
 

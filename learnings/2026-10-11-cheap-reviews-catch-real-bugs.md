@@ -17,4 +17,4 @@ promoted_to:
 
 **Do instead.** Review every commit before pushing it, read-only, with the brief above. Verify each finding before acting on it.
 
-**Evidence.** A quiz app's commits 57a3445, c213861 and 311df9e each fix review findings, with tests that fail on the reviewed commit.
+**Evidence.** Three commits in a quiz app each fix review findings, with tests that fail on the reviewed commit.

@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Every route that reads per-account data compares the caller with the owner. Test it with a second account's credential, not only a missing one. Probe live as anonymous and as two accounts.
 
-**Evidence.** A quiz app's `docs/security-audit-2026-10-11.md`, finding 1; `tests/test_live_owner.py` failed first.
+**Evidence.** A quiz app's security audit, finding 1; the ownership test failed first.

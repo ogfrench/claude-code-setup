@@ -76,7 +76,7 @@ Pick the lightest form that does the job.
 - **Every practice has evidence.** Its `derived_from` names the learnings, or it says
   `source: judgment` and is never severity `must`. Every promoted learning names where it
   went (`promoted_to`). `node --test` checks both, the vocab in `kb/_vocab.json`, that the
-  generated files are current, and the token budgets in `test/budgets.test.mjs`. Over
+  generated files are current, and the token budgets in `lib/kb.mjs` (tested in `test/budgets.test.mjs`). Over
   budget means merge or retire something, not raise the number.
 - **One idea per learning.** Two ideas are two files.
 - **Merge, don't pile up.** Before adding a practice, look for one it extends.

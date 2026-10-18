@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Counters are one SQL statement (`SET n = n + 1`). Other writers name their columns (`update(_columns=[...])` in ormar). A whole-row write is a bug unless the writer really sets every field.
 
-**Evidence.** A quiz app's commits 6ee0db8 and ab677df, with tests that fail on the old writes.
+**Evidence.** Two commits in a quiz app, with tests that fail on the old writes.

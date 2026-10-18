@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** Claim with one atomic operation (a Redis `MULTI` of read and delete, `SPOP`, or a conditional `UPDATE ... WHERE` that reports the rows it changed). Put items back if the work after the claim fails.
 
-**Evidence.** A quiz app's `tests/test_live_images.py`: two releases at once freed twice on the old code.
+**Evidence.** A quiz app's image-release test: two releases at once freed twice on the old code.

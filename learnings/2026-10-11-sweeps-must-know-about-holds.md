@@ -15,4 +15,4 @@ promoted_to:
 
 **Do instead.** When adding a hold, list every code path that deletes the thing (grep for the delete call and for cron jobs) and make each one respect it. Test the sweep, not only the paths you changed.
 
-**Evidence.** A quiz app's commit 311df9e, found by a cheap review.
+**Evidence.** A commit in a quiz app, found by a cheap review.

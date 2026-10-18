@@ -1204,7 +1204,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 250,
+      "tokens": 243,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/security.md"
       ]
@@ -1218,7 +1218,7 @@
       ],
       "status": "promoted",
       "source": "a private project",
-      "tokens": 223,
+      "tokens": 220,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
         "plugins/agent-workflow/skills/model-delegation/SKILL.md"
@@ -1250,7 +1250,7 @@
       ],
       "status": "promoted",
       "source": "a private project",
-      "tokens": 273,
+      "tokens": 267,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
         "plugins/agent-workflow/agents/cheap-reviewer.md",
@@ -1268,7 +1268,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 226,
+      "tokens": 223,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1298,7 +1298,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 229,
+      "tokens": 226,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
@@ -1346,7 +1346,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 184,
+      "tokens": 181,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
       ]
@@ -1377,7 +1377,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 241,
+      "tokens": 238,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
@@ -1392,7 +1392,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 192,
+      "tokens": 189,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/security.md"
       ]
@@ -1407,7 +1407,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 215,
+      "tokens": 213,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1438,7 +1438,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 246,
+      "tokens": 242,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/ui.md"
       ]
@@ -1453,7 +1453,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 194,
+      "tokens": 191,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/testing.md"
       ]
@@ -1469,7 +1469,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 236,
+      "tokens": 232,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1617,7 +1617,7 @@
       ],
       "status": "practice",
       "source": "a private project",
-      "tokens": 400,
+      "tokens": 397,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/data-and-concurrency.md"
       ]
@@ -1680,7 +1680,7 @@
       ],
       "status": "raw",
       "source": "a private project",
-      "tokens": 367,
+      "tokens": 366,
       "promoted_to": []
     },
     {
@@ -1750,7 +1750,7 @@
       ],
       "status": "raw",
       "source": "a private project",
-      "tokens": 187,
+      "tokens": 184,
       "promoted_to": []
     },
     {
@@ -1914,7 +1914,7 @@
       ],
       "status": "raw",
       "source": "a private project",
-      "tokens": 300,
+      "tokens": 298,
       "promoted_to": []
     },
     {
