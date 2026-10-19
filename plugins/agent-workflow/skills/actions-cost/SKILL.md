@@ -39,6 +39,32 @@ stopped all CI.
 - **Skip work whose inputs did not change**, and give a scheduled rebuild the same skip.
 - **Use `concurrency` with `cancel-in-progress`** on anything a newer push makes stale.
 
+## Shape the pipeline: a fast job on every push, a slow one once per PR
+
+- **Run the slow, browser-backed job once per pull request,** when it is marked ready for
+  review (and by hand for a PR that changed afterward). Open PRs as drafts, so the pushes
+  while the work changes cost only the fast job. Give the ready run its own `concurrency`
+  group, or a push right after "ready" cancels the one run that carries the slow job.
+- **Keep the per-push job to about a minute or two, and watch its creep.** A job nobody owns
+  grows a step at a time: one went from 1 to 8 to 12 minutes unnoticed. Set
+  `timeout-minutes` as a fence. When a step pushes it over, move the step whole to the
+  once-per-PR job, or make it faster; never sample the tests (`--changed`) to fit, and never
+  drop a step. First find where the time goes: the step times of a recent run, then `time`
+  each step locally, and ask whether a slow step is working or waiting (a CPU profile that
+  shows most of the time idle means a retry or a sleep).
+- **Do the same work once.** A test that builds what a later step builds is one build, run
+  first, with the later step reading its output.
+- **Skip a docs-only PR inside the job, not with `paths-ignore`.** A workflow that never
+  starts leaves a required check pending forever. Start the job, run a first step that
+  diffs the PR against its base (checkout `fetch-depth: 2` gives the merge commit's first
+  parent), and put `if:` on the rest; a job of skipped steps reports success. Call a file
+  prose only if no code reads it, and treat anything unclear as not prose.
+
+## Estimate a month
+
+Runs × billed minutes per run × the per-minute rate, minus the free quota. Each job rounds up
+to a whole minute and parallel jobs bill separately, so add them; a skipped job bills nothing.
+
 ## A job that fails in one or two seconds with no runner and no log
 
 That is billing, not code: the month's minutes or the spending limit are used up. Do not

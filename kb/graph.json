@@ -251,11 +251,12 @@
       ],
       "severity": "should",
       "status": "active",
-      "seen": 1,
-      "tokens": 123,
-      "last_verified": "2026-10-18",
+      "seen": 2,
+      "tokens": 148,
+      "last_verified": "2026-10-19",
       "derived_from": [
-        "2026-10-17-estimate-runner-minutes-before-merging-a-trigger"
+        "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
+        "2026-10-19-run-the-slow-ci-job-once-per-pr"
       ],
       "implemented_by": [
         "plugins/agent-workflow/skills/actions-cost"
@@ -922,11 +923,11 @@
       "type": "tool",
       "kind": "skill",
       "summary": "Estimate a change's GitHub Actions runner-minutes before merging it; on demand and cached over a prebuilt matrix.",
-      "use_when": "Before merging or pushing what triggers a workflow in a private repo, adding or widening a matrix, or when a job fails in seconds with no log.",
+      "use_when": "Before merging or pushing what triggers a workflow in a private repo, adding or widening a matrix or a per-push step, or when a job fails in seconds with no log.",
       "where": "plugins/agent-workflow/skills/actions-cost",
       "state": "installed",
-      "tokens": 105,
-      "last_reviewed": "2026-10-18"
+      "tokens": 109,
+      "last_reviewed": "2026-10-19"
     },
     {
       "id": "best-practices",
@@ -1970,6 +1971,22 @@
       "source": "a private project",
       "tokens": 187,
       "promoted_to": []
+    },
+    {
+      "id": "2026-10-19-run-the-slow-ci-job-once-per-pr",
+      "type": "learning",
+      "summary": "Run the slow CI job once per PR, keep the per-push job near a minute, and watch its creep",
+      "tags": [
+        "ci",
+        "cost"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 533,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+        "kb/practices/estimate-runner-minutes.md"
+      ]
     }
   ],
   "edges": [
@@ -2211,6 +2228,11 @@
     {
       "from": "estimate-runner-minutes",
       "to": "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
+      "type": "derived_from"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "2026-10-19-run-the-slow-ci-job-once-per-pr",
       "type": "derived_from"
     },
     {
@@ -2931,6 +2953,16 @@
     {
       "from": "2026-10-18-state-the-job-before-planning-a-server",
       "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-19-run-the-slow-ci-job-once-per-pr",
+      "to": "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-19-run-the-slow-ci-job-once-per-pr",
+      "to": "kb/practices/estimate-runner-minutes.md",
       "type": "promoted_to"
     }
   ]
