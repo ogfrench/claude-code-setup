@@ -82,6 +82,11 @@ round of back and forth.
 - **Settle before shooting.** Animated or eased content must be at rest: call the page's
   own finish or still hook, wait for images to decode, then shoot. A shot on a timer is
   a picture of a transition.
+- **Stills cannot verify motion.** A tool that disables transitions or freezes on a settled
+  frame hides what a motion fix changed. Record frames across the real navigation (every 80 to
+  160 ms on a frozen clock, press to 2.4 s after) and read them, before and after the fix. Cover
+  forward, back to the start, a press mid-transition, reduced motion and a cut between two light
+  positions, and keep a test that fails on the broken version.
 - **Git Bash rewrites URL paths.** An argument like `/t/page/` becomes `T:/page/`; set
   `MSYS_NO_PATHCONV=1` for commands that take one.
 - **A file open in a viewer can be locked** on Windows; a screenshot write fails with
