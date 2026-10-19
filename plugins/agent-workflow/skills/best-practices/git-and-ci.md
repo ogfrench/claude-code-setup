@@ -8,9 +8,10 @@
   fast-forwards a local main in a clone worked through worktrees. Read the sha a review tool
   prints as its baseline. *(2026-10-18-review-baselines-come-from-the-remote)*
 - **Estimate a workflow's runner-minutes before merging what triggers it.** Jobs times
-  minutes times triggers. Prefer on demand and cached to a prebuilt matrix. A job failing in
-  seconds with no log is billing: stop.
-  *(2026-10-17-estimate-runner-minutes-before-merging-a-trigger)*
+  minutes times triggers. Build on demand, not a matrix. Slow job once per PR, at ready;
+  per-push job near a minute, watched for creep. Failing in seconds with no log is billing:
+  stop. *(2026-10-17-estimate-runner-minutes-before-merging-a-trigger)*
+  *(2026-10-19-run-the-slow-ci-job-once-per-pr)*
 - **Merge commits on shared branches; never rewrite someone else's history.**
 - **Checks missing from a PR usually mean a merge conflict.** Look at the mergeable state
   first; merge the base in and push. *(2026-10-11-conflicted-pr-runs-no-workflows)*
