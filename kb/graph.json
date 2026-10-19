@@ -1987,6 +1987,22 @@
         "plugins/agent-workflow/skills/actions-cost/SKILL.md",
         "kb/practices/estimate-runner-minutes.md"
       ]
+    },
+    {
+      "id": "2026-10-19-verify-motion-with-frames-not-stills",
+      "type": "learning",
+      "summary": "Verify a motion fix with frames recorded across the change, not with stills",
+      "tags": [
+        "ui",
+        "testing",
+        "motion"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 465,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/visual-loop/SKILL.md"
+      ]
     }
   ],
   "edges": [
@@ -2963,6 +2979,11 @@
     {
       "from": "2026-10-19-run-the-slow-ci-job-once-per-pr",
       "to": "kb/practices/estimate-runner-minutes.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-19-verify-motion-with-frames-not-stills",
+      "to": "plugins/agent-workflow/skills/visual-loop/SKILL.md",
       "type": "promoted_to"
     }
   ]
