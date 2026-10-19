@@ -1,8 +1,8 @@
 ---
 name: actions-cost
 description: >-
-  Estimate GitHub Actions runner-minutes before merging what triggers a paid
-  workflow; a job failing in seconds with no log is billing.
+  Estimate Actions runner-minutes before merging a workflow trigger; a job
+  failing in seconds with no log is billing.
 ---
 
 # Actions minutes cost money
