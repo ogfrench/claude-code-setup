@@ -16,7 +16,7 @@ const tmpRepo = () => {
     fs.mkdirSync(path.dirname(path.join(t, f)), { recursive: true });
     fs.cpSync(path.join(ROOT, f), path.join(t, f), { recursive: true });
   }
-  for (const f of ["frog-writing/skills/frogify", "frog-writing/skills/deslopify", "frog-writing/skills/humanizer", "agent-workflow/skills/learning-loop", "agent-workflow/skills/visual-loop", "agent-workflow/skills/token-efficiency", "agent-workflow/skills/actions-cost", "agent-workflow/skills/session-continuity"]) {
+  for (const f of ["frog-writing/skills/frogify", "frog-writing/skills/deslopify", "frog-writing/skills/humanizer", "agent-workflow/skills/learning-loop", "agent-workflow/skills/visual-loop", "agent-workflow/skills/token-efficiency", "agent-workflow/skills/actions-cost", "agent-workflow/skills/netlify-cost", "agent-workflow/skills/session-continuity"]) {
     fs.mkdirSync(path.join(t, "plugins", path.dirname(f)), { recursive: true });
     fs.cpSync(path.join(ROOT, "plugins", f), path.join(t, "plugins", f), { recursive: true });
   }

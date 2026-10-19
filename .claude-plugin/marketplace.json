@@ -15,7 +15,7 @@
     },
     {
       "name": "agent-workflow",
-      "description": "How work is run: best-practices, learning-loop, model-delegation, visual-loop, token-efficiency, actions-cost, session-continuity, and the cheap-reviewer subagent.",
+      "description": "How work is run: best-practices, learning-loop, model-delegation, visual-loop, token-efficiency, actions-cost, netlify-cost, session-continuity, and the cheap-reviewer subagent.",
       "source": "./plugins/agent-workflow",
       "category": "productivity"
     },

@@ -1094,6 +1094,17 @@
       "last_reviewed": "2026-10-11"
     },
     {
+      "id": "netlify-cost",
+      "type": "tool",
+      "kind": "skill",
+      "summary": "Estimate a Netlify site's builds, credits, edge runs and bandwidth before changing its config; ignore script, complete gate.",
+      "use_when": "Before changing netlify.toml, an edge function or the build trigger, when many merges are coming, or when a Netlify bill looks high.",
+      "where": "plugins/agent-workflow/skills/netlify-cost",
+      "state": "installed",
+      "tokens": 105,
+      "last_reviewed": "2026-10-18"
+    },
+    {
       "id": "playwright",
       "type": "tool",
       "kind": "plugin",
@@ -1668,6 +1679,22 @@
       "tokens": 368,
       "promoted_to": [
         "plugins/agent-workflow/skills/best-practices/git-and-ci.md"
+      ]
+    },
+    {
+      "id": "2026-10-18-find-the-billing-model-before-cutting-a-hosting-bill",
+      "type": "learning",
+      "summary": "Find the plan's billing model before cutting a hosting bill",
+      "tags": [
+        "ci",
+        "cost",
+        "hosting"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 408,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/netlify-cost/SKILL.md"
       ]
     },
     {
@@ -2854,6 +2881,11 @@
     {
       "from": "2026-10-18-each-worktree-gets-its-own-install",
       "to": "plugins/agent-workflow/skills/best-practices/git-and-ci.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-18-find-the-billing-model-before-cutting-a-hosting-bill",
+      "to": "plugins/agent-workflow/skills/netlify-cost/SKILL.md",
       "type": "promoted_to"
     },
     {
