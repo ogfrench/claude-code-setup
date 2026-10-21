@@ -18,6 +18,8 @@ Without it, a cloud session has no plugins at all, because cloud sessions never 
 
 The source of truth is this repo. The copies in each project are overwritten on the next sync, so edit here.
 
+**Provenance and drift detection.** Each synced project records the central source commit and a SHA-256 fingerprint of its managed skill/agent/command copies in `.claude/claude-code-setup.json`. From a checkout of this repo, run `node scripts/check-sync.mjs /path/to/project` (or add `--json`) to distinguish current, outdated, locally modified, legacy and unverifiable copies. It reads only; it does not update a project. The next deliberate sync overwrites managed copies, while project-owned skills remain untouched. Existing projects acquire these stamps on their next sync. CI in a project can run the checker after checking out this source, but a standard project is not blocked automatically until its manifest is upgraded.
+
 ## Layout
 
 | Path | What it is | Lands in each repo as |
