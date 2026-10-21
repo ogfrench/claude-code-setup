@@ -1,8 +1,7 @@
 ---
 name: actions-cost
 description: >-
-  Audit GitHub Actions usage and budgets; remove duplicate PR/merge validation,
-  reduce runner-minutes, and protect deployment and security checks.
+  Reduce GitHub Actions costs while preserving PR checks, security and deployments.
 ---
 
 # Optimize GitHub Actions cost without weakening CI
