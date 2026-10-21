@@ -1,73 +1,98 @@
 ---
 name: actions-cost
 description: >-
-  Estimate Actions runner-minutes before merging a workflow trigger; a job
-  failing in seconds with no log is billing.
+  Audit GitHub Actions usage and budgets; remove duplicate PR/merge validation,
+  reduce runner-minutes, and protect deployment and security checks.
 ---
 
-# Actions minutes cost money
+# Optimize GitHub Actions cost without weakening CI
 
-In a private repository, every runner-minute past the month's free allowance is billed, and
-larger runners are billed from the first minute. Cost is jobs × minutes × triggers, and none
-of the three shows in a diff: a version bump or an edit to a shared package looks small and
-fans out to every cell of a matrix. Two merges in one day once used a month's budget and
-stopped all CI.
+Use for requests about CI bills, too many runs, budgets, slow jobs, merge-trigger
+duplication, matrices, caching, or workflow optimization. Always start with the real
+workflows and recent run history, not a generic YAML recipe. Read
+[the implementation reference](references/ci-audit.md) when changing workflow files.
 
-## Before a merge or push that starts a workflow
+## 1. Inventory and measure before editing
 
-1. **List what it starts.** Read the `on:` triggers and `paths` of each workflow in
-   `.github/workflows/` against the files the change touches. A merge to the default branch
-   starts the `push` workflows; a push to a PR branch starts the `pull_request` ones.
-2. **Estimate it:** jobs × minutes a job × how many times it runs. Read the minutes from a
-   recent run of the same workflow (`gh run list`, `gh run view --json jobs`, or the GitHub
-   MCP's run and job listings). Write the repo's usual figures in its `CLAUDE.md`, so the
-   next session does not have to measure again.
-3. **Over about an hour of runner-minutes for one change, say so before merging**, with the
-   number. Batch it with other changes that rebuild the same things, rather than merging
-   them one by one.
-4. **Push once, validated.** Each push to a PR reruns its CI. Run the fast checks locally
-   first (type check, the changed tests, linters), then push.
+1. Read *all* `.github/workflows/*.yml` and `*.yaml`, branch rules, required
+   status checks, deployment/image publishing, releases, schedules and environments.
+   Distinguish validation, publishing, deployment, monitoring, and security jobs.
+2. For every workflow, list the events (`push`, `pull_request`, `merge_group`,
+   `workflow_dispatch`, `schedule`), branches, paths, matrices, runners and
+   concurrency groups. Identify jobs that repeat on the PR and again on merge.
+3. Inspect actual job durations and counts: `gh run list`, `gh run view --json jobs`,
+   GitHub MCP, or Actions > a run > Usage. Runner-minutes are the **sum of job
+   times**, not workflow wall time. GitHub rounds each job up to a whole minute.
+4. Establish repo owner, public/private status, runner type, plan allowance,
+   remaining usage, storage, and budgets. Do not infer a user's personal billing
+   settings from a repo. Check current GitHub pricing, not a stale quoted rate.
+5. Write a baseline: monthly runs × billable minutes per job × runner rate,
+   plus artifact/cache storage beyond allowances, and estimate post-change savings.
+   Call out multi-architecture builds and matrix fan-out.
 
-## When you add or change a workflow
+## 2. Avoid duplicate PR/merge validation
 
-- **On demand and cached beats a prebuilt matrix.** Make an artifact when someone asks and
-  keep it for the next person, rather than making every combination after every merge.
-- **Never run the same slow job twice for one change.** A PR's CI already tested its merge
-  commit, so the slow job need not run again on the default branch after the merge.
-- **A matrix multiplies everything.** Write its job count, and its minutes on a full
-  rebuild, in the workflow's header comment.
-- **Skip work whose inputs did not change**, and give a scheduled rebuild the same skip.
-- **Use `concurrency` with `cancel-in-progress`** on anything a newer push makes stale.
+- When **PR checks are mandatory and direct default-branch pushes are blocked**,
+  validate the merge candidate on `pull_request` and remove `push` on the default
+  branch from **validation-only** workflows. Preserve `workflow_dispatch`.
+  A green PR does not literally cache a test result for `master`; removing the
+  merge-triggered run is a deliberate safety/cost tradeoff.
+- **Do not** remove `push` from container publication, release tagging, deploy,
+  migrations or other side effects needed *after* merge. Split build-and-test
+  from publish jobs when they share a workflow. Keep scheduled security checks.
+- Do not make validation PR-only until checking required status checks, branch
+  protection/rulesets, bypass rules, and whether the repo merges via PR at all.
+  If direct pushes are allowed or protection cannot be confirmed, state the risk
+  and request protection before shipping PR-only enforcement.
+- PR checks normally check out GitHub's synthetic merge ref; protect against
+  stale PRs by requiring up-to-date checks or a supported merge queue.
+  For a merge queue, add `merge_group` to every **required** Actions workflow.
+  Do not recommend merge queues without checking repo/plan availability.
+- Preserve path filters cautiously. A required *workflow* skipped by `paths`
+  can remain Pending indefinitely. Prefer a stable always-started required job
+  with inexpensive changed-file detection and conditional costly steps.
+- Keep meaningful checks at every commit needing validation. Label/manual
+  gating is suitable for expensive *optional* E2E, not a required check whose
+  status must prove the latest commit was tested.
 
-## Shape the pipeline: a fast job on every push, a slow one once per PR
+## 3. Reduce unnecessary work, not test coverage
 
-- **Run the slow, browser-backed job once per pull request,** when it is marked ready for
-  review (and by hand for a PR that changed afterward). Open PRs as drafts, so the pushes
-  while the work changes cost only the fast job. Give the ready run its own `concurrency`
-  group, or a push right after "ready" cancels the one run that carries the slow job.
-- **Keep the per-push job to about a minute or two, and watch its creep.** A job nobody owns
-  grows a step at a time: one went from 1 to 8 to 12 minutes unnoticed. Set
-  `timeout-minutes` as a fence. When a step pushes it over, move the step whole to the
-  once-per-PR job, or make it faster; never sample the tests (`--changed`) to fit, and never
-  drop a step. First find where the time goes: the step times of a recent run, then `time`
-  each step locally, and ask whether a slow step is working or waiting (a CPU profile that
-  shows most of the time idle means a retry or a sleep).
-- **Do the same work once.** A test that builds what a later step builds is one build, run
-  first, with the later step reading its output.
-- **Skip a docs-only PR inside the job, not with `paths-ignore`.** A workflow that never
-  starts leaves a required check pending forever. Start the job, run a first step that
-  diffs the PR against its base (checkout `fetch-depth: 2` gives the merge commit's first
-  parent), and put `if:` on the rest; a job of skipped steps reports success. Call a file
-  prose only if no code reads it, and treat anything unclear as not prose.
+- Run fast checks on each PR update and heavy E2E once when ready, then rerun
+  after material changes before merge. Do not present old green E2E results as
+  proof of a newer commit.
+- Add `timeout-minutes`; measure retries, sleep, repeated installs, duplicate
+  builds, and oversized matrices before removing any tests. Do not truncate test
+  suites to hide runtime growth.
+- Use lockfile-keyed dependency caches, verify cache hit times, and do not
+  cache secrets or untrusted executable state. Artifacts are for passing build
+  outputs between jobs, not for hiding missing tests.
+- Use `concurrency` and `cancel-in-progress: true` only where superseded work
+  is safe to cancel. Give PRs distinct groups. **Never** cancel a deploy, image
+  publish, migration, or a one-shot expensive run because of an unrelated event.
+- Review large-runner cost, reusable workflows, artifact retention, backups,
+  schedules and cross-repo Actions usage. Publish once and reuse the artifact.
 
-## Estimate a month
+## 4. Budgets and operational guardrails
 
-Runs × billed minutes per run × the per-minute rate, minus the free quota. Each job rounds up
-to a whole minute and parallel jobs bill separately, so add them; a skipped job bills nothing.
+- GitHub Settings > Billing and licensing > Budgets and alerts: inspect Actions
+  usage, included-minute alerts, and product-level or account-level budgets.
+  Turn on threshold notifications. A budget without **Stop usage** is an alert,
+  not a spending cap. A hard stop can block CI; set it deliberately.
+- Public repos on standard GitHub-hosted runners generally use free Actions
+  minutes; private repos consume plan allowances. Larger runners and storage
+  follow separate billing rules. Check current docs and the owner account.
+- A job failing immediately with no runner/log **may** be exhausted billing,
+  policy, permissions, concurrency or an Actions outage. Check the run's
+  annotations and billing before claiming a code failure or rerunning blindly.
+- Actions cost is not cloud hosting/deployment cost. Audit hosting provider
+  build minutes, deploy previews and artifact/image registry retention separately.
 
-## A job that fails in one or two seconds with no runner and no log
+## Deliverable and change policy
 
-That is billing, not code: the month's minutes or the spending limit are used up. Do not
-rerun it, do not push "fixes", and do not merge on the strength of an old green run without
-saying so. Tell the owner, who sees usage in the account's billing settings. Comment once on
-each PR it blocks, saying the failure is not that PR's.
+Report a before/after trigger matrix, the measured or estimated runner-minutes
+saved per merge and per month, remaining required post-merge work, and any
+unverified branch-protection or billing assumptions. When modifying a repo:
+create a branch and PR, preserve its checks, inspect the diff, and do not merge
+without authorization. Keep sensitive repository details out of public skills.
+
+See [reference, YAML patterns and calculator](references/ci-audit.md).
