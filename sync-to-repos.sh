@@ -98,7 +98,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - \`.claude/skills/\`: committed copies of the shared skills. Cloud sessions load these, but they never install plugins from project settings.
 - \`.claude/settings.json\`: registers the \`ogfrench\` marketplace and enables the plugins, for local sessions. Keys the repo already had are kept as they were.
 - \`.claude/knowledge/\`: the practices for this repo's stacks (\`bundle.md\`, one card per practice, a search index). A SessionStart hook prints \`must.md\` from it, a few lines.
-- \`.claude/claude-code-setup.json\`: lists the synced copies, so a skill removed upstream is removed here too.${renamed:+
+- \`.claude/claude-code-setup.json\`: lists the synced copies, so a skill removed upstream is removed here too. Records the source commit and a fingerprint, so drift can be detected read-only.${renamed:+
 - $renamed}
 
 Edit these in claude-code-setup, not here: the next sync overwrites the copies.
