@@ -1,7 +1,7 @@
 {
   "name": "agent-workflow",
-  "version": "1.6.0",
-  "description": "How work is run: best-practices, learning-loop (capture, curate, promote), model-delegation, visual-loop (show design options on the real thing and loop), token-efficiency (fewer turns and tokens for the same work), session-continuity (keep long work alive across compactions), actions-cost (runner-minutes before a merge), netlify-cost (Netlify builds, credits and edge runs before a config change), and the cheap-reviewer subagent.",
+  "version": "1.7.0",
+  "description": "How work is run: best-practices, learning-loop (capture, curate, promote), model-delegation, visual-loop (show design options on the real thing and loop), token-efficiency (fewer turns and tokens for the same work), session-continuity (keep long work alive across compactions), actions-cost (runner-minutes before a merge), netlify-cost (Netlify builds, credits and edge runs before a config change), issue-management (MECE backlogs), and the cheap-reviewer subagent.",
   "author": {
     "name": "ogfrench"
   }

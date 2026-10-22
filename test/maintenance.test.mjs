@@ -11,14 +11,12 @@ const tmpRepo = () => {
   const t = fs.mkdtempSync(path.join(os.tmpdir(), "ccs-kb-"));
   fs.cpSync(path.join(ROOT, "kb"), path.join(t, "kb"), { recursive: true });
   fs.cpSync(path.join(ROOT, "learnings"), path.join(t, "learnings"), { recursive: true });
-  fs.cpSync(path.join(ROOT, "plugins/agent-workflow/skills/best-practices"), path.join(t, "plugins/agent-workflow/skills/best-practices"), { recursive: true });
-  for (const f of ["plugins/agent-workflow/skills/model-delegation", "plugins/agent-workflow/agents/cheap-reviewer.md", "scripts/check-public.mjs", ".githooks/pre-push"]) {
+  // Copy all plugin skills and agents: adding a new skill must not require
+  // updating a second hard-coded inventory just to validate the knowledge graph.
+  fs.cpSync(path.join(ROOT, "plugins"), path.join(t, "plugins"), { recursive: true });
+  for (const f of ["scripts/check-public.mjs", ".githooks/pre-push"]) {
     fs.mkdirSync(path.dirname(path.join(t, f)), { recursive: true });
     fs.cpSync(path.join(ROOT, f), path.join(t, f), { recursive: true });
-  }
-  for (const f of ["frog-writing/skills/frogify", "frog-writing/skills/deslopify", "frog-writing/skills/humanizer", "agent-workflow/skills/learning-loop", "agent-workflow/skills/visual-loop", "agent-workflow/skills/token-efficiency", "agent-workflow/skills/actions-cost", "agent-workflow/skills/netlify-cost", "agent-workflow/skills/session-continuity"]) {
-    fs.mkdirSync(path.join(t, "plugins", path.dirname(f)), { recursive: true });
-    fs.cpSync(path.join(ROOT, "plugins", f), path.join(t, "plugins", f), { recursive: true });
   }
   return t;
 };
