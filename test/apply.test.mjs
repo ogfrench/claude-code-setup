@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { apply, deepMerge } from "../lib/apply.mjs";
 import { BUDGET } from "../lib/kb.mjs";
+import { checkSync, sourceRevision } from "../lib/sync-status.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "ccs-test-"));
@@ -233,4 +234,39 @@ test("the real repo: stack bundles stay inside the session budget", () => {
   const must = fs.readFileSync(path.join(k, "must.md"), "utf8");
   assert.ok(Math.ceil(must.length / 4) <= BUDGET.mustRules, "must.md is the only thing printed at session start");
   assert.ok(must.includes("names-are-private-data"));
+});
+
+test("sync provenance detects changed and missing managed copies without writing", () => {
+  const t = tmp();
+  apply(t);
+  const manifest = read(path.join(t, ".claude/claude-code-setup.json"));
+  assert.match(manifest.snapshot_sha256, /^[0-9a-f]{64}$/);
+  assert.equal(manifest.source_revision, sourceRevision(ROOT));
+  assert.equal(checkSync(t).status, "current");
+
+  const target = path.join(t, ".claude/skills/actions-cost/SKILL.md");
+  fs.appendFileSync(target, "\\nlocal change\\n");
+  assert.equal(checkSync(t).status, "modified");
+
+  apply(t);
+  assert.equal(checkSync(t).status, "current", "re-applying restores the synced version");
+
+  fs.rmSync(target);
+  assert.equal(checkSync(t).status, "modified", "missing files are not silently treated as current");
+
+  const stamp = path.join(t, ".claude/claude-code-setup.json");
+  const old = read(stamp);
+  delete old.source_revision;
+  write(stamp, old);
+  assert.equal(checkSync(t).status, "legacy", "older manifests need a resync");
+});
+
+test("sync checker refuses untrusted managed paths", () => {
+  const t = tmp();
+  apply(t);
+  const file = path.join(t, ".claude/claude-code-setup.json");
+  const manifest = read(file);
+  manifest.copied = ["../outside"];
+  write(file, manifest);
+  assert.equal(checkSync(t).status, "modified");
 });
