@@ -18,6 +18,8 @@ Without it, a cloud session has no plugins at all, because cloud sessions never 
 
 The source of truth is this repo. The copies in each project are overwritten on the next sync, so edit here.
 
+**Provenance and drift detection.** Each synced project records the central source commit and a SHA-256 fingerprint of its managed skill/agent/command copies in `.claude/claude-code-setup.json`. From a checkout of this repo, run `node scripts/check-sync.mjs /path/to/project` (or add `--json`) to distinguish current, outdated, locally modified, legacy and unverifiable copies. It reads only; it does not update a project. The next deliberate sync overwrites managed copies, while project-owned skills remain untouched. Existing projects acquire these stamps on their next sync. CI in a project can run the checker after checking out this source, but a standard project is not blocked automatically until its manifest is upgraded.
+
 ## Layout
 
 | Path | What it is | Lands in each repo as |
@@ -158,7 +160,7 @@ CI runs `node --test`, the public check on the pushed commits, plugin validation
 | Plugin | Source |
 | --- | --- |
 | `frog-writing` | This repo. `frogify` and `deslopify` are mine. `humanizer` is vendored from [blader/humanizer](https://github.com/blader/humanizer) at `9600f2b`, MIT, with its license kept in its folder. |
-| `agent-workflow` | This repo. How work is run: `model-delegation` (which model does which work), `best-practices` (the curated practices), `learning-loop` (capture, curate, promote), `visual-loop` (show design options on the real thing, read every shot, loop until one is picked), `token-efficiency` (fewer turns and tokens for the same work: batching, lean context, background waits, environment facts saved once), `session-continuity` (keep long work alive across compactions: state in durable places, check-ins that stand alone, the work checked against the plan, open points raised), `actions-cost` (estimate GitHub Actions runner-minutes before merging what triggers a workflow), `netlify-cost` (estimate a Netlify site's builds, credits and edge runs before changing its config, and a build-skip script that builds when unsure) and the `cheap-reviewer` subagent. |
+| `agent-workflow` | This repo. How work is run: `model-delegation` (which model does which work), `best-practices` (the curated practices), `learning-loop` (capture, curate, promote), `visual-loop` (show design options on the real thing, read every shot, loop until one is picked), `token-efficiency` (fewer turns and tokens for the same work: batching, lean context, background waits, environment facts saved once), `session-continuity` (keep long work alive across compactions: state in durable places, check-ins that stand alone, the work checked against the plan, open points raised), `actions-cost` (estimate GitHub Actions runner-minutes before merging what triggers a workflow), `netlify-cost` (estimate a Netlify site's builds, credits and edge runs before changing its config, and a build-skip script that builds when unsure), `issue-management` (MECE backlog ownership, decision stages, issue writing and consolidation) and the `cheap-reviewer` subagent. |
 | `caveman` | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman), pinned by SHA |
 | `ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail), pinned by SHA |
 | `21st` | [21st-dev/claude-code-plugin](https://github.com/21st-dev/claude-code-plugin), pinned by SHA |

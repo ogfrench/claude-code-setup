@@ -40,6 +40,7 @@
 - frontend-design (plugin): Distinctive, production-grade frontend interfaces that avoid generic AI aesthetics.
 - github (plugin): Official GitHub MCP server: issues, pull requests, code search, repository management.
 - humanizer (skill): Rewrite prose at length to remove signs of AI writing. Vendored, MIT.
+- issue-management (skill): Triage and restructure GitHub issue backlogs with one owner per outcome, clear stages and testable acceptance.
 - learning-loop (skill): Capture a lesson, curate it into a practice, promote it, harvest inboxes, retire it.
 - model-delegation (skill): Which model does which work, how to brief a cheaper agent, and how to check its work.
 - netlify-cost (skill): Estimate a Netlify site's builds, credits, edge runs and bandwidth before changing its config; ignore script, complete gate.
