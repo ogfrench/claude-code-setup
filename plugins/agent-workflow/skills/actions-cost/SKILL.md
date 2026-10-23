@@ -86,29 +86,8 @@ workflows and recent run history, not a generic YAML recipe. Read
 - Actions cost is not cloud hosting/deployment cost. Audit hosting provider
   build minutes, deploy previews and artifact/image registry retention separately.
 
-## 5. Diagnose infrastructure failures before rerunning
-
-- A job that fails immediately without runner, steps or downloadable logs might be
-  blocked by billing, spending limits, runner availability, repository policy or
-  GitHub infrastructure. Inspect the run conclusion, job steps, logs, GitHub
-  status and account billing. **Never claim billing is proven without evidence.**
-- Do not push code fixes or start repeated reruns while the infrastructure block
-  persists. After the owner confirms recovery, retry **only failed jobs** once on
-  the existing run; inspect the result and solve any real failure before retrying.
-- Before each substantial change, estimate runner-minutes. If the change is
-  likely to consume more than about an hour, flag its budget impact before merging.
-
-## 6. Validate the exact final commit within budget
-
-- Batch changes and run available local checks first. Avoid full browser E2E
-  for intermediate commits; use focused E2E during iteration.
-- When full E2E is a required merge gate, run the **complete suite on the exact
-  final PR head SHA**. A targeted subset does not certify a full suite.
-- New commits invalidate head-specific checks. Verify the latest SHA, actual
-  successful check conclusions, reviews and mergeability before merging.
-- Monitoring and status polling must be read-only. Do not trigger workflows,
-  make commits or merge from monitoring without authorization.
-- Never drop mandatory test, security or release gates to save minutes.
+For retry discipline, runner-cost thresholds and final-SHA full-suite verification,
+see [the detailed audit reference](references/ci-audit.md).
 
 ## Deliverable and change policy
 

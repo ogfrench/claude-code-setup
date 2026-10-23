@@ -139,6 +139,30 @@ is required, trigger again on the latest head or use merge-queue verification.
 - Record a baseline and compare after the next few merges. Don't give a precise
   savings number without run frequency and actual durations.
 
+## Diagnosing runner and infrastructure failures
+
+- A job that fails immediately without runner, steps or downloadable logs might be
+  blocked by billing, spending limits, runner availability, repository policy or
+  GitHub infrastructure. Inspect the run conclusion, job steps, logs, GitHub
+  status and account billing. **Never claim billing is proven without evidence.**
+- Do not push code fixes or start repeated reruns while the infrastructure block
+  persists. After the owner confirms recovery, retry **only failed jobs** once on
+  the existing run; inspect the result and solve any real failure before retrying.
+- Before each substantial change, estimate runner-minutes. If the change is
+  likely to consume more than about an hour, flag its budget impact before merging.
+
+## Fixed-budget final-commit verification
+
+- Batch changes and run available local checks first. Avoid full browser E2E
+  for intermediate commits; use focused E2E during iteration.
+- When full E2E is a required merge gate, run the **complete suite on the exact
+  final PR head SHA**. A targeted subset does not certify a full suite.
+- New commits invalidate head-specific checks. Verify the latest SHA, actual
+  successful check conclusions, reviews and mergeability before merging.
+- Monitoring and status polling must be read-only. Do not trigger workflows,
+  make commits or merge from monitoring without authorization.
+- Never drop mandatory test, security or release gates to save minutes.
+
 ## Official references (verify current figures)
 
 - https://docs.github.com/en/billing/concepts/product-billing/github-actions
