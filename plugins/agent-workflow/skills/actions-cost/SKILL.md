@@ -2,7 +2,7 @@
 name: actions-cost
 description: >-
   Estimate Actions runner-minutes before merging a workflow trigger; a job
-  failing in seconds with no log is billing.
+  failing in seconds with no log may indicate billing or runner access.
 ---
 
 # Actions minutes cost money
@@ -65,9 +65,32 @@ stopped all CI.
 Runs × billed minutes per run × the per-minute rate, minus the free quota. Each job rounds up
 to a whole minute and parallel jobs bill separately, so add them; a skipped job bills nothing.
 
-## A job that fails in one or two seconds with no runner and no log
+## Diagnose infrastructure failures before retrying
 
-That is billing, not code: the month's minutes or the spending limit are used up. Do not
-rerun it, do not push "fixes", and do not merge on the strength of an old green run without
-saying so. Tell the owner, who sees usage in the account's billing settings. Comment once on
-each PR it blocks, saying the failure is not that PR's.
+A job that fails in one or two seconds with no steps, runner or downloadable log may be
+blocked by billing, spending limits, runner availability, repository policy or GitHub
+infrastructure. Do not claim billing is proven without checking the account's Actions
+usage and billing settings. Inspect the run conclusion, job steps, logs and GitHub status.
+Do not push code fixes or retry while the underlying block remains.
+
+Once the owner confirms the block is resolved, retry **only failed jobs** on the existing
+run, once, and inspect their conclusions before deciding on another action. Reuse passing
+checks where valid. If a retry fails, inspect its logs and address the cause rather than
+starting a retry loop.
+
+## Keep verification within a fixed budget
+
+- Before triggering workflows, count the jobs and expected runner-minutes. Prefer one
+  deliberate batch of changes after local lint, tests and targeted E2E.
+- Do not dispatch the full browser suite for every intermediate commit. Run focused E2E
+  while iterating, then the **full suite on the exact final PR head SHA** when required
+  by the merge gate. A subset is not evidence that the full suite passed.
+- A new commit invalidates prior head-specific checks. Confirm the final SHA, actual
+  successful workflow conclusions, review state and mergeability before merging.
+- Status polling is read-only. Monitoring automations must not trigger workflows,
+  push changes or merge unless explicitly authorized. Disable monitoring when a
+  persistent infrastructure blocker requires owner action.
+- Never remove required security, test or release gates merely to save minutes.
+  Optimize when they run, not whether they run.
+- Avoid redundant CI on merge/default-branch pushes where a valid tested artifact can
+  be reused, without weakening required branch protection or deployment checks.
