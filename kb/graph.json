@@ -2014,6 +2014,58 @@
       "promoted_to": [
         "plugins/agent-workflow/skills/visual-loop/SKILL.md"
       ]
+    },
+    {
+      "id": "2026-10-24-dependabot-config-change-triggers-a-wave",
+      "type": "learning",
+      "summary": "Editing dependabot.yml makes Dependabot scan at once: expect a wave of PRs and their CI",
+      "tags": [
+        "ci",
+        "cost"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 288,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-libpq-url-params-break-asyncpg",
+      "type": "learning",
+      "summary": "A libpq connection URL is not an asyncpg URL: switching the driver can drop the database",
+      "tags": [
+        "database",
+        "deploy"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 379,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-name-inputs-for-pre-hydration-submit",
+      "type": "learning",
+      "summary": "A form handled in JavaScript still needs named inputs: before hydration the browser submits it",
+      "tags": [
+        "frontend",
+        "testing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 291,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-new-token-claim-must-not-strand-old-tokens",
+      "type": "learning",
+      "summary": "A new required claim in session tokens signs everyone out at deploy unless old tokens can renew",
+      "tags": [
+        "auth",
+        "deploy"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 326,
+      "promoted_to": []
     }
   ],
   "edges": [
