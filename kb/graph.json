@@ -2016,6 +2016,32 @@
       ]
     },
     {
+      "id": "2026-10-24-a-picked-passthrough-drops-new-fields",
+      "type": "learning",
+      "summary": "A loader that picks fields to pass on drops every field added later, without an error",
+      "tags": [
+        "frontend",
+        "testing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 297,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-advertise-new-capabilities-from-the-api",
+      "type": "learning",
+      "summary": "When frontend and backend deploy separately, let the API say what it supports",
+      "tags": [
+        "deploy",
+        "api"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 282,
+      "promoted_to": []
+    },
+    {
       "id": "2026-10-24-dependabot-config-change-triggers-a-wave",
       "type": "learning",
       "summary": "Editing dependabot.yml makes Dependabot scan at once: expect a wave of PRs and their CI",
@@ -2026,6 +2052,19 @@
       "status": "raw",
       "source": "a private project",
       "tokens": 288,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-email-sign-in-links-wait-for-a-press",
+      "type": "learning",
+      "summary": "A sign-in link in an email must not sign in on load: mail scanners open links and run pages",
+      "tags": [
+        "security",
+        "auth"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 359,
       "promoted_to": []
     },
     {
@@ -2051,7 +2090,7 @@
       ],
       "status": "raw",
       "source": "a private project",
-      "tokens": 291,
+      "tokens": 290,
       "promoted_to": []
     },
     {
@@ -2065,6 +2104,19 @@
       "status": "raw",
       "source": "a private project",
       "tokens": 326,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-scripted-edits-can-delete-their-anchor",
+      "type": "learning",
+      "summary": "A scripted find-and-replace edit can silently delete the line it anchored on",
+      "tags": [
+        "workflow",
+        "editing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 287,
       "promoted_to": []
     }
   ],
