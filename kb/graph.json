@@ -244,19 +244,20 @@
     {
       "id": "estimate-runner-minutes",
       "type": "practice",
-      "summary": "Estimate a workflow's runner-minutes before merging what triggers it.",
+      "summary": "Estimate runner-minutes per trigger; one heavy run per release.",
       "concern": "ci",
       "stack": [
         "any"
       ],
       "severity": "should",
       "status": "active",
-      "seen": 2,
-      "tokens": 148,
-      "last_verified": "2026-10-19",
+      "seen": 3,
+      "tokens": 147,
+      "last_verified": "2026-10-25",
       "derived_from": [
         "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
-        "2026-10-19-run-the-slow-ci-job-once-per-pr"
+        "2026-10-19-run-the-slow-ci-job-once-per-pr",
+        "2026-10-25-one-release-pr-one-e2e-run"
       ],
       "implemented_by": [
         "plugins/agent-workflow/skills/actions-cost"
@@ -2118,6 +2119,22 @@
       "source": "a private project",
       "tokens": 287,
       "promoted_to": []
+    },
+    {
+      "id": "2026-10-25-one-release-pr-one-e2e-run",
+      "type": "learning",
+      "summary": "Batch related changes into one release PR, then run the expensive end-to-end suite once",
+      "tags": [
+        "ci",
+        "cost"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 484,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+        "kb/practices/estimate-runner-minutes.md"
+      ]
     }
   ],
   "edges": [
@@ -2364,6 +2381,11 @@
     {
       "from": "estimate-runner-minutes",
       "to": "2026-10-19-run-the-slow-ci-job-once-per-pr",
+      "type": "derived_from"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "2026-10-25-one-release-pr-one-e2e-run",
       "type": "derived_from"
     },
     {
@@ -3099,6 +3121,16 @@
     {
       "from": "2026-10-19-verify-motion-with-frames-not-stills",
       "to": "plugins/agent-workflow/skills/visual-loop/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-25-one-release-pr-one-e2e-run",
+      "to": "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-25-one-release-pr-one-e2e-run",
+      "to": "kb/practices/estimate-runner-minutes.md",
       "type": "promoted_to"
     }
   ]

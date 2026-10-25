@@ -56,12 +56,12 @@ workflows and recent run history, not a generic YAML recipe. Read
 
 ## 3. Reduce unnecessary work, not test coverage
 
-- Run fast checks on each PR update and heavy E2E once when ready, then rerun
-  after material changes before merge. Do not present old green E2E results as
-  proof of a newer commit.
-- Add `timeout-minutes`; measure retries, sleep, repeated installs, duplicate
-  builds, and oversized matrices before removing any tests. Do not truncate test
-  suites to hide runtime growth.
+- Fast checks every push; heavy E2E once per release. Make the release one PR,
+  merge related branches into it, and push review fixes to it: a "ready" or
+  label gate lets them ride along. Run touched specs locally, say so; re-run
+  only for a risky fix. Old green E2E proves nothing new.
+- Add `timeout-minutes`. Measure retries, sleeps, repeat installs, duplicate
+  builds and big matrices before removing a test; never truncate suites.
 - Use lockfile-keyed dependency caches, verify cache hit times, and do not
   cache secrets or untrusted executable state. Artifacts are for passing build
   outputs between jobs, not for hiding missing tests.
