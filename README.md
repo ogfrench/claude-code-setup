@@ -155,6 +155,45 @@ bash sync-to-repos.sh owner/name            # just one repo
 
 CI runs `node --test`, the public check on the pushed commits, plugin validation (the marketplace and each plugin) and an apply into an empty folder with stacks, on every PR and every push to `main`. `main` is protected: a PR is required, `check` must pass, and merge commits carry only the PR title. A real sync refuses to run unless the checkout is exactly `origin/main` and CI passed on that commit, so only what CI tested reaches the repos.
 
+## The sync bot
+
+Dependabot for this setup. `.github/workflows/sync.yml` runs `sync-to-repos.sh` every Monday,
+or now from Actions → sync → Run workflow. It opens a sync PR in each listed repo, or updates
+the one already open there, as a draft with the `skip-e2e` label where the repo has one. It
+opens a ready PR where drafts are not available. When the open PR already holds the same
+files, it pushes nothing, so the repo's CI does not run again for no change.
+Nothing is merged: the PRs wait for you. Weekly, not on every merge to `main`, because each
+refresh re-runs the target repo's CI, which costs minutes in a private repo. The same gate
+applies as by hand: only a `main` that passed `check` is synced.
+
+Logs here are public and the repo list is not, so the bot runs with `SYNC_QUIET=1`. It prints
+`repo 3 of 9` and a count, never a name, a PR link or an error's text. A failed repo is named
+by its position in the list: run `bash sync-to-repos.sh owner/name` on the laptop to see why.
+`test/sync-quiet.test.mjs` fails if a name gets through.
+
+A PR's description warns when a managed copy in that repo had been edited by hand, because
+the sync overwrites it.
+
+**Setting it up, once (GitHub settings, by you):**
+
+1. **Create a GitHub App** (Settings → Developer settings → GitHub Apps → New). Name it
+   anything, turn the webhook off, and give it these repository permissions: Contents read
+   and write, Pull requests read and write, Metadata read. Nothing else.
+2. **Install it on the listed repos only**, not on all repositories.
+3. **Create the `sync` environment** in this repo (Settings → Environments → New
+   environment). Under deployment branches and tags, choose "Selected branches and tags"
+   and add `main` only. That is what keeps the secrets away from any other branch, even one
+   whose copy of the workflow was edited.
+4. **Generate a private key** on the App's page. Then, in the `sync` environment (not the
+   repository-wide secrets):
+   - add the variable `SYNC_APP_ID` with the App's ID;
+   - add the secret `SYNC_APP_PRIVATE_KEY` with the whole `.pem` file;
+   - add the secret `SYNC_REPOS` with the contents of `repos.local.txt`.
+5. **Run it once by hand** from the Actions tab and read the summary.
+
+A repo added to the list needs both: a line in `SYNC_REPOS` and the App installed on it.
+`repos.local.txt` stays the list for runs from the laptop.
+
 ## Plugins
 
 | Plugin | Source |

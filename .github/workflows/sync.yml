@@ -1,0 +1,83 @@
+name: sync
+
+# Dependabot for this setup: every Monday, and on demand from the Actions tab, open or
+# refresh a sync PR in every repo on the list. One PR per repo, never merged here. Weekly,
+# like Dependabot, because each refresh re-runs the target repo's CI, which costs minutes
+# in a private repo; a sync on every merge to main would do that several times a day.
+#
+# Needs (see README, "The sync bot"), all in the `sync` environment, which only main may use:
+#   vars.SYNC_APP_ID             a GitHub App installed only on the repos to sync, with
+#   secrets.SYNC_APP_PRIVATE_KEY Contents and Pull requests read and write
+#   secrets.SYNC_REPOS           the list, in the format of repos.local.txt
+#
+# This repo is public, so are its Actions logs, and the list is private: the script runs
+# with SYNC_QUIET=1 and prints positions and counts only. Nothing from a pull request runs
+# here: there is no pull_request trigger, and the checkout is always main.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'ogfrench/claude-code-setup' && github.ref == 'refs/heads/main'
+    # The `if` is in this file, which a branch can edit. What keeps the secrets on main is
+    # the environment: its deployment branches are limited to main in the repo settings.
+    environment: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Token for the listed repos
+        id: app
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.SYNC_APP_ID }}
+          private-key: ${{ secrets.SYNC_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Commit as the App's bot
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          SLUG: ${{ steps.app.outputs.app-slug }}
+        run: |
+          id="$(gh api "/users/${SLUG}%5Bbot%5D" --jq .id)"
+          git config --global user.name "${SLUG}[bot]"
+          git config --global user.email "${id}+${SLUG}[bot]@users.noreply.github.com"
+          gh auth setup-git
+
+      - name: Sync
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GATE_GH_TOKEN: ${{ github.token }}
+          SYNC_REPOS: ${{ secrets.SYNC_REPOS }}
+          SYNC_QUIET: "1"
+          DRAFT: "1"
+          SYNC_LABELS: skip-e2e
+        run: |
+          set -o pipefail
+          # Outside the checkout: the script refuses to run on a checkout with stray files.
+          log="$RUNNER_TEMP/sync.log"
+          status=0
+          bash sync-to-repos.sh | tee "$log" || status=$?
+          { echo '### Sync'; echo; echo '```'; cat "$log"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
