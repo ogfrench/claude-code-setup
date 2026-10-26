@@ -41,7 +41,7 @@ Search every node: `grep -i <term> kb/index.jsonl`.
 ## Git and CI
 - [must] gate-push-on-exit-status: Push only after the gate's own exit status says green.
 - [should] compare-against-origin-main: Compare a change against origin/main after a fetch, never a local main.
-- [should] estimate-runner-minutes: Estimate a workflow's runner-minutes before merging what triggers it.
+- [should] estimate-runner-minutes: Estimate runner-minutes per trigger; one heavy run per release.
 - [should] merge-commits-on-shared-branches: Merge commits on shared branches; never rewrite someone else's history.
 - [should] missing-checks-mean-conflict: Checks missing from a PR usually mean a merge conflict.
 - [should] own-install-per-worktree: Every worktree gets its own install.
