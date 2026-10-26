@@ -11,6 +11,13 @@
 #        DRY_RUN=1 bash sync-to-repos.sh       # commit in a temp clone, push nothing
 #        KEEP=<dir> DRY_RUN=1 ...              # also keep each prepared clone in <dir>
 #        bash sync-to-repos.sh owner/name      # only these repos, not the list
+#        DRAFT=1 ...                           # open the PRs as drafts
+#        SYNC_LABELS=skip-e2e ...              # add these labels where the repo has them
+#
+# The sync workflow (.github/workflows/sync.yml) runs it with the list in SYNC_REPOS
+# (a secret, same format as the file) and SYNC_QUIET=1. This repo is public and so are
+# its Actions logs: quiet mode prints list positions and counts, never a repo's name,
+# a PR link or a command's error text.
 #
 # repos.local.txt: one repo per line, optionally followed by the stacks it uses, which
 # decide the practices it gets (see kb/_vocab.json). No stacks means the general ones only:
@@ -29,6 +36,13 @@ sync_one() {
   dir="$work/${repo##*/}"
   gh repo clone "$repo" "$dir" -- --quiet --depth 1 --branch "$base" 2>/dev/null
   git -C "$dir" checkout -q -b "$BRANCH"
+  # What the repo held before this sync: a hand-edited copy is about to be overwritten.
+  local before
+  before="$(node --input-type=module -e '
+    const { pathToFileURL } = await import("node:url");
+    const { checkSync } = await import(pathToFileURL(process.argv[1]).href);
+    console.log(checkSync(process.argv[2]).status);
+  ' "$HERE/lib/sync-status.mjs" "$dir" 2>/dev/null || echo unknown)"
 
   # `.CLAUDE` works on Windows and macOS but Claude on Linux (cloud sessions)
   # only reads `.claude`. Rename through git, in two steps, or a case-insensitive
@@ -67,6 +81,8 @@ sync_one() {
     echo "   already in sync"
     return 0
   fi
+  [[ "$before" == modified ]] && echo "   a managed copy had been edited in the repo; this sync overwrites it"
+
   git -C "$dir" commit -q -m "$SUBJECT
 
 From ogfrench/claude-code-setup. Skills are committed under .claude/
@@ -77,7 +93,7 @@ $renamed}
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   if [[ "${DRY_RUN:-0}" == 1 ]]; then
-    git -C "$dir" show --stat --format=%s HEAD | sed 's/^/   /'
+    [[ "${SYNC_QUIET:-0}" == 1 ]] || git -C "$dir" show --stat --format=%s HEAD | sed 's/^/   /'
     [[ -n "${KEEP:-}" ]] && cp -r "$dir" "$KEEP/"
     return 0
   fi
@@ -93,6 +109,15 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   fi
   git -C "$dir" push -q --force-with-lease="$BRANCH:$remote_sha" origin "$BRANCH"
 
+  local edited="" flags=() label have
+  [[ "$before" == modified ]] && edited="**A managed copy here had been edited by hand.** This sync overwrites it. If the edit should stay, make it in claude-code-setup and sync again."
+  [[ "${DRAFT:-0}" == 1 ]] && flags+=(--draft)
+  if [[ -n "${SYNC_LABELS:-}" ]]; then
+    have="$(gh label list --repo "$repo" --limit 200 --json name -q '.[].name' 2>/dev/null || true)"
+    for label in ${SYNC_LABELS//,/ }; do
+      grep -qxF -- "$label" <<<"$have" && flags+=(--label "$label")
+    done
+  fi
   local body="Synced from [ogfrench/claude-code-setup](https://github.com/ogfrench/claude-code-setup) by \`sync-to-repos.sh\`.
 
 - \`.claude/skills/\`: committed copies of the shared skills. Cloud sessions load these, but they never install plugins from project settings.
@@ -101,15 +126,22 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - \`.claude/claude-code-setup.json\`: lists the synced copies, so a skill removed upstream is removed here too. Records the source commit and a fingerprint, so drift can be detected read-only.${renamed:+
 - $renamed}
 
-Edit these in claude-code-setup, not here: the next sync overwrites the copies.
+Edit these in claude-code-setup, not here: the next sync overwrites the copies.${edited:+
+
+$edited}
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-  if ! out="$(gh pr create --repo "$repo" --base "$base" --head "$BRANCH" --title "$SUBJECT" --body "$body" 2>&1)"; then
+  if out="$(gh pr create --repo "$repo" --base "$base" --head "$BRANCH" --title "$SUBJECT" --body "$body" ${flags[@]+"${flags[@]}"} 2>&1)"; then
+    echo "   opened a PR"
+  else
     grep -q "already exists" <<<"$out" || { echo "$out" >&2; return 1; }
+    # Dependabot's way: the open PR now carries this sync, so refresh its description too.
     out="$(gh pr list --repo "$repo" --head "$BRANCH" --state open --json url -q '.[0].url')"
+    gh pr edit "$out" --body "$body" >/dev/null
+    echo "   updated the open PR"
   fi
   url="$(grep -o 'https://github.com/[^ ]*/pull/[0-9]*' <<<"$out" | tail -1)"
-  echo "   $url"
+  [[ "${SYNC_QUIET:-0}" == 1 ]] || echo "   $url"
   if [[ "${MERGE:-0}" == 1 ]]; then
     gh pr merge "$url" --squash --delete-branch >/dev/null
     echo "   merged"
@@ -130,7 +162,8 @@ if [[ "${DRY_RUN:-0}" != 1 ]]; then
     echo "Refusing: commit and push first, the checkout must equal origin/main." >&2
     exit 1
   fi
-  ci="$(gh run list -R ogfrench/claude-code-setup --workflow check.yml --commit "$head" --json conclusion -q '.[0].conclusion')"
+  # In the workflow, GH_TOKEN can only reach the target repos; this repo's own token reads CI.
+  ci="$(GH_TOKEN="${GATE_GH_TOKEN:-${GH_TOKEN:-}}" gh run list -R ogfrench/claude-code-setup --workflow check.yml --commit "$head" --json conclusion -q '.[0].conclusion')"
   if [[ "$ci" != "success" ]]; then
     echo "Refusing: CI on ${head:0:7} is '${ci:-not run yet}', not success." >&2
     exit 1
@@ -138,7 +171,7 @@ if [[ "${DRY_RUN:-0}" != 1 ]]; then
 fi
 
 LIST="$HERE/repos.local.txt"
-if ((! $#)) && [[ ! -f "$LIST" ]]; then
+if ((! $#)) && [[ -z "${SYNC_REPOS:-}" && ! -f "$LIST" ]]; then
   # The list used to be tracked as repos.txt. Recover it once from this clone's history.
   for c in $(git -C "$HERE" reflog --format=%H 2>/dev/null) $(git -C "$HERE" rev-list --all 2>/dev/null); do
     if git -C "$HERE" cat-file -e "$c:repos.txt" 2>/dev/null; then
@@ -149,18 +182,36 @@ if ((! $#)) && [[ ! -f "$LIST" ]]; then
   done
 fi
 if (($#)); then repos=("$@")
+elif [[ -n "${SYNC_REPOS:-}" ]]; then mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' <<<"$SYNC_REPOS")
 elif [[ -f "$LIST" ]]; then mapfile -t repos < <(grep -v -e '^#' -e '^\s*$' "$LIST")
 else
   echo "No repos.local.txt: list the repos to sync in it, one owner/name per line." >&2
   exit 1
 fi
-failed=()
+quiet="${SYNC_QUIET:-0}"
+failed=() n=0 changed=0
 for line in "${repos[@]}"; do
   line="${line%$'\r'}"
   read -r repo stacks _ <<<"$line"
-  echo "== $repo${stacks:+ ($stacks)}"
-  bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" || failed+=("$repo")
+  n=$((n + 1))
+  if [[ "$quiet" == 1 ]]; then
+    # Position in the list only. A command's error text can name the repo, so it is dropped.
+    echo "== repo $n of ${#repos[@]}"
+    if out="$(bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" 2>/dev/null)"; then
+      grep -E '^   (already in sync|opened a PR|updated the open PR|merged|a managed copy)' <<<"$out" || true
+      grep -qE '^   (opened|updated)' <<<"$out" && changed=$((changed + 1))
+    else
+      echo "   failed (run it from a laptop to see why)"
+      failed+=("$n")
+    fi
+  else
+    echo "== $repo${stacks:+ ($stacks)}"
+    bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" || failed+=("$repo")
+  fi
 done
+if [[ "$quiet" == 1 ]]; then
+  echo "${#repos[@]} repos: $changed with a sync PR opened or updated, ${#failed[@]} failed."
+fi
 if ((${#failed[@]})); then
   echo "Failed: ${failed[*]}" >&2
   exit 1
