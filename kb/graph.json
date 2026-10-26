@@ -2014,6 +2014,48 @@
       "promoted_to": [
         "plugins/agent-workflow/skills/visual-loop/SKILL.md"
       ]
+    },
+    {
+      "id": "2026-10-26-claim-a-one-shot-action-before-its-side-effects",
+      "type": "learning",
+      "summary": "Claim a one-shot action atomically before its side effects, and answer a retry with the first result",
+      "tags": [
+        "concurrency",
+        "api",
+        "idempotency"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 326,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-26-never-key-records-by-a-credential",
+      "type": "learning",
+      "summary": "Do not key a stored record by a value that is also a credential: hash it first",
+      "tags": [
+        "security",
+        "analytics",
+        "privacy"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 342,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-26-session-keys-share-one-ttl",
+      "type": "learning",
+      "summary": "Give every key a session writes one TTL, and test it by reading the TTLs back",
+      "tags": [
+        "redis",
+        "state",
+        "testing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 386,
+      "promoted_to": []
     }
   ],
   "edges": [
