@@ -7,11 +7,11 @@
 - **Compare a change against origin/main after a fetch, never a local main.** Nothing
   fast-forwards a local main in a clone worked through worktrees. Read the sha a review tool
   prints as its baseline. *(2026-10-18-review-baselines-come-from-the-remote)*
-- **Estimate a workflow's runner-minutes before merging what triggers it.** Jobs times
-  minutes times triggers. Build on demand, not a matrix. Slow job once per PR, at ready;
-  per-push job near a minute, watched for creep. Failing in seconds with no log is billing:
-  stop. *(2026-10-17-estimate-runner-minutes-before-merging-a-trigger)*
-  *(2026-10-19-run-the-slow-ci-job-once-per-pr)*
+- **Estimate runner-minutes per trigger; one heavy run per release.** Jobs times minutes
+  times triggers. On demand, not a matrix. One release, one PR: fixes pushed to it. Per-push
+  job near a minute. Fails fast, no log: billing.
+  *(2026-10-17-estimate-runner-minutes-before-merging-a-trigger)*
+  *(2026-10-19-run-the-slow-ci-job-once-per-pr)* *(2026-10-25-one-release-pr-one-e2e-run)*
 - **Merge commits on shared branches; never rewrite someone else's history.**
 - **Checks missing from a PR usually mean a merge conflict.** Look at the mergeable state
   first; merge the base in and push. *(2026-10-11-conflicted-pr-runs-no-workflows)*

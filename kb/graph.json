@@ -244,19 +244,20 @@
     {
       "id": "estimate-runner-minutes",
       "type": "practice",
-      "summary": "Estimate a workflow's runner-minutes before merging what triggers it.",
+      "summary": "Estimate runner-minutes per trigger; one heavy run per release.",
       "concern": "ci",
       "stack": [
         "any"
       ],
       "severity": "should",
       "status": "active",
-      "seen": 2,
-      "tokens": 148,
-      "last_verified": "2026-10-19",
+      "seen": 3,
+      "tokens": 147,
+      "last_verified": "2026-10-25",
       "derived_from": [
         "2026-10-17-estimate-runner-minutes-before-merging-a-trigger",
-        "2026-10-19-run-the-slow-ci-job-once-per-pr"
+        "2026-10-19-run-the-slow-ci-job-once-per-pr",
+        "2026-10-25-one-release-pr-one-e2e-run"
       ],
       "implemented_by": [
         "plugins/agent-workflow/skills/actions-cost"
@@ -2014,6 +2015,126 @@
       "promoted_to": [
         "plugins/agent-workflow/skills/visual-loop/SKILL.md"
       ]
+    },
+    {
+      "id": "2026-10-24-a-picked-passthrough-drops-new-fields",
+      "type": "learning",
+      "summary": "A loader that picks fields to pass on drops every field added later, without an error",
+      "tags": [
+        "frontend",
+        "testing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 297,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-advertise-new-capabilities-from-the-api",
+      "type": "learning",
+      "summary": "When frontend and backend deploy separately, let the API say what it supports",
+      "tags": [
+        "deploy",
+        "api"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 282,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-dependabot-config-change-triggers-a-wave",
+      "type": "learning",
+      "summary": "Editing dependabot.yml makes Dependabot scan at once: expect a wave of PRs and their CI",
+      "tags": [
+        "ci",
+        "cost"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 288,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-email-sign-in-links-wait-for-a-press",
+      "type": "learning",
+      "summary": "A sign-in link in an email must not sign in on load: mail scanners open links and run pages",
+      "tags": [
+        "security",
+        "auth"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 359,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-libpq-url-params-break-asyncpg",
+      "type": "learning",
+      "summary": "A libpq connection URL is not an asyncpg URL: switching the driver can drop the database",
+      "tags": [
+        "database",
+        "deploy"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 379,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-name-inputs-for-pre-hydration-submit",
+      "type": "learning",
+      "summary": "A form handled in JavaScript still needs named inputs: before hydration the browser submits it",
+      "tags": [
+        "frontend",
+        "testing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 290,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-new-token-claim-must-not-strand-old-tokens",
+      "type": "learning",
+      "summary": "A new required claim in session tokens signs everyone out at deploy unless old tokens can renew",
+      "tags": [
+        "auth",
+        "deploy"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 326,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-24-scripted-edits-can-delete-their-anchor",
+      "type": "learning",
+      "summary": "A scripted find-and-replace edit can silently delete the line it anchored on",
+      "tags": [
+        "workflow",
+        "editing"
+      ],
+      "status": "raw",
+      "source": "a private project",
+      "tokens": 287,
+      "promoted_to": []
+    },
+    {
+      "id": "2026-10-25-one-release-pr-one-e2e-run",
+      "type": "learning",
+      "summary": "Batch related changes into one release PR, then run the expensive end-to-end suite once",
+      "tags": [
+        "ci",
+        "cost"
+      ],
+      "status": "promoted",
+      "source": "a private project",
+      "tokens": 484,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+        "kb/practices/estimate-runner-minutes.md"
+      ]
     }
   ],
   "edges": [
@@ -2260,6 +2381,11 @@
     {
       "from": "estimate-runner-minutes",
       "to": "2026-10-19-run-the-slow-ci-job-once-per-pr",
+      "type": "derived_from"
+    },
+    {
+      "from": "estimate-runner-minutes",
+      "to": "2026-10-25-one-release-pr-one-e2e-run",
       "type": "derived_from"
     },
     {
@@ -2995,6 +3121,16 @@
     {
       "from": "2026-10-19-verify-motion-with-frames-not-stills",
       "to": "plugins/agent-workflow/skills/visual-loop/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-25-one-release-pr-one-e2e-run",
+      "to": "plugins/agent-workflow/skills/actions-cost/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-25-one-release-pr-one-e2e-run",
+      "to": "kb/practices/estimate-runner-minutes.md",
       "type": "promoted_to"
     }
   ]
