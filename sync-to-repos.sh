@@ -28,11 +28,26 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 BRANCH="chore/claude-code-setup"
 SUBJECT="Sync shared Claude Code setup"
 
-# A sync PR may still be a draft, and a draft cannot be merged: mark it ready first.
+# A sync PR may still be a draft, and a draft cannot be merged: mark it ready first. Right
+# after a push GitHub is still working out whether the PR can merge, and a repo's rules may
+# require checks that take minutes. So: try for about a minute, then ask GitHub to merge it
+# when the checks pass, and if the repo does not allow that, leave it ready. None of these
+# fails the run; a later run with merge ticked tries again.
 merge_pr() {
+  local try
   gh pr ready "$1" >/dev/null 2>&1 || true
-  gh pr merge "$1" --squash --delete-branch >/dev/null
-  echo "   merged"
+  for try in 1 2 3 4 5 6; do
+    if gh pr merge "$1" --squash --delete-branch >/dev/null 2>&1; then
+      echo "   merged"
+      return 0
+    fi
+    sleep "${SYNC_MERGE_WAIT:-10}"
+  done
+  if gh pr merge "$1" --squash --delete-branch --auto >/dev/null 2>&1; then
+    echo "   set to merge when its required checks pass"
+  else
+    echo "   ready, not merged: its checks or branch rules are still pending"
+  fi
 }
 
 # One repo, in its own process, so a failure aborts that repo and nothing else.
@@ -237,7 +252,7 @@ for line in "${repos[@]}"; do
     # Position in the list only. A command's error text can name the repo, so it is dropped.
     echo "== repo $n of ${#repos[@]}"
     if out="$(bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" 2>/dev/null)"; then
-      grep -E '^   (already in sync|the open sync PR already has this|opened a PR|updated the open PR|merged|a managed copy)' <<<"$out" || true
+      grep -E '^   (already in sync|the open sync PR already has this|opened a PR|updated the open PR|merged|set to merge when|ready, not merged|a managed copy)' <<<"$out" || true
       grep -qE '^   (opened|updated)' <<<"$out" && changed=$((changed + 1))
       grep -qx '   merged' <<<"$out" && merged=$((merged + 1))
     else
