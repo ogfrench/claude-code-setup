@@ -109,6 +109,17 @@ sync_one() {
     echo "   already in sync"
     return 0
   fi
+  # The copies and the knowledge folder are unchanged and only the recorded central commit
+  # would move, and the repo is within SYNC_BUFFER commits of it (checkSync says current):
+  # no PR for that alone. Past the buffer, it is refreshed.
+  local moved
+  moved="$(git -C "$dir" diff --cached -U0 -- .claude/claude-code-setup.json | grep -E '^[+-]' \
+           | grep -vE '^(\+\+\+|---) ' | grep -v '"source_revision"' || true)"
+  if [[ "$before" == current && -z "$moved" \
+        && "$(git -C "$dir" diff --cached --name-only)" == ".claude/claude-code-setup.json" ]]; then
+    echo "   in sync within the buffer: only the recorded commit would move"
+    return 0
+  fi
   [[ "$before" == modified ]] && echo "   a managed copy had been edited in the repo; this sync overwrites it"
 
   git -C "$dir" commit -q -m "$SUBJECT
@@ -252,7 +263,7 @@ for line in "${repos[@]}"; do
     # Position in the list only. A command's error text can name the repo, so it is dropped.
     echo "== repo $n of ${#repos[@]}"
     if out="$(bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" 2>/dev/null)"; then
-      grep -E '^   (already in sync|the open sync PR already has this|opened a PR|updated the open PR|merged|set to merge when|ready, not merged|a managed copy)' <<<"$out" || true
+      grep -E '^   (already in sync|in sync within the buffer|the open sync PR already has this|opened a PR|updated the open PR|merged|set to merge when|ready, not merged|a managed copy)' <<<"$out" || true
       grep -qE '^   (opened|updated)' <<<"$out" && changed=$((changed + 1))
       grep -qx '   merged' <<<"$out" && merged=$((merged + 1))
     else

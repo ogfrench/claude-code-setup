@@ -176,6 +176,13 @@ by its position in the list: run `bash sync-to-repos.sh owner/name` on the lapto
 A PR's description warns when a managed copy in that repo had been edited by hand, because
 the sync overwrites it.
 
+**The buffer.** Each repo records the central commit it was synced from. Most central commits
+change no synced file (a script, a README, a learning), so a repo whose files all match and
+that is at most `SYNC_BUFFER` (2, in `lib/sync-status.mjs`) commits behind gets no PR: the
+bot prints "in sync within the buffer". A third such commit refreshes it, so the record never
+drifts far. The drift checker uses the same rule and calls such a repo current. Any change to
+a synced file still syncs at once.
+
 **Setting it up, once (GitHub settings, by you):**
 
 1. **Create a GitHub App** (Settings → Developer settings → GitHub Apps → New). Name it
