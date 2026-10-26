@@ -7,7 +7,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { apply, deepMerge } from "../lib/apply.mjs";
 import { BUDGET } from "../lib/kb.mjs";
-import { checkSync, sourceRevision } from "../lib/sync-status.mjs";
+import { checkSync, sourceRevision, SYNC_BUFFER } from "../lib/sync-status.mjs";
+import { execFileSync } from "node:child_process";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "ccs-test-"));
@@ -269,4 +270,36 @@ test("sync checker refuses untrusted managed paths", () => {
   manifest.copied = ["../outside"];
   write(file, manifest);
   assert.equal(checkSync(t).status, "modified");
+});
+
+test("a copy up to SYNC_BUFFER central commits behind counts as current; one more is outdated", () => {
+  // A throwaway central history: c0..c4, the checkout at c4.
+  const root = tmp();
+  const git = (...a) => execFileSync("git", ["-C", root, ...a], { encoding: "utf8" }).trim();
+  git("init", "-q", "-b", "main");
+  const shas = [];
+  for (let i = 0; i <= SYNC_BUFFER + 2; i++) {
+    git("-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-q", "--allow-empty", "-m", `c${i}`);
+    shas.push(git("rev-parse", "HEAD"));
+  }
+  const head = shas.at(-1);
+  const t = tmp();
+  apply(t);
+  const stamp = path.join(t, ".claude/claude-code-setup.json");
+  const at = (sha) => {
+    write(stamp, { ...read(stamp), source_revision: sha });
+    return checkSync(t, root);
+  };
+  assert.equal(at(head).status, "current");
+  const within = at(shas.at(-1 - SYNC_BUFFER));
+  assert.equal(within.status, "current");
+  assert.equal(within.behind, SYNC_BUFFER);
+  const past = at(shas.at(-2 - SYNC_BUFFER));
+  assert.equal(past.status, "outdated");
+  assert.equal(past.behind, SYNC_BUFFER + 1);
+  assert.equal(at("0".repeat(40)).status, "outdated", "a commit outside the history is not within the buffer");
+  // Within the buffer, a hand edit still shows.
+  write(stamp, { ...read(stamp), source_revision: shas.at(-2) });
+  fs.appendFileSync(path.join(t, ".claude/skills/actions-cost/SKILL.md"), "\nlocal change\n");
+  assert.equal(checkSync(t, root).status, "modified");
 });
