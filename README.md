@@ -159,7 +159,9 @@ CI runs `node --test`, the public check on the pushed commits, plugin validation
 
 Dependabot for this setup. `.github/workflows/sync.yml` runs `sync-to-repos.sh` every Monday,
 or now from Actions → sync → Run workflow. It opens a sync PR in each listed repo, or updates
-the one already open there, as a draft with the `skip-e2e` label where the repo has one.
+the one already open there, as a draft with the `skip-e2e` label where the repo has one. It
+opens a ready PR where drafts are not available. When the open PR already holds the same
+files, it pushes nothing, so the repo's CI does not run again for no change.
 Nothing is merged: the PRs wait for you. Weekly, not on every merge to `main`, because each
 refresh re-runs the target repo's CI, which costs minutes in a private repo. The same gate
 applies as by hand: only a `main` that passed `check` is synced.
@@ -178,12 +180,16 @@ the sync overwrites it.
    anything, turn the webhook off, and give it these repository permissions: Contents read
    and write, Pull requests read and write, Metadata read. Nothing else.
 2. **Install it on the listed repos only**, not on all repositories.
-3. **Generate a private key** on the App's page. Then, in this repo's Settings → Secrets and
-   variables → Actions:
+3. **Create the `sync` environment** in this repo (Settings → Environments → New
+   environment). Under deployment branches and tags, choose "Selected branches and tags"
+   and add `main` only. That is what keeps the secrets away from any other branch, even one
+   whose copy of the workflow was edited.
+4. **Generate a private key** on the App's page. Then, in the `sync` environment (not the
+   repository-wide secrets):
    - add the variable `SYNC_APP_ID` with the App's ID;
    - add the secret `SYNC_APP_PRIVATE_KEY` with the whole `.pem` file;
    - add the secret `SYNC_REPOS` with the contents of `repos.local.txt`.
-4. **Run it once by hand** from the Actions tab and read the summary.
+5. **Run it once by hand** from the Actions tab and read the summary.
 
 A repo added to the list needs both: a line in `SYNC_REPOS` and the App installed on it.
 `repos.local.txt` stays the list for runs from the laptop.

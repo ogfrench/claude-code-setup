@@ -57,6 +57,12 @@ sync_one() {
     renamed="Renamed \`$odd/\` to \`.claude/\`: Claude on Linux, which cloud sessions run on, only reads the lowercase name."
   fi
 
+  # A tracked symlink here would make the copy write outside the clone.
+  local link
+  for link in .claude .claude/skills .claude/agents .claude/commands .claude/knowledge CHANGELOG.md; do
+    if [[ -L "$dir/$link" ]]; then echo "   $link is a symlink, not syncing this repo" >&2; return 1; fi
+  done
+
   # Run apply outside a process substitution so its failure stops this repo.
   managed="$(node "$HERE/lib/apply.mjs" "$dir" "$stacks")"
   # -f because some repos gitignore .claude/; only the paths apply.mjs manages are forced in.
@@ -106,16 +112,25 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
       echo "   $BRANCH has someone else's commit on it, not overwriting" >&2
       return 1
     fi
+    # Same files as the sync already pushed: pushing again would only re-run that repo's
+    # CI. Only the managed paths count, so a moved base branch alone does not re-push.
+    local paths=()
+    mapfile -t paths < <(grep -v '^$' <<<"$managed"; [[ -f "$dir/CHANGELOG.md" ]] && echo CHANGELOG.md)
+    if git -C "$dir" diff --quiet FETCH_HEAD HEAD -- "${paths[@]}"; then
+      echo "   the open sync PR already has this"
+      return 0
+    fi
   fi
   git -C "$dir" push -q --force-with-lease="$BRANCH:$remote_sha" origin "$BRANCH"
 
-  local edited="" flags=() label have
+  local edited="" flags=() labels=() label have num
   [[ "$before" == modified ]] && edited="**A managed copy here had been edited by hand.** This sync overwrites it. If the edit should stay, make it in claude-code-setup and sync again."
   [[ "${DRAFT:-0}" == 1 ]] && flags+=(--draft)
   if [[ -n "${SYNC_LABELS:-}" ]]; then
-    have="$(gh label list --repo "$repo" --limit 200 --json name -q '.[].name' 2>/dev/null || true)"
-    for label in ${SYNC_LABELS//,/ }; do
-      grep -qxF -- "$label" <<<"$have" && flags+=(--label "$label")
+    have="$(gh label list --repo "$repo" --limit 1000 --json name -q '.[].name' 2>/dev/null || true)"
+    IFS=, read -ra labels <<<"$SYNC_LABELS"
+    for label in "${labels[@]}"; do
+      if grep -qxF -- "$label" <<<"$have"; then flags+=(--label "$label"); fi
     done
   fi
   local body="Synced from [ogfrench/claude-code-setup](https://github.com/ogfrench/claude-code-setup) by \`sync-to-repos.sh\`.
@@ -131,16 +146,27 @@ Edit these in claude-code-setup, not here: the next sync overwrites the copies.$
 $edited}
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-  if out="$(gh pr create --repo "$repo" --base "$base" --head "$BRANCH" --title "$SUBJECT" --body "$body" ${flags[@]+"${flags[@]}"} 2>&1)"; then
+  local ready=() f
+  for f in ${flags[@]+"${flags[@]}"}; do [[ "$f" == --draft ]] || ready+=("$f"); done
+  create() { gh pr create --repo "$repo" --base "$base" --head "$BRANCH" --title "$SUBJECT" --body "$body" "$@" 2>&1; }
+  if out="$(create ${flags[@]+"${flags[@]}"})"; then
     echo "   opened a PR"
-  else
-    grep -q "already exists" <<<"$out" || { echo "$out" >&2; return 1; }
+  elif [[ "${DRAFT:-0}" == 1 ]] && grep -qi "draft" <<<"$out" \
+       && out="$(create ${ready[@]+"${ready[@]}"})"; then
+    # Draft PRs are not on every plan for a private repo: open it ready instead.
+    echo "   opened a PR (drafts not available there)"
+  elif grep -q "already exists" <<<"$out"; then
     # Dependabot's way: the open PR now carries this sync, so refresh its description too.
-    out="$(gh pr list --repo "$repo" --head "$BRANCH" --state open --json url -q '.[0].url')"
-    gh pr edit "$out" --body "$body" >/dev/null
+    # REST, which needs only Pull requests write; `gh pr edit` also reads project fields.
+    num="$(gh pr list --repo "$repo" --head "$BRANCH" --state open --json number -q '.[0].number')"
+    gh api -X PATCH "repos/$repo/pulls/$num" -f body="$body" >/dev/null
+    out="https://github.com/$repo/pull/$num"
     echo "   updated the open PR"
+  else
+    echo "$out" >&2
+    return 1
   fi
-  url="$(grep -o 'https://github.com/[^ ]*/pull/[0-9]*' <<<"$out" | tail -1)"
+  url="$(grep -o 'https://github.com/[^ ]*/pull/[0-9]*' <<<"$out" | tail -1 || true)"
   [[ "${SYNC_QUIET:-0}" == 1 ]] || echo "   $url"
   if [[ "${MERGE:-0}" == 1 ]]; then
     gh pr merge "$url" --squash --delete-branch >/dev/null
@@ -188,6 +214,10 @@ else
   echo "No repos.local.txt: list the repos to sync in it, one owner/name per line." >&2
   exit 1
 fi
+if ((! ${#repos[@]})); then
+  echo "The repo list is empty." >&2
+  exit 1
+fi
 quiet="${SYNC_QUIET:-0}"
 failed=() n=0 changed=0
 for line in "${repos[@]}"; do
@@ -198,7 +228,7 @@ for line in "${repos[@]}"; do
     # Position in the list only. A command's error text can name the repo, so it is dropped.
     echo "== repo $n of ${#repos[@]}"
     if out="$(bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" 2>/dev/null)"; then
-      grep -E '^   (already in sync|opened a PR|updated the open PR|merged|a managed copy)' <<<"$out" || true
+      grep -E '^   (already in sync|the open sync PR already has this|opened a PR|updated the open PR|merged|a managed copy)' <<<"$out" || true
       grep -qE '^   (opened|updated)' <<<"$out" && changed=$((changed + 1))
     else
       echo "   failed (run it from a laptop to see why)"

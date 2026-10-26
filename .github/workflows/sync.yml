@@ -5,7 +5,7 @@ name: sync
 # like Dependabot, because each refresh re-runs the target repo's CI, which costs minutes
 # in a private repo; a sync on every merge to main would do that several times a day.
 #
-# Needs (see README, "The sync bot"):
+# Needs (see README, "The sync bot"), all in the `sync` environment, which only main may use:
 #   vars.SYNC_APP_ID             a GitHub App installed only on the repos to sync, with
 #   secrets.SYNC_APP_PRIVATE_KEY Contents and Pull requests read and write
 #   secrets.SYNC_REPOS           the list, in the format of repos.local.txt
@@ -29,8 +29,10 @@ concurrency:
 
 jobs:
   sync:
-    # Only main's copy of this file runs with the secrets, even when dispatched by hand.
     if: github.repository == 'ogfrench/claude-code-setup' && github.ref == 'refs/heads/main'
+    # The `if` is in this file, which a branch can edit. What keeps the secrets on main is
+    # the environment: its deployment branches are limited to main in the repo settings.
+    environment: sync
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -50,6 +52,8 @@ jobs:
           app-id: ${{ vars.SYNC_APP_ID }}
           private-key: ${{ secrets.SYNC_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Commit as the App's bot
         env:
