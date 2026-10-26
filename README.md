@@ -178,8 +178,9 @@ the sync overwrites it.
 
 **The buffer.** Each repo records the central commit it was synced from. Most central commits
 change no synced file (a script, a README, a learning), so a repo whose files all match and
-that is at most `SYNC_BUFFER` (2, in `lib/sync-status.mjs`) commits behind gets no PR: the
-bot prints "in sync within the buffer". A third such commit refreshes it, so the record never
+that is at most `SYNC_BUFFER` (2, in `lib/sync-status.mjs`) changes behind gets no PR: the
+bot prints "in sync within the buffer". A change is a commit on `main`'s own line, so a PR
+merged with a merge commit counts once. A third change refreshes it, so the record never
 drifts far. The drift checker uses the same rule and calls such a repo current. Any change to
 a synced file still syncs at once.
 

@@ -7,7 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { apply, deepMerge } from "../lib/apply.mjs";
 import { BUDGET } from "../lib/kb.mjs";
-import { checkSync, sourceRevision, SYNC_BUFFER } from "../lib/sync-status.mjs";
+import { checkSync, commitsBehind, sourceRevision, SYNC_BUFFER } from "../lib/sync-status.mjs";
 import { execFileSync } from "node:child_process";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -302,4 +302,19 @@ test("a copy up to SYNC_BUFFER central commits behind counts as current; one mor
   write(stamp, { ...read(stamp), source_revision: shas.at(-2) });
   fs.appendFileSync(path.join(t, ".claude/skills/actions-cost/SKILL.md"), "\nlocal change\n");
   assert.equal(checkSync(t, root).status, "modified");
+});
+
+test("the buffer counts merged PRs, not the commits inside them", () => {
+  const root = tmp();
+  const git = (...a) => execFileSync("git", ["-C", root, "-c", "user.name=t", "-c", "user.email=t@example.com", ...a], { encoding: "utf8" }).trim();
+  git("init", "-q", "-b", "main");
+  git("commit", "-q", "--allow-empty", "-m", "base");
+  const base = git("rev-parse", "HEAD");
+  // One PR with two commits, merged with a merge commit: one change on main's line.
+  git("checkout", "-q", "-b", "pr");
+  git("commit", "-q", "--allow-empty", "-m", "pr 1");
+  git("commit", "-q", "--allow-empty", "-m", "pr 2");
+  git("checkout", "-q", "main");
+  git("merge", "-q", "--no-ff", "-m", "Merge PR", "pr");
+  assert.equal(commitsBehind(root, base, git("rev-parse", "HEAD")), 1);
 });
