@@ -1,7 +1,9 @@
 name: sync
 
-# Dependabot for this setup: every Monday, and on demand from the Actions tab, open or
-# refresh a sync PR in every repo on the list. One PR per repo, never merged here. Weekly,
+# Dependabot for this setup: every Sunday at 05:00 UTC (06:00 in Amsterdam in winter, 07:00
+# in summer), and on demand from the Actions tab, open or refresh a sync PR in every repo on
+# the list. One PR per repo. The scheduled run never merges; a run by hand can, if its
+# "merge" box is ticked: each sync PR is marked ready and squash-merged. Weekly,
 # like Dependabot, because each refresh re-runs the target repo's CI, which costs minutes
 # in a private repo; a sync on every merge to main would do that several times a day.
 #
@@ -16,8 +18,13 @@ name: sync
 
 on:
   schedule:
-    - cron: "17 6 * * 1"
+    - cron: "0 5 * * 0"
   workflow_dispatch:
+    inputs:
+      merge:
+        description: Also mark each sync PR ready and squash-merge it
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -72,6 +79,8 @@ jobs:
           SYNC_REPOS: ${{ secrets.SYNC_REPOS }}
           SYNC_QUIET: "1"
           DRAFT: "1"
+          # Empty on the scheduled run, so it never merges.
+          MERGE: ${{ inputs.merge && '1' || '0' }}
           SYNC_LABELS: skip-e2e
         run: |
           set -o pipefail

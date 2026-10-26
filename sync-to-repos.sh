@@ -7,7 +7,7 @@
 # and its .mcp.json. Local sessions also get the plugins through the marketplace.
 #
 # Usage: bash sync-to-repos.sh                 # open PRs
-#        MERGE=1 bash sync-to-repos.sh         # open and squash-merge them
+#        MERGE=1 bash sync-to-repos.sh         # open (or find) them, mark them ready and squash-merge
 #        DRY_RUN=1 bash sync-to-repos.sh       # commit in a temp clone, push nothing
 #        KEEP=<dir> DRY_RUN=1 ...              # also keep each prepared clone in <dir>
 #        bash sync-to-repos.sh owner/name      # only these repos, not the list
@@ -27,6 +27,13 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BRANCH="chore/claude-code-setup"
 SUBJECT="Sync shared Claude Code setup"
+
+# A sync PR may still be a draft, and a draft cannot be merged: mark it ready first.
+merge_pr() {
+  gh pr ready "$1" >/dev/null 2>&1 || true
+  gh pr merge "$1" --squash --delete-branch >/dev/null
+  echo "   merged"
+}
 
 # One repo, in its own process, so a failure aborts that repo and nothing else.
 sync_one() {
@@ -118,6 +125,9 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
     mapfile -t paths < <(grep -v '^$' <<<"$managed"; [[ -f "$dir/CHANGELOG.md" ]] && echo CHANGELOG.md)
     if git -C "$dir" diff --quiet FETCH_HEAD HEAD -- "${paths[@]}"; then
       echo "   the open sync PR already has this"
+      if [[ "${MERGE:-0}" == 1 ]]; then
+        merge_pr "$(gh pr list --repo "$repo" --head "$BRANCH" --state open --json url -q '.[0].url')"
+      fi
       return 0
     fi
   fi
@@ -169,8 +179,7 @@ $edited}
   url="$(grep -o 'https://github.com/[^ ]*/pull/[0-9]*' <<<"$out" | tail -1 || true)"
   [[ "${SYNC_QUIET:-0}" == 1 ]] || echo "   $url"
   if [[ "${MERGE:-0}" == 1 ]]; then
-    gh pr merge "$url" --squash --delete-branch >/dev/null
-    echo "   merged"
+    merge_pr "$url"
   fi
 }
 
@@ -219,7 +228,7 @@ if ((! ${#repos[@]})); then
   exit 1
 fi
 quiet="${SYNC_QUIET:-0}"
-failed=() n=0 changed=0
+failed=() n=0 changed=0 merged=0
 for line in "${repos[@]}"; do
   line="${line%$'\r'}"
   read -r repo stacks _ <<<"$line"
@@ -230,6 +239,7 @@ for line in "${repos[@]}"; do
     if out="$(bash "$HERE/sync-to-repos.sh" --one "$repo" "${stacks:-}" 2>/dev/null)"; then
       grep -E '^   (already in sync|the open sync PR already has this|opened a PR|updated the open PR|merged|a managed copy)' <<<"$out" || true
       grep -qE '^   (opened|updated)' <<<"$out" && changed=$((changed + 1))
+      grep -qx '   merged' <<<"$out" && merged=$((merged + 1))
     else
       echo "   failed (run it from a laptop to see why)"
       failed+=("$n")
@@ -240,7 +250,7 @@ for line in "${repos[@]}"; do
   fi
 done
 if [[ "$quiet" == 1 ]]; then
-  echo "${#repos[@]} repos: $changed with a sync PR opened or updated, ${#failed[@]} failed."
+  echo "${#repos[@]} repos: $changed with a sync PR opened or updated, $merged merged, ${#failed[@]} failed."
 fi
 if ((${#failed[@]})); then
   echo "Failed: ${failed[*]}" >&2
