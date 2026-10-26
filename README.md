@@ -157,12 +157,14 @@ CI runs `node --test`, the public check on the pushed commits, plugin validation
 
 ## The sync bot
 
-Dependabot for this setup. `.github/workflows/sync.yml` runs `sync-to-repos.sh` every Monday,
-or now from Actions → sync → Run workflow. It opens a sync PR in each listed repo, or updates
+Dependabot for this setup. `.github/workflows/sync.yml` runs `sync-to-repos.sh` every Sunday at
+05:00 UTC (06:00 in Amsterdam in winter, 07:00 in summer: Actions schedules are UTC only), or
+now from Actions → sync → Run workflow. Tick **merge** on a run by hand to also mark every sync
+PR ready and squash-merge it; the scheduled run never merges. It opens a sync PR in each listed repo, or updates
 the one already open there, as a draft with the `skip-e2e` label where the repo has one. It
 opens a ready PR where drafts are not available. When the open PR already holds the same
 files, it pushes nothing, so the repo's CI does not run again for no change.
-Nothing is merged: the PRs wait for you. Weekly, not on every merge to `main`, because each
+Unless you tick merge, nothing is merged: the PRs wait for you. Weekly, not on every merge to `main`, because each
 refresh re-runs the target repo's CI, which costs minutes in a private repo. The same gate
 applies as by hand: only a `main` that passed `check` is synced.
 
