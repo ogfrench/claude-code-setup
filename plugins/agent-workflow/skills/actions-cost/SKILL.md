@@ -21,7 +21,8 @@ workflows and recent run history, not a generic YAML recipe. Read
    concurrency groups. Identify jobs that repeat on the PR and again on merge.
 3. Inspect actual job durations and counts: `gh run list`, `gh run view --json jobs`,
    GitHub MCP, or Actions > a run > Usage. Runner-minutes are the **sum of job
-   times**, not workflow wall time. GitHub rounds each job up to a whole minute.
+   times**, not workflow wall time. For billable private-repo GitHub-hosted jobs,
+   GitHub reports execution minutes rounded up per job; apply current runner rates.
 4. Establish repo owner, public/private status, runner type, plan allowance,
    remaining usage, storage, and budgets. Do not infer a user's personal billing
    settings from a repo. Check current GitHub pricing, not a stale quoted rate.

@@ -12,7 +12,11 @@ It is also a living record of what working with Claude has taught me. Lessons ar
 curl -fsSL https://raw.githubusercontent.com/ogfrench/claude-code-setup/main/setup-user.sh | bash
 ```
 
-Without it, a cloud session has no plugins at all, because cloud sessions never install plugins from a repo's settings.
+Cloud sessions do not install plugins solely because a repository's settings enable them.
+Account-synced skills can load separately, and the rules vary for project cloud threads.
+The setup script remains the explicit path for this repository's pinned plugins.
+Check the current [skill loading rules](https://code.claude.com/docs/en/skills) before assuming
+that repository, plugin and account skills are equivalent.
 
 **Each repo, for anyone: `sync-to-repos.sh`.** It commits the skills into each repo's `.claude/skills/` and merges `project/settings.json`, so a teammate's session, or a cloud session without the setup script, still gets them. Repos only enable team-useful plugins. Personal modes such as caveman and ponytail stay in `user/plugins.txt`, so nobody else is switched into them.
 
@@ -45,6 +49,15 @@ The source of truth is this repo. The copies in each project are overwritten on 
 | `CLAUDE.md` | How Claude keeps the knowledge base: the public-repo rule and the promotion ladder | not synced |
 
 Merging keeps everything a repo already has. Objects merge key by key, arrays gain the entries they lack, and a value the repo already set wins, so a repo's own permissions, hooks and disabled plugins survive. Merging never removes anything, so to take a key back out, list it in `project/retired.json`. Copies are listed in `.claude/claude-code-setup.json` inside each repo. A skill deleted or renamed here is therefore removed there on the next sync, while skills a repo wrote itself are never touched.
+
+## Current architecture review
+
+The [October 2026 research and skill inventory](docs/claude-practices-2026-10.md)
+records a source-checked review of our skills and third-party plugins. Default
+to one main agent loop, keep reusable know-how in on-demand skills and use tools
+for live actions. Subagents require an evaluation advantage, not just a cheaper model.
+Nothing in this review automatically uninstalls a plugin or rewrites project copies;
+the sync and installation steps remain explicit.
 
 ## Adding things
 
