@@ -43,6 +43,10 @@ Parallel implementation | Sequential main loop | Independent worktrees and measu
 
 ## Documented external plugins
 
+The table below reviews what this repository **declares and describes**, not a
+fresh inspection of every pinned upstream plugin implementation. Review upstream
+source and permissions before changing any pin or enabling new tools.
+
 | Group | Plugins | Review decision |
 | --- | --- | --- |
 | Agent-heavy workflows | superpowers, code-review | No automatic parallel orchestration; compare their output/cost against main-loop review |
@@ -71,8 +75,9 @@ not an authorized automatic migration. Keep current settings unchanged here.
 4. Track completion, rule violations, mandatory lookups, correct skill/tool
    invocation, manual correction, latency and total spend. No invented scores.
 5. Keep or revert based on regressions, especially correctness and security.
-6. Use `claude plugin eval` for plugin-level with/without comparisons on
-   compatible versions. Validate each plugin's actual CLI support before use.
+6. Use `claude plugin eval` for plugin-level with/without comparisons (Claude
+   Code 2.1.269 or later). Run it explicitly because it makes billable model
+   calls. An initial, unrun suite lives in `plugins/agent-workflow/evals/`.
    Use `/skill-doctor` for discovery/usage and `skill-creator` for authoring
    iterations. These are not substitutes for task-level outcomes.
 7. Review prompt-injection and external skill trust. Model instructions do
@@ -115,3 +120,8 @@ and integrity review before making that path more automatic.
 Review date: 2026-10-28. Source-verified advice is not a result from live
 Claude Code skill evals or any production experiment. No project copies have
 been synchronized and no plugin was installed or removed.
+
+To run the plugin's initial cases from its directory: `claude plugin eval . --no-publish`.
+Start with `--runs 1` to validate prompts and graders, then use repeated runs
+before promoting a behavioral claim. Do not publish or copy model transcripts
+into this public repository.

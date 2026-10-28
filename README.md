@@ -18,7 +18,7 @@ The setup script remains the explicit path for this repository's pinned plugins.
 Check the current [skill loading rules](https://code.claude.com/docs/en/skills) before assuming
 that repository, plugin and account skills are equivalent.
 
-**Each repo, for anyone: `sync-to-repos.sh`.** It commits the skills into each repo's `.claude/skills/` and merges `project/settings.json`, so a teammate's session, or a cloud session without the setup script, still gets them. Repos only enable team-useful plugins. Personal modes such as caveman and ponytail stay in `user/plugins.txt`, so nobody else is switched into them.
+**Each repo, for anyone: `sync-to-repos.sh`.** It commits the skills into each repo's `.claude/skills/` and merges `project/settings.json`, so teammates' local sessions and non-project cloud sessions that load repository skills get them. Cloud project threads use account-synced skills instead. Repos only enable team-useful plugins. Personal modes such as caveman and ponytail stay in `user/plugins.txt`, so nobody else is switched into them.
 
 The source of truth is this repo. The copies in each project are overwritten on the next sync, so edit here.
 

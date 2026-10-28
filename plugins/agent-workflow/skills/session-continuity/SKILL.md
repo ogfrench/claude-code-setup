@@ -91,8 +91,8 @@ Give each the options and a recommendation, then carry on with what it does not 
 
 Save the work in an authorized branch or durable local file, tick the tracker,
 update the plan, and record open questions. Commit and push only when authorized,
-with applicable checks and repository rules satisfied. The summary then only has to point at those
-records, not carry them.
+with applicable checks and repository rules satisfied. The summary can then
+point at those records rather than carry them.
 
 ## Do not
 

@@ -58,9 +58,8 @@ Load the Netlify MCP readers with ToolSearch (project, deploy, team, observabili
 an updater. `get-deploy` gives `deploy_time` in seconds, `context` and the commit; deploy ids
 are in a commit's check runs. Observability `get-topk` (`edge_functions`, `urls`, sort by
 `EdgeFunctionInvocations` or `Bandwidth`) and `get-timeseries` take millisecond times; Pro
-keeps 7 days. The plan type, billed spend and deploy counts are not in these tools. Use the team billing
-UI for compute, AI inference, credit balance, add-ons and the applicable plan.
-
+keeps 7 days. The plan type, billed spend and deploy counts are not in these tools.
+Use team billing for compute, AI inference, credits, add-ons and plan details.
 
 Rate sources (recheck when estimating):
 https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/
