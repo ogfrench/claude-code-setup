@@ -3,7 +3,33 @@
     {
       "id": "cheapest-model-with-catch",
       "type": "practice",
-      "summary": "Hand a task to the cheapest model whose mistake would be caught before it lands.",
+      "summary": "Delegate to the cheapest model only after measuring that delegation helps.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 2,
+      "tokens": 133,
+      "last_verified": "2026-10-28",
+      "derived_from": [
+        "2026-10-11-cheap-reviews-catch-real-bugs",
+        "2026-10-28-test-single-loop-before-agents"
+      ],
+      "implemented_by": [
+        "plugins/agent-workflow/skills/model-delegation"
+      ],
+      "related": [
+        "review-every-commit",
+        "measure-single-loop-before-delegation"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "evaluate-skill-triggers",
+      "type": "practice",
+      "summary": "Test positive, negative and ambiguous skill triggers before promotion.",
       "concern": "agents",
       "stack": [
         "any"
@@ -11,16 +37,16 @@
       "severity": "should",
       "status": "active",
       "seen": 1,
-      "tokens": 108,
-      "last_verified": "2026-10-11",
+      "tokens": 127,
+      "last_verified": "2026-10-28",
       "derived_from": [
-        "2026-10-11-cheap-reviews-catch-real-bugs"
+        "2026-10-28-evaluate-skill-routing"
       ],
       "implemented_by": [
-        "plugins/agent-workflow/skills/model-delegation"
+        "plugins/agent-workflow/skills/learning-loop"
       ],
       "related": [
-        "review-every-commit"
+        "measure-single-loop-before-delegation"
       ],
       "supersedes": []
     },
@@ -44,6 +70,30 @@
       "related": [
         "review-every-commit",
         "one-suite-at-a-time"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "measure-single-loop-before-delegation",
+      "type": "practice",
+      "summary": "Compare the main loop with skills and tools before adding or keeping a subagent.",
+      "concern": "agents",
+      "stack": [
+        "any"
+      ],
+      "severity": "should",
+      "status": "active",
+      "seen": 1,
+      "tokens": 133,
+      "last_verified": "2026-10-28",
+      "derived_from": [
+        "2026-10-28-test-single-loop-before-agents"
+      ],
+      "implemented_by": [
+        "plugins/agent-workflow/skills/model-delegation"
+      ],
+      "related": [
+        "cheapest-model-with-catch"
       ],
       "supersedes": []
     },
@@ -1099,12 +1149,12 @@
       "id": "model-delegation",
       "type": "tool",
       "kind": "skill",
-      "summary": "Which model does which work, how to brief a cheaper agent, and how to check its work.",
-      "use_when": "When planning multi-step work or before launching subagents on cheaper models.",
+      "summary": "Decide when to use the main agent, an on-demand skill or tool, or a measured subagent.",
+      "use_when": "Before adding subagents, splitting models, or optimizing task latency and cost.",
       "where": "plugins/agent-workflow/skills/model-delegation",
       "state": "installed",
       "tokens": 84,
-      "last_reviewed": "2026-10-11"
+      "last_reviewed": "2026-10-28"
     },
     {
       "id": "netlify-cost",
@@ -2192,6 +2242,41 @@
       "source": "a private project",
       "tokens": 386,
       "promoted_to": []
+    },
+    {
+      "id": "2026-10-28-evaluate-skill-routing",
+      "type": "learning",
+      "summary": "Check skill routing and task completion before promotion",
+      "tags": [
+        "skills",
+        "evaluation",
+        "regression"
+      ],
+      "status": "practice",
+      "source": "ogfrench/claude-code-setup",
+      "tokens": 229,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+        "plugins/agent-workflow/skills/learning-loop/SKILL.md"
+      ]
+    },
+    {
+      "id": "2026-10-28-test-single-loop-before-agents",
+      "type": "learning",
+      "summary": "Test the main agent with skills before creating specialist agents",
+      "tags": [
+        "agents",
+        "orchestration",
+        "skills",
+        "evaluation"
+      ],
+      "status": "practice",
+      "source": "ogfrench/claude-code-setup",
+      "tokens": 244,
+      "promoted_to": [
+        "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+        "plugins/agent-workflow/skills/model-delegation/SKILL.md"
+      ]
     }
   ],
   "edges": [
@@ -2212,12 +2297,47 @@
     },
     {
       "from": "cheapest-model-with-catch",
+      "to": "2026-10-28-test-single-loop-before-agents",
+      "type": "derived_from"
+    },
+    {
+      "from": "cheapest-model-with-catch",
       "to": "plugins/agent-workflow/skills/model-delegation",
       "type": "implemented_by"
     },
     {
       "from": "cheapest-model-with-catch",
       "to": "review-every-commit",
+      "type": "related"
+    },
+    {
+      "from": "cheapest-model-with-catch",
+      "to": "measure-single-loop-before-delegation",
+      "type": "related"
+    },
+    {
+      "from": "evaluate-skill-triggers",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "evaluate-skill-triggers",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "evaluate-skill-triggers",
+      "to": "2026-10-28-evaluate-skill-routing",
+      "type": "derived_from"
+    },
+    {
+      "from": "evaluate-skill-triggers",
+      "to": "plugins/agent-workflow/skills/learning-loop",
+      "type": "implemented_by"
+    },
+    {
+      "from": "evaluate-skill-triggers",
+      "to": "measure-single-loop-before-delegation",
       "type": "related"
     },
     {
@@ -2243,6 +2363,31 @@
     {
       "from": "limit-what-a-reviewer-runs",
       "to": "one-suite-at-a-time",
+      "type": "related"
+    },
+    {
+      "from": "measure-single-loop-before-delegation",
+      "to": "agents",
+      "type": "concern"
+    },
+    {
+      "from": "measure-single-loop-before-delegation",
+      "to": "any",
+      "type": "stack"
+    },
+    {
+      "from": "measure-single-loop-before-delegation",
+      "to": "2026-10-28-test-single-loop-before-agents",
+      "type": "derived_from"
+    },
+    {
+      "from": "measure-single-loop-before-delegation",
+      "to": "plugins/agent-workflow/skills/model-delegation",
+      "type": "implemented_by"
+    },
+    {
+      "from": "measure-single-loop-before-delegation",
+      "to": "cheapest-model-with-catch",
       "type": "related"
     },
     {
@@ -3188,6 +3333,26 @@
     {
       "from": "2026-10-25-one-release-pr-one-e2e-run",
       "to": "kb/practices/estimate-runner-minutes.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-28-evaluate-skill-routing",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-28-evaluate-skill-routing",
+      "to": "plugins/agent-workflow/skills/learning-loop/SKILL.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-28-test-single-loop-before-agents",
+      "to": "plugins/agent-workflow/skills/best-practices/agents-and-models.md",
+      "type": "promoted_to"
+    },
+    {
+      "from": "2026-10-28-test-single-loop-before-agents",
+      "to": "plugins/agent-workflow/skills/model-delegation/SKILL.md",
       "type": "promoted_to"
     }
   ]
