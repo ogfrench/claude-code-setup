@@ -16,6 +16,8 @@ This repo is public. These rules apply to everyone, including Claude sessions.
 6. **Edit nodes, not generated files.** Change `kb/practices/` or `kb/tools/`, then run
    `node scripts/build-kb.mjs`.
 7. **One idea per learning, one change per PR.** Keep PRs small enough to read.
+8. **New skills need behavior cases.** Add a positive invocation case, a quality grader,
+   and a negative routing case or reuse an existing negative case. Keep eval results private.
 
 ## Merging
 
