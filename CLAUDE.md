@@ -65,11 +65,21 @@ Pick the lightest form that does the job.
 | **A practice** | It holds across repos, and was seen twice, or once at a high cost | `kb/practices/<id>.md` |
 | **A skill** | It is a procedure with steps, triggered by a kind of task, longer than a few lines | `plugins/<plugin>/skills/<name>/` |
 | **A hook** | It must always hold and a script can check it (a scan before a push) | `project/settings.json` |
-| **A subagent** | It is a recurring delegated role with its own prompt and model (a cheap reviewer) | `plugins/<plugin>/agents/<name>.md` |
+| **A subagent** | Evaluated context isolation, adversarial independence or safe parallel work beats the main loop plus skills/tools | `plugins/<plugin>/agents/<name>.md` |
 | **A slash command** | It is a recurring prompt the user starts by name | `plugins/<plugin>/commands/<name>.md` |
 | **A plugin** | Two or more related skills, agents or commands worth enabling as a unit | `plugins/<plugin>/` and the marketplace |
 | **An MCP server** | It needs a live outside system | `project/mcp.json` |
 | **Retired** | It stopped being true, or the tool fixed it | its learning keeps the reason |
+
+## Architecture and evaluation gate
+
+Begin with the main agent using on-demand skills and tools. Do not promote a
+recurring topic into a subagent simply because it has a specialist name.
+Before a new skill or agent ships, write positive, negative and ambiguous
+routing cases, then compare end-to-end task quality with the component absent.
+Fold one subagent at a time, keep it if the simpler version regresses, and
+preserve independent reviewers when they catch errors the main loop misses.
+See `docs/claude-practices-2026-10.md` for the dated evidence and audit.
 
 ## Rules for edits
 
