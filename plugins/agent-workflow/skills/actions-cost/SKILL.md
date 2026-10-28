@@ -37,9 +37,8 @@ workflows and recent run history, not a generic YAML recipe. Read
   branch from **validation-only** workflows. Preserve `workflow_dispatch`.
   A green PR does not literally cache a test result for `master`; removing the
   merge-triggered run is a deliberate safety/cost tradeoff.
-- **Do not** remove `push` from container publication, release tagging, deploy,
-  migrations or other side effects needed *after* merge. Split build-and-test
-  from publish jobs when they share a workflow. Keep scheduled security checks.
+- Keep `push` on publishing, releases, deployments, migrations and other
+  post-merge effects. Split test and publish jobs; retain security schedules.
 - Do not make validation PR-only until checking required status checks, branch
   protection/rulesets, bypass rules, and whether the repo merges via PR at all.
   If direct pushes are allowed or protection cannot be confirmed, state the risk
