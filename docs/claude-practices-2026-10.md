@@ -104,6 +104,36 @@ the entire local install is always present. The shell bootstrap currently
 downloads a mutable main-branch installer; consider a commit-pinned release
 and integrity review before making that path more automatic.
 
+## Follow-up audit: validation versus measured results
+
+The October 28 follow-up added cases for each existing first-party skill
+in both plugins and static assertions that every skill has a routing case.
+The generic writing and workflow cases also test that irrelevant prompts
+do not invoke skills. `node --test` checks the files and graders, not
+Claude's decisions. Live A/B runs are still unexecuted here because an
+authenticated Claude Code CLI is unavailable; no scores or cost reductions
+can be claimed.
+
+### Third-party pin review (October 28)
+
+| Pin | Pinned commit | Latest upstream checked | Review decision |
+| --- | --- | --- | --- |
+| caveman | `25d22f8` (June 12) | `9b68f7e` (October 25) | Keep pin pending compatibility and supply-chain review |
+| ponytail | `687c1b3` (June 15) | `09c434a` (October 18) | Keep pin pending hook/plugin compatibility review |
+| 21st | `f76b07a` (September 9) | Same commit | No drift at review time |
+
+Compared to the pins, upstream contains 1,685 commits for caveman and
+301 for ponytail. These are GitHub commit counts, not estimates of risk.
+The changed files include executable hooks, plugin metadata and other
+integration code. Before changing a pin, inspect the actual installer and
+runtime diff, validate the pinned subdirectory layout, and run both plugin
+validation and relevant behavior tests. Do not automatically switch to
+upstream HEAD.
+
+Compare sources:
+https://github.com/JuliusBrussee/caveman/compare/25d22f864ad68cc447a4cb93aefde918aa4aec9f...9b68f7ed12b05e7efaff18e65c5a3fc2849fd0a4
+https://github.com/DietrichGebert/ponytail/compare/687c1b339872289d70f65c5eaabce850b1663867...09c434ab73ca43761c5d8b0c5d341926c2fba710
+
 ## Primary sources and checks
 
 - Anthropic, agent simplification: https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop

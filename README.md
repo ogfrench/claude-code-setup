@@ -103,6 +103,19 @@ A repo's stacks decide what it gets. Put them after the repo in `repos.local.txt
 
 Mark a practice with a stack only when the lesson holds on that stack alone. Today every practice is `any`, because the learnings behind them do not show otherwise, so every repo gets the same bundle until one is tagged.
 
+## Behavioral skill evaluations
+
+The two first-party plugins have cases in `plugins/*/evals/`. The regular
+`node --test` suite checks that cases, graders and skill-routing coverage
+remain structurally valid, **not** whether Claude produces good answers.
+For behavior, run the documented `claude plugin eval` commands from each
+plugin directory on an authenticated machine. They compare fresh sessions
+with and without the plugin and incur model usage; no automatic paid CI runs
+are enabled. Keep reports and private prompts outside this public repository.
+
+Do not use a green static check as evidence that a plugin improves quality.
+Treat measured task completion and regressions as the promotion gate.
+
 ## Maintenance
 
 Nothing here fixes itself, so a weekly look is the habit. `node scripts/kb-audit.mjs` lists practices and tools nobody re-checked in 120 days, raw learnings older than 14 days, practices backed by two learnings but enforced by nothing (candidates for a skill or hook), practices that rest on judgment alone, and how much token headroom is left. It never fails a build: dates move on their own and commits do not.
